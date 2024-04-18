@@ -3,4 +3,5 @@
 /**
 *   @psalm-taint-sink html $value
 */
-function update_option($option, $value, $autoload){ }
+function update_option(string $option, string $value, $autoload = \null){ }
+
