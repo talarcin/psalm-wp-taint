@@ -17,6 +17,7 @@ class Plugin implements PluginEntryPointInterface
     public function __invoke(RegistrationInterface $registration, ?SimpleXMLElement $config = null): void
     {
         foreach ($this->getStubFiles() as $file) {
+            print_r("Current stub file" . $file);
             $registration->addStubFile($file);
         }
     }
@@ -26,6 +27,7 @@ class Plugin implements PluginEntryPointInterface
      */
     private function getStubFiles(): array
     {
+        print_r("Getting stub files... \n");
         return glob(__DIR__ . '/stubs/*.phpstub') ?: [];
     }
 }
