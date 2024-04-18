@@ -5,7 +5,9 @@
   "license": "proprietary",
   "autoload": {
     "psr-4": {
-      "Tuncay\\PsalmWpTaint\\": "src/"
+      "Tuncay\\PsalmWpTaint\\": [
+        "."
+      ]
     }
   },
   "authors": [
