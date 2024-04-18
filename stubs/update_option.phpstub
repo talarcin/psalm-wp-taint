@@ -1,9 +1,0 @@
-/**
-*  @psalm-taint-sink html $value
-*/
-function update_option($option, $value) { }
-
-/**
-*  @psalm-taint-sink html $value
-*/
-function update_option($option, $value, $autoload) { }

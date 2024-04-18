@@ -24,5 +24,8 @@
   "require": {
     "vimeo/psalm": "dev-master",
     "ext-simplexml": "*"
+  },
+  "require-dev": {
+    "php-stubs/wordpress-stubs": "^6.5"
   }
 }
