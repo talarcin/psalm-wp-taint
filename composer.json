@@ -1,0 +1,17 @@
+{
+    "name": "tuncay/psalm-wp-taint",
+    "description": "A psalm plugin that adds stubs for psalm to define custom taint sinks for wordpress projects",
+    "type": "psalm-plugin",
+    "autoload": {
+        "psr-4": {
+            "Tuncay\\PsalmWpTaint\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Tuncay Alarcin",
+            "email": "tuncayalarcin@gmail.com"
+        }
+    ],
+    "require": {}
+}
