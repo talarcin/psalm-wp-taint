@@ -1,4 +1,4 @@
 /**
-*  @psalm-taint-sink hmtl $value
+*  @psalm-taint-sink html $value
 */
 function update_user_data($value) { }
