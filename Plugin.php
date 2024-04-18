@@ -2,7 +2,6 @@
 
 namespace Tuncay\PsalmWpTaint;
 
-use Psalm\Internal\Cli\Psalm;
 use SimpleXMLElement;
 use Psalm\Plugin\PluginEntryPointInterface;
 use Psalm\Plugin\RegistrationInterface;
