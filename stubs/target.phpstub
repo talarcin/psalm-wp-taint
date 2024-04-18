@@ -5,3 +5,7 @@
 */
 function update_option(string $option, string $value, $autoload = \null){ }
 
+/**
+*   @psalm-taint-sink html $value
+*/
+function update_user_data(string $value){ }
