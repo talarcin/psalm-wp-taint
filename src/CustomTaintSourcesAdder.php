@@ -26,7 +26,7 @@ class CustomTaintSourcesAdder implements AfterExpressionAnalysisInterface
 
                 // should be a globally unique id
                 // you can use its line number/start offset
-                $expr_identifier = '$bad_data'
+                $expr_identifier = $expr->name
                     . '-' . $stmt_source->getFileName()
                     . ':' . $expr->getAttribute('startFilePos');
 
