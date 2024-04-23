@@ -43,6 +43,8 @@ class CustomTaintSourcesAdder implements AfterExpressionAnalysisInterface
             }
         }
 
+        print_r($codebase->taint_flow_graph);
+
         return null;
     }
 }

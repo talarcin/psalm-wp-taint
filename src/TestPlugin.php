@@ -32,8 +32,6 @@ class TestPlugin implements AfterStatementAnalysisInterface
                     TaintKindGroup::ALL_INPUT,
                     new CodeLocation($statements_source, $statement)
                 );
-
-                print_r($codebase->taint_flow_graph);
             }
         }
 
