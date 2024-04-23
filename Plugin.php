@@ -33,7 +33,7 @@ class Plugin implements PluginEntryPointInterface
      */
     private function getStubFiles(): array
     {
-        print_r("Getting stub files... \n");
+        print_r("Getting stub files..." . PHP_EOL);
         return glob(__DIR__ . '/stubs/*.phpstub') ?: [];
     }
 }
