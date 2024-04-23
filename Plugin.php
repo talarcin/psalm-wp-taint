@@ -24,8 +24,9 @@ class Plugin implements PluginEntryPointInterface
                 $registration->registerHooksFromClass(CustomTaintSourcesAdder::class);*/
 
         foreach ($this->getStubFiles() as $file) {
-            print_r("Current stub file" . $file . "\n");
-            $registration->addStubFile($file);
+            if (str_contains('target.phpstub', $file)) {
+                $registration->addStubFile($file);
+            }
         }
     }
 
