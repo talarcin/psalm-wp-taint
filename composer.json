@@ -22,7 +22,7 @@
     }
   },
   "require": {
-    "vimeo/psalm": "^4.20.0",
+    "vimeo/psalm": "dev-master",
     "ext-simplexml": "*"
   },
   "require-dev": {
