@@ -31,6 +31,8 @@ class CustomTaintSourcesAdder implements AfterExpressionAnalysisInterface
                     . ':' . $expr->getAttribute('startFilePos');
 
                 if ($expr_type) {
+                    print_r('Adding ' . $expr_identifier . ' as taint source');
+
                     $codebase->addTaintSource(
                         $expr_type,
                         $expr_identifier,
