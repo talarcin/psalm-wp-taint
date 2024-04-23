@@ -18,11 +18,10 @@ class TestPlugin implements AfterStatementAnalysisInterface
         $codebase = $event->getCodebase();
 
         if ($statement instanceof Function_) {
-            $fn_name = $statement->name;
-            print_r("Found a function " . $fn_name . "\n");
+            print_r("Found a function " . $statement->name . "\n");
 
-            if ($fn_name === 'update_user_data') {
-                $stmt_id = $fn_name
+            if ($statement->name == 'update_user_data') {
+                $stmt_id = $statement->name
                     . '-' . $statements_source->getFileName()
                     . ':' . $statement->getAttribute('startFilePos');
 
