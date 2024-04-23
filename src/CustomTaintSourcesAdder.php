@@ -6,7 +6,7 @@ use PhpParser\Node\Expr\Variable;
 use Psalm\CodeLocation;
 use Psalm\Plugin\EventHandler\AfterExpressionAnalysisInterface;
 use Psalm\Plugin\EventHandler\Event\AfterExpressionAnalysisEvent;
-use Psalm\Type\TaintKind;
+
 use Psalm\Type\TaintKindGroup;
 
 class CustomTaintSourcesAdder implements AfterExpressionAnalysisInterface
