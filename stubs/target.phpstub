@@ -6,3 +6,10 @@
 function update_user_data_custom(string $value): string
 {
 }
+
+/**
+ *  @psalm-taint-sink sql $value
+ */
+function custom_taint_sink(string $input)
+{
+}
