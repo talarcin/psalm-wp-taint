@@ -7,4 +7,5 @@ if (str_contains(__DIR__, '')) {
     chdir("./");
 }
 exec("./vendor/bin/psalm --taint-analysis", $out);
+$out = implode("\n", $out);
 print_r($out);
