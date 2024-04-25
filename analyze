@@ -6,5 +6,4 @@ namespace PsalmWpTaint;
 if (str_contains(__DIR__, '')) {
     chdir("./");
 }
-exec("ls -l", $out);
-print_r($out);
+exec("./vendor/bin/psalm --taint-analysis");
