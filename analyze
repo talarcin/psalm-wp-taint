@@ -3,4 +3,8 @@
 
 namespace PsalmWpTaint;
 
-echo __DIR__;
+if (str_contains(__DIR__, '/vendor/tuncay/psalm-wp-taint')) {
+    shell_exec('./../../bin/psalm --taint-analysís');
+} else {
+    shell_exec('./vendor/bin/psalm --taint-analysis');
+}
