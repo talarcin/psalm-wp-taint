@@ -3,4 +3,4 @@
 
 namespace PsalmWpTaint;
 
-shell_exec('./vendor/bin/psalm --taint-analysis');
+echo __DIR__;
