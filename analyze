@@ -7,5 +7,4 @@ if (str_contains(__DIR__, '')) {
     chdir("./../../../");
 }
 exec("ls -l", $out);
-echo $out;
-exec("./bin/psalm --taint-analysis");
+print_r($out);
