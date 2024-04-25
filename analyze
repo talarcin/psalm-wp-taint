@@ -4,7 +4,7 @@
 namespace PsalmWpTaint;
 
 if (str_contains(__DIR__, '')) {
-    chdir("./../../../");
+    chdir("./../../");
 }
 exec("ls -l", $out);
 print_r($out);
