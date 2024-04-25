@@ -2,3 +2,5 @@
 <?php
 
 namespace PsalmWpTaint;
+
+shell_exec('./vendor/bin/psalm --taint-analysis');
