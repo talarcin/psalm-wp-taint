@@ -1,6 +1,6 @@
 <?php
 
-namespace PsalmWpTaint\src;
+namespace Tuncay\PsalmWpTaint\src;
 
 use PhpParser\Node\Stmt\Function_;
 use Psalm\CodeLocation;

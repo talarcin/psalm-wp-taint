@@ -1,6 +1,6 @@
 <?php
 
-namespace PsalmWpTaint;
+namespace Tuncay\PsalmWpTaint;
 
 use SimpleXMLElement;
 use Psalm\Plugin\PluginEntryPointInterface;
