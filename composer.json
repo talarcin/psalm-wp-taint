@@ -5,7 +5,7 @@
   "license": "proprietary",
   "autoload": {
     "psr-4": {
-      "Tuncay\\PsalmWpTaint\\": [
+      "Tuncay": [
         "."
       ]
     }
@@ -18,7 +18,7 @@
   ],
   "extra": {
     "psalm": {
-      "pluginClass": "Tuncay\\PsalmWpTaint\\Plugin"
+      "pluginClass": "PsalmWpTaint\\Plugin"
     }
   },
   "require": {
