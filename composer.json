@@ -5,7 +5,7 @@
   "license": "proprietary",
   "autoload": {
     "psr-4": {
-      "PsalmWpTaint\\": [
+      "Tuncay\\PsalmWpTaint\\": [
         "."
       ]
     }
