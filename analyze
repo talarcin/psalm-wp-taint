@@ -3,6 +3,8 @@
 
 namespace PsalmWpTaint;
 
+use stdClass;
+
 if (str_contains(__DIR__, '')) {
     chdir("./");
 }
