@@ -64,50 +64,49 @@ if ($argv[1] == "--plugin_list") {
     }
 
     print_r("File \"psalm.xml\" found.\n");
-    
+    print_r("Getting installed plugins ...\n");
     $installed_plugins = glob("./wp-content/plugins/*", GLOB_ONLYDIR);
-
-    print_r("Found installed plugins:\n");
-    foreach ($installed_plugins as $plugin_slug) {
-        print_r("\t$plugin_slug\n");
-    }
-
-    // Running psalm
-    print_r("Running psalm's taint analysis on ./wp-content/plugins/ ...\n");
-    exec("./vendor/bin/psalm --taint-analysis", $output);
+    print_r("Found " . sizeof($installed_plugins) . " plugins.\n");
 
     $analysis_results = [];
 
-    for ($i = 0; $i < sizeof($output); $i++) {
-        if (str_contains($output[$i], "ERROR")) {
-            $single_result = new stdClass();
-            [$key, $error_type] = explode(": ", $output[$i]);
-            $i++;
-            [$at, $path] = explode(" ", $output[$i]);
+    // Run psalm taint analysis on each plugin separately
+    foreach ($installed_plugins as $plugin_path) {
+        // Running psalm for plugin
+        print_r("Running psalm's taint analysis on $plugin_path ...\n");
+        change_psalm_project_dir($plugin_path, "./psalm.xml");
+        exec("./vendor/bin/psalm --taint-analysis", $output);
 
-            $single_result->error_type = $error_type;
-            $single_result->path = $path;
-            $single_result->plugin_slug = get_plugin_slug_from_path($path);
-            $single_result->error_message = [];
-            $i += 2;
-            $j = 0;
+        $single_result = new stdClass();
+        $single_result->plugin_slug = explode("/", $plugin_path)[2];
 
-
-            while (!str_contains($output[$i], "ERROR")) {
-                if (trim($output[$i]) != "") {
-                    $node = array(
-                        "id" => trim($output[$i]),
-                        "stmt" => trim($output[$i + 1])
-                    );
-                    $single_result->error_message[] = $node;
-                    $i += 2;
-                    continue;
-                }
+        for ($i = 0; $i < sizeof($output); $i++) {
+            if (str_contains($output[$i], "ERROR")) {
+                [$key, $error_type] = explode(": ", $output[$i]);
                 $i++;
-            }
+                [$at, $path] = explode(" ", $output[$i]);
 
-            $analysis_results[] = $single_result;
+                $single_result->error_type = $error_type;
+                $single_result->error_path = $path;
+                $single_result->error_message = [];
+                $i += 2;
+
+                while (!str_contains($output[$i], "ERROR")) {
+                    if (trim($output[$i]) != "") {
+                        $node = array(
+                            "id" => trim($output[$i]),
+                            "stmt" => trim($output[$i + 1])
+                        );
+                        $single_result->error_message[] = $node;
+                        $i += 2;
+                        continue;
+                    }
+                    $i++;
+                }
+            }
         }
+
+        $analysis_results[] = $single_result;
     }
 
     if (!is_dir("./psalm-result/")) {
@@ -120,21 +119,6 @@ if ($argv[1] == "--plugin_list") {
     print_r("Analysis results saved to \"./psalm-result/out.json\".\n");
 } else {
     print_r("Invalid command! Check for usage with --help or -h.\n");
-}
-
-
-function get_plugin_slug_from_path($path): string
-{
-    $dir_array = explode("/", $path);
-    $slug = "";
-
-    for ($i = 0; $i < sizeof($dir_array); $i++) {
-        if ($dir_array[$i] == "plugins") {
-            $slug = $dir_array[$i + 1];
-        }
-    }
-
-    return $slug;
 }
 
 
