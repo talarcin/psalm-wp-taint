@@ -93,7 +93,7 @@ if ($argv[1] == "--plugin_list") {
                     $single_result->error_message = [];
                     $i += 2;
 
-                    while (!str_contains($output[$i], "ERROR") && $i < sizeof($output)) {
+                    while ($i < sizeof($output) && !str_contains($output[$i], "ERROR")) {
                         if (trim($output[$i]) != "") {
                             $node = array(
                                 "id" => trim($output[$i]),
