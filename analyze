@@ -6,6 +6,115 @@ namespace PsalmWpTaint;
 if (str_contains(__DIR__, '')) {
     chdir("./");
 }
+
+if ($argv[1] == "--help" || $argv[1] == "-h") {
+    print_r("Usage:\n");
+    print_r("analyze --plugin_list ./absolute/path/to/file/with/plugins/list. \n");
+    print_r("The plugin list should be a .csv file with the first column being the plugin name slugs and the second being the plugin versions.\n");
+    exit();
+}
+
+if ($argc != 3) {
+    print_r("Invalid number of options. Use --help or -h to show list of options.\n");
+    exit();
+}
+
+if ($argv[1] == "--plugin_list") {
+    $filepath = $argv[2];
+
+    if (is_dir($filepath)) {
+        print_r("Path \"$filepath\" leads to a directory. Please input a path leading to the correct csv file.\n");
+        exit();
+    }
+
+    if (!file_exists($filepath) || !str_ends_with($filepath, ".csv")) {
+        print_r("File \"$filepath\" not found or not a .csv file.\n");
+        exit();
+    }
+
+    if (file_get_contents($filepath) == null) {
+        print_r("No data found in $filepath.\n");
+        exit();
+    }
+
+    foreach (file($filepath) as $line) {
+        [$plugin_slug, $plugin_version] = explode(", ", $line);
+
+        if (is_dir("./wp-content/plugins/$plugin_slug/")) {
+            print_r("Plugin \"$plugin_slug\" already installed. Skipping installation.\n");
+            continue;
+        }
+
+        print_r("Installing plugin:\n \"$plugin_slug (v$plugin_version) \" ...\n");
+        exec("ddev wp plugin install $plugin_slug --version=$plugin_version");
+    }
+    print_r("Plugins installed successfully.\n\n");
+
+    print_r("Running psalm's taint analysis on ./wp-content/plugins/ ...\n");
+    exec("./vendor/bin/psalm --taint-analysis", $output, $exit_code);
+
+    $analysis_results = [];
+
+    for ($i = 0; $i < sizeof($output); $i++) {
+        if (str_contains($output[$i], "ERROR")) {
+            $single_result = new stdClass();
+            [$key, $error_type] = explode(": ", $output[$i]);
+            $i++;
+            [$at, $path] = explode(" ", $output[$i]);
+
+            $single_result->error_type = $error_type;
+            $single_result->path = $path;
+            $single_result->plugin_slug = get_plugin_slug_from_path($path);
+            $single_result->error_message = [];
+            $i += 2;
+            $j = 0;
+
+
+            while (!str_contains($output[$i], "ERROR")) {
+                if (trim($output[$i]) != "") {
+                    $node = array(
+                        "id" => trim($output[$i]),
+                        "stmt" => trim($output[$i + 1])
+                    );
+                    $single_result->error_message[] = $node;
+                    $i += 2;
+                    continue;
+                }
+                $i++;
+            }
+
+            $analysis_results[] = $single_result;
+        }
+    }
+
+    if (!is_dir("./psalm-result/")) {
+        mkdir("./psalm-result/");
+    }
+    if (!file_exists("./psalm-result/out.json")) {
+        fopen("./psalm-result/out.json", "w");
+    }
+    file_put_contents("./psalm-result/out.json", json_encode($analysis_results, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+    print_r("Analysis results saved to \"./psalm-result/out.json\".\n");
+} else {
+    print_r("Invalid command");
+}
+
+
+function get_plugin_slug_from_path($path): string
+{
+    $dir_array = explode("/", $path);
+    $slug = "";
+
+    for ($i = 0; $i < sizeof($dir_array); $i++) {
+        if ($dir_array[$i] == "plugins") {
+            $slug = $dir_array[$i + 1];
+        }
+    }
+
+    return $slug;
+}
+
+
 exec("./vendor/bin/psalm --taint-analysis", $out);
 $out = implode("\n", $out);
 print_r($out);
