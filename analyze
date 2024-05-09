@@ -60,7 +60,7 @@ if ($argv[1] == "--plugin_list") {
     // Check for correct psalm config
     if (file_exists("./psalm.xml")) {
         print_r("File \"psalm.xml\" found. Checking for correct project directory.\n");
-
+        check_psalm_config("./psalm.xml");
     }
 
     // Running psalm
