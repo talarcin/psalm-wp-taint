@@ -147,7 +147,6 @@ function check_psalm_config($filepath): void
     if ($psalm_xml->projectFiles->directory["name"] != "./wp-content/plugins/") {
         print_r("Configuring psalm.xml with correct project directory.\n");
 
-        $psalm_xml->projectFiles->directory->removeAttribute("name");
         $psalm_xml->projectFiles->directory->addAttribute("name", "./wp-content/plugins/");
     }
 
