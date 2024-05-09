@@ -85,9 +85,9 @@ if ($argv[1] == "--plugin_list") {
         }
 
         $errors = [];
-        $single_error = new stdClass();
 
         for ($i = 0; $i < sizeof($output); $i++) {
+            $single_error = new stdClass();
             if (str_contains($output[$i], "ERROR")) {
                 [$key, $error_type] = explode(": ", $output[$i]);
                 $i++;
@@ -110,9 +110,8 @@ if ($argv[1] == "--plugin_list") {
                     }
                     $i++;
                 }
+                $errors[] = $single_error;
             }
-
-            $errors[] = $single_error;
         }
 
         $single_result->errors = $errors;
