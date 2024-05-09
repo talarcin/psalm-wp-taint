@@ -5,10 +5,12 @@ namespace PsalmWpTaint;
 
 use stdClass;
 
+// Checking for current dir
 if (str_contains(__DIR__, '')) {
     chdir("./");
 }
 
+// Checking for correct arguments
 if ($argv[1] == "--help" || $argv[1] == "-h") {
     print_r("Usage:\n");
     print_r("analyze --plugin_list ./absolute/path/to/file/with/plugins/list. \n");
@@ -21,9 +23,11 @@ if ($argc != 3) {
     exit();
 }
 
+// Correct number of arguments and names
 if ($argv[1] == "--plugin_list") {
     $filepath = $argv[2];
 
+    // Checking for correct filepaths for csv files
     if (is_dir($filepath)) {
         print_r("Path \"$filepath\" leads to a directory. Please input a path leading to the correct csv file.\n");
         exit();
@@ -39,6 +43,7 @@ if ($argv[1] == "--plugin_list") {
         exit();
     }
 
+    // Installing plugins via wp cli
     foreach (file($filepath) as $line) {
         [$plugin_slug, $plugin_version] = explode(", ", $line);
 
@@ -52,8 +57,15 @@ if ($argv[1] == "--plugin_list") {
     }
     print_r("Plugins installed successfully.\n\n");
 
+    // Check for correct psalm config
+    if (file_exists("./psalm.xml")) {
+        print_r("File \"psalm.xml\" found. Checking for correct project directory.\n");
+
+    }
+
+    // Running psalm
     print_r("Running psalm's taint analysis on ./wp-content/plugins/ ...\n");
-    exec("./vendor/bin/psalm --taint-analysis", $output, $exit_code);
+    exec("./vendor/bin/psalm --taint-analysis", $output);
 
     $analysis_results = [];
 
@@ -116,7 +128,29 @@ function get_plugin_slug_from_path($path): string
     return $slug;
 }
 
+function check_psalm_config($filepath): void
+{
+    $psalm_xml = simplexml_load_file($filepath);
 
-exec("./vendor/bin/psalm --taint-analysis", $out);
-$out = implode("\n", $out);
-print_r($out);
+    if (!$psalm_xml->projectFiles->directory) {
+        print_r("Configuring psalm.xml with correct project directory.\n");
+
+        $psalm_xml->projectFiles->addChild("directory");
+        $psalm_xml->projectFiles->directory->addAttribute("name", "./wp-content/plugins/");
+    }
+
+    if (!$psalm_xml->projectFiles->directory["name"]) {
+        print_r("Configuring psalm.xml with correct project directory.\n");
+        $psalm_xml->projectFiles->directory->addAttribute("name", "./wp-content/plugins/");
+    }
+
+    if ($psalm_xml->projectFiles->directory["name"] != "./wp-content/plugins/") {
+        print_r("Configuring psalm.xml with correct project directory.\n");
+
+        $psalm_xml->projectFiles->directory->removeAttribute("name");
+        $psalm_xml->projectFiles->directory->addAttribute("name", "./wp-content/plugins/");
+    }
+
+    $psalm_xml->asXML("./psalm.xml");
+    print_r("Configuration of psalm.xml done!\n");
+}
