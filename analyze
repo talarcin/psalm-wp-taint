@@ -110,7 +110,7 @@ if ($argv[1] == "--plugin_list") {
     file_put_contents("./psalm-result/out.json", json_encode($analysis_results, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
     print_r("Analysis results saved to \"./psalm-result/out.json\".\n");
 } else {
-    print_r("Invalid command");
+    print_r("Invalid command! Check for usage with --help or -h.\n");
 }
 
 
@@ -133,21 +133,21 @@ function check_psalm_config($filepath): void
     $psalm_xml = simplexml_load_file($filepath);
 
     if (!$psalm_xml->projectFiles->directory) {
-        print_r("Configuring psalm.xml with correct project directory.\n");
+        print_r("Configuring psalm.xml with correct project directory ...\n");
 
         $psalm_xml->projectFiles->addChild("directory");
         $psalm_xml->projectFiles->directory->addAttribute("name", "./wp-content/plugins/");
     }
 
     if (!$psalm_xml->projectFiles->directory["name"]) {
-        print_r("Configuring psalm.xml with correct project directory.\n");
+        print_r("Configuring psalm.xml with correct project directory ...\n");
         $psalm_xml->projectFiles->directory->addAttribute("name", "./wp-content/plugins/");
     }
 
     if ($psalm_xml->projectFiles->directory["name"] != "./wp-content/plugins/") {
-        print_r("Configuring psalm.xml with correct project directory.\n");
+        print_r("Configuring psalm.xml with correct project directory ...\n");
 
-        $psalm_xml->projectFiles->directory->addAttribute("name", "./wp-content/plugins/");
+        $psalm_xml->projectFiles->directory['name'] = "./wp-content/plugins/";
     }
 
     $psalm_xml->asXML("./psalm.xml");
