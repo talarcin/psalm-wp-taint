@@ -130,20 +130,17 @@ function change_psalm_project_dir($plugin_dir_path, $psalm_xml_path): void
         print_r("Configuring psalm.xml with correct project directory ...\n");
 
         $psalm_xml->projectFiles->addChild("directory");
-        $psalm_xml->projectFiles->directory->addAttribute("name", "./wp-content/plugins/");
+        $psalm_xml->projectFiles->directory->addAttribute("name", $plugin_dir_path);
     }
 
     if (!$psalm_xml->projectFiles->directory["name"]) {
         print_r("Configuring psalm.xml with correct project directory ...\n");
-        $psalm_xml->projectFiles->directory->addAttribute("name", "./wp-content/plugins/");
-    }
-
-    if ($psalm_xml->projectFiles->directory["name"] != "./wp-content/plugins/") {
+        $psalm_xml->projectFiles->directory->addAttribute("name", $plugin_dir_path);
+    } else {
         print_r("Configuring psalm.xml with correct project directory ...\n");
-
-        $psalm_xml->projectFiles->directory['name'] = "./wp-content/plugins/";
+        $psalm_xml->projectFiles->directory["name"] = $plugin_dir_path;
     }
-
+    
     $psalm_xml->asXML("./psalm.xml");
     print_r("Configuration of psalm.xml done!\n");
 }
