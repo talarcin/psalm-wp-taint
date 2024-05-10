@@ -26,7 +26,8 @@
     "ext-simplexml": "*"
   },
   "require-dev": {
-    "php-stubs/wordpress-stubs": "^6.5"
+    "php-stubs/wordpress-stubs": "^6.5",
+    "phpunit/phpunit": "^11"
   },
   "bin": [
     "analyze"
