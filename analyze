@@ -50,13 +50,11 @@ if ($argv[1] == "--plugin_list") {
 
         if (is_dir("./wp-content/plugins/$plugin_slug/")) {
             print_r("Plugin \"$plugin_slug\" already installed. Skipping installation.\n\n");
-            print_r("----------------------------------------\n\n");
             continue;
         }
 
         print_r("Installing plugin:\n \"$plugin_slug (v$plugin_version) \" ...\n");
         exec("ddev wp plugin install $plugin_slug --version=$plugin_version");
-        print_r("----------------------------------------\n\n");
     }
     print_r("Plugins installed successfully.\n\n");
     print_r("----------------------------------------\n\n");
@@ -71,7 +69,6 @@ if ($argv[1] == "--plugin_list") {
     print_r("Getting installed plugins ...\n");
     $installed_plugins = glob("./wp-content/plugins/*", GLOB_ONLYDIR);
     print_r("Found " . sizeof($installed_plugins) . " plugins.\n\n");
-    print_r("----------------------------------------\n\n");
 
     $analysis_results = [];
 
@@ -89,7 +86,6 @@ if ($argv[1] == "--plugin_list") {
 
         if (sizeof($output) <= 9) {
             print_r("No errors found for $single_result->plugin_slug.\n\n");
-            print_r("----------------------------------------\n\n");
             continue;
         }
 
@@ -137,6 +133,7 @@ if ($argv[1] == "--plugin_list") {
         fopen("./psalm-result/out.json", "w");
     }
     file_put_contents("./psalm-result/out.json", json_encode($analysis_results, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+    print_r("----------------------------------------\n\n");
     print_r("Analysis results saved to \"./psalm-result/out.json\".\n");
 } else {
     print_r("Invalid command! Check for usage with --help or -h.\n");
