@@ -72,10 +72,11 @@ if ($argv[1] == "--plugin_list") {
 
     // Run psalm taint analysis on each plugin separately
     foreach ($installed_plugins as $plugin_path) {
-        // Running psalm for plugin
+        // Running psalm for plugin $plugin_path
         print_r("Running psalm's taint analysis on $plugin_path ...\n");
         change_psalm_project_dir($plugin_path, "./psalm.xml");
         exec("./vendor/bin/psalm --taint-analysis", $output);
+        print_r($output);
 
         $single_result = new stdClass();
         $single_result->plugin_slug = explode("/", $plugin_path)[3];
@@ -153,3 +154,4 @@ function change_psalm_project_dir($plugin_dir_path, $psalm_xml_path): void
     $psalm_xml->asXML("./psalm.xml");
     print_r("Configuration of psalm.xml done!\n");
 }
+
