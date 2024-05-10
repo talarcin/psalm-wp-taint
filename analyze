@@ -45,7 +45,7 @@ if ($argv[1] == "--plugin_list") {
 
     // Installing plugins via wp cli
     foreach (file($filepath) as $line) {
-        print_r("----------------------------------------\n\n");
+        print_r("----------------------------------------\n");
         [$plugin_slug, $plugin_version] = explode(", ", $line);
 
         if (is_dir("./wp-content/plugins/$plugin_slug/")) {
@@ -56,8 +56,8 @@ if ($argv[1] == "--plugin_list") {
         print_r("Installing plugin:\n \"$plugin_slug (v$plugin_version) \" ...\n");
         exec("ddev wp plugin install $plugin_slug --version=$plugin_version");
     }
-    print_r("Plugins installed successfully.\n\n");
-    print_r("----------------------------------------\n\n");
+    print_r("Plugins installed successfully.\n");
+    print_r("----------------------------------------\n");
 
     // Check for correct psalm config
     if (!file_exists("./psalm.xml")) {
