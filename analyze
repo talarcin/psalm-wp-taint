@@ -46,7 +46,7 @@ if ($argv[1] == "--plugin_list") {
     // Installing plugins via wp cli
     foreach (file($filepath) as $line) {
         print_r("----------------------------------------\n");
-        [$plugin_slug, $plugin_version] = explode(", ", $line);
+        [$plugin_slug, $plugin_version] = explode(",", $line);
 
         if (is_dir("./wp-content/plugins/$plugin_slug/")) {
             print_r("Plugin \"$plugin_slug\" already installed. Skipping installation.\n");
