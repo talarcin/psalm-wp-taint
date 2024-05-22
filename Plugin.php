@@ -5,6 +5,8 @@ namespace Tuncay\PsalmWpTaint;
 use SimpleXMLElement;
 use Psalm\Plugin\PluginEntryPointInterface;
 use Psalm\Plugin\RegistrationInterface;
+use Tuncay\PsalmWpTaint\src\AddActionChecker;
+use Tuncay\PsalmWpTaint\src\AddActionParser;
 use Tuncay\PsalmWpTaint\src\FunctionCascadeChecker;
 
 class Plugin implements PluginEntryPointInterface
@@ -17,8 +19,6 @@ class Plugin implements PluginEntryPointInterface
      */
     public function __invoke(RegistrationInterface $registration, ?SimpleXMLElement $config = null): void
     {
-        require_once __DIR__ . '/src/FunctionCascadeChecker.php';
-        $registration->registerHooksFromClass(FunctionCascadeChecker::class);
 
         foreach ($this->getStubFiles() as $file) {
             $registration->addStubFile($file);
