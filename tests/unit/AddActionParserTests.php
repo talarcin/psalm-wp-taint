@@ -47,6 +47,7 @@ final class AddActionParserTests extends TestCase
     {
         $testFilePath = "./res/test-file.php";
         $expectedSizeOfFoundExpressions = 3;
+        $expectedActionsMap = array("admin_post" => array("example_admin_post_callback", "example_admin_post_callback", "example_admin_post_callback"));
 
         $ast = $this->setUpParsing(file_get_contents($testFilePath));
         $this->traverser->addVisitor($this->visitor);
@@ -55,6 +56,24 @@ final class AddActionParserTests extends TestCase
         $this->addActionParser->parseFoundExpressions();
 
         $this->assertSame($expectedSizeOfFoundExpressions, sizeof($this->addActionParser->foundExpressions));
+        $this->assertSame($expectedActionsMap, $this->addActionParser->getActionsMap());
+    }
+
+    public function testWriteToFile(): void
+    {
+        $testFilePath = "./res/test-file.php";
+        $filePathToWrite = "./res/actions-map.json";
+        $expectedActionsMap = array("admin_post" => array("example_admin_post_callback", "example_admin_post_callback", "example_admin_post_callback"));
+
+        $ast = $this->setUpParsing(file_get_contents($testFilePath));
+        $this->traverser->addVisitor($this->visitor);
+        $this->traverser->traverse($ast);
+
+        $this->addActionParser->parseFoundExpressions();
+        $this->addActionParser->writeActionsMapToFile($filePathToWrite);
+
+        $this->addActionParser->readActionsMapFromFile($filePathToWrite);
+        $this->assertSame($expectedActionsMap, $this->addActionParser->getActionsMap());
     }
 
     protected function setUp(): void

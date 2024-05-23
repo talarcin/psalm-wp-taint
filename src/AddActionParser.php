@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tuncay\PsalmWpTaint\src;
 
 use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Scalar\String_;
 
@@ -42,6 +43,16 @@ class AddActionParser
         }
     }
 
+    public function writeActionsMapToFile(string $filepath): void
+    {
+        file_put_contents($filepath, json_encode($this->actionsMap));
+    }
+
+    public function readActionsMapFromFile(string $filepath): void
+    {
+        $this->actionsMap = json_decode(file_get_contents($filepath), true);
+    }
+
     /**
      * @return array
      */
@@ -60,10 +71,11 @@ class AddActionParser
         $args = [];
 
         foreach ($expr->args as $arg) {
-
-            if ($arg->value instanceof String_) {
+            if ($arg->value instanceof String_ && !$args["hook"]) {
                 $args["hook"] = $arg->value->value;
-            } else if ($arg->value instanceof Expr\Array_) {
+            } else if ($arg->value instanceof String_ && !$args["callback"]) {
+                $args["callback"] = $arg->value->value;
+            } else if ($arg->value instanceof Array_) {
                 $args["callback"] = $arg->value->items[1]->value->value;
             }
         }
