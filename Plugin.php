@@ -5,9 +5,6 @@ namespace Tuncay\PsalmWpTaint;
 use SimpleXMLElement;
 use Psalm\Plugin\PluginEntryPointInterface;
 use Psalm\Plugin\RegistrationInterface;
-use Tuncay\PsalmWpTaint\src\AddActionChecker;
-use Tuncay\PsalmWpTaint\src\AddActionParser;
-use Tuncay\PsalmWpTaint\src\FunctionCascadeChecker;
 
 class Plugin implements PluginEntryPointInterface
 {
