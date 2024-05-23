@@ -9,6 +9,7 @@ use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Scalar\String_;
 
+// TODO: Maybe make class static to not need too many I/O operations
 class AddActionParser
 {
     public array $foundExpressions = [];
