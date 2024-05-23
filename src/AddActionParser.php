@@ -10,33 +10,52 @@ use PhpParser\Node\Scalar\String_;
 
 class AddActionParser
 {
-    public array $found_expr = [];
-
-    public array $actions_map = [];
+    public array $foundExpressions = [];
+    private array $actionsMap = [];
 
     public function __construct()
     {
 
     }
 
+    /**
+     * @param Expr $expr
+     * @return bool
+     */
     public function isAddAction(Expr $expr): bool
     {
         return $expr instanceof FuncCall && $expr->name == 'add_action';
     }
 
-    public function parse(): void
+    /**
+     * @return void
+     */
+    public function parseFoundExpressions(): void
     {
-        foreach ($this->found_expr as $expr) {
-            $args = $this->get_args($expr);
-            if (!$this->actions_map[$args["hook"]]) {
-                $this->actions_map[$args["hook"]] = array($args["callback"]);
+        foreach ($this->foundExpressions as $expr) {
+            $args = $this->getArgs($expr);
+            if (!$this->actionsMap[$args["hook"]]) {
+                $this->actionsMap[$args["hook"]] = array($args["callback"]);
             } else {
-                $this->actions_map[$args["hook"]][] = $args["callback"];
+                $this->actionsMap[$args["hook"]][] = $args["callback"];
             }
         }
     }
 
-    private function get_args(Expr $expr): array
+    /**
+     * @return array
+     */
+    public function getActionsMap(): array
+    {
+        return $this->actionsMap;
+    }
+
+
+    /**
+     * @param Expr $expr
+     * @return array
+     */
+    private function getArgs(Expr $expr): array
     {
         $args = [];
 

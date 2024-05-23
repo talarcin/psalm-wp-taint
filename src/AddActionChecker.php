@@ -9,6 +9,10 @@ use Psalm\Plugin\EventHandler\Event\AfterExpressionAnalysisEvent;
 
 class AddActionChecker implements AfterExpressionAnalysisInterface
 {
+    /**
+     * @param AfterExpressionAnalysisEvent $event
+     * @return bool|null
+     */
     public static function afterExpressionAnalysis(AfterExpressionAnalysisEvent $event): ?bool
     {
         $expr = $event->getExpr();
@@ -17,7 +21,7 @@ class AddActionChecker implements AfterExpressionAnalysisInterface
         $add_action_parser = new AddActionParser();
 
         if ($add_action_parser->isAddAction($expr)) {
-            $add_action_parser->found_expr[] = $expr;
+            $add_action_parser->foundExpressions[] = $expr;
         }
 
         return null;
