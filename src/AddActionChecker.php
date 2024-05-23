@@ -22,6 +22,9 @@ class AddActionChecker implements AfterExpressionAnalysisInterface
 
         if ($add_action_parser->isAddAction($expr)) {
             $add_action_parser->foundExpressions[] = $expr;
+            $add_action_parser->readActionsMapFromFile("./actions-map.json");
+            $add_action_parser->parseFoundExpressions();
+            $add_action_parser->writeActionsMapToFile("./actions-map.json");
         }
 
         return null;

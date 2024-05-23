@@ -5,6 +5,7 @@ namespace Tuncay\PsalmWpTaint;
 use SimpleXMLElement;
 use Psalm\Plugin\PluginEntryPointInterface;
 use Psalm\Plugin\RegistrationInterface;
+use Tuncay\PsalmWpTaint\src\AddActionChecker;
 
 class Plugin implements PluginEntryPointInterface
 {
@@ -16,7 +17,8 @@ class Plugin implements PluginEntryPointInterface
      */
     public function __invoke(RegistrationInterface $registration, ?SimpleXMLElement $config = null): void
     {
-
+        require_once './src/AddActionChecker.php';
+        $registration->registerHooksFromClass(AddActionChecker::class);
         foreach ($this->getStubFiles() as $file) {
             $registration->addStubFile($file);
         }

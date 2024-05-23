@@ -9,7 +9,7 @@
         findUnusedCode="true"
 >
     <projectFiles>
-        <directory name="./tests/psalm/res/"/>
+        <file name="./tests/res/test-file.php"/>
         <ignoreFiles>
             <directory name="vendor"/>
         </ignoreFiles>

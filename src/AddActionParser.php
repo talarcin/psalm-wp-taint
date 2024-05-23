@@ -35,7 +35,7 @@ class AddActionParser
     {
         foreach ($this->foundExpressions as $expr) {
             $args = $this->getArgs($expr);
-            if (!$this->actionsMap[$args["hook"]]) {
+            if (!array_key_exists($args["hook"], $this->actionsMap)) {
                 $this->actionsMap[$args["hook"]] = array($args["callback"]);
             } else {
                 $this->actionsMap[$args["hook"]][] = $args["callback"];
@@ -50,6 +50,9 @@ class AddActionParser
 
     public function readActionsMapFromFile(string $filepath): void
     {
+        if (!file_exists($filepath)) {
+            return;
+        }
         $this->actionsMap = json_decode(file_get_contents($filepath), true);
     }
 
@@ -68,12 +71,12 @@ class AddActionParser
      */
     private function getArgs(Expr $expr): array
     {
-        $args = [];
+        $args = array("hook" => "", "callback" => "");
 
         foreach ($expr->args as $arg) {
-            if ($arg->value instanceof String_ && !$args["hook"]) {
+            if ($arg->value instanceof String_ && $args["hook"] == "") {
                 $args["hook"] = $arg->value->value;
-            } else if ($arg->value instanceof String_ && !$args["callback"]) {
+            } else if ($arg->value instanceof String_ && $args["callback"] == "") {
                 $args["callback"] = $arg->value->value;
             } else if ($arg->value instanceof Array_) {
                 $args["callback"] = $arg->value->items[1]->value->value;

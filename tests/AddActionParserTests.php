@@ -73,6 +73,7 @@ final class AddActionParserTests extends TestCase
         $this->addActionParser->writeActionsMapToFile($filePathToWrite);
 
         $this->addActionParser->readActionsMapFromFile($filePathToWrite);
+        // TODO remove file afterwards for clean up
         $this->assertSame($expectedActionsMap, $this->addActionParser->getActionsMap());
     }
 
