@@ -16,8 +16,6 @@ class AddActionChecker implements AfterExpressionAnalysisInterface
     public static function afterExpressionAnalysis(AfterExpressionAnalysisEvent $event): ?bool
     {
         $expr = $event->getExpr();
-        $codebase = $event->getCodebase();
-        $statements_source = $event->getStatementsSource();
         $add_action_parser = new AddActionParser();
 
         if ($add_action_parser->isAddAction($expr)) {
