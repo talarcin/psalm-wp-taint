@@ -54,7 +54,13 @@ class AddActionParser
         if (!file_exists($filepath)) {
             return;
         }
-        $this->actionsMap = json_decode(file_get_contents($filepath), true);
+
+        $file = file_get_contents($filepath);
+        if ($file == null) {
+            return;
+        }
+
+        $this->actionsMap = json_decode($file, true);
     }
 
     /**

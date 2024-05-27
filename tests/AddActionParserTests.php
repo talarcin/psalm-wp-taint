@@ -47,7 +47,7 @@ final class AddActionParserTests extends TestCase
     {
         $testFilePath = "./res/test-file.php";
         $expectedSizeOfFoundExpressions = 3;
-        $expectedActionsMap = array("admin_post" => array("example_admin_post_callback", "example_admin_post_callback", "example_admin_post_callback"));
+        $expectedActionsMap = array("admin_post" => array("example_admin_post_callback", "example_admin_post_callback"), "test_hook" => array("example_admin_post_callback"));
 
         $ast = $this->setUpParsing(file_get_contents($testFilePath));
         $this->traverser->addVisitor($this->visitor);
@@ -63,7 +63,7 @@ final class AddActionParserTests extends TestCase
     {
         $testFilePath = "./res/test-file.php";
         $filePathToWrite = "./res/actions-map.json";
-        $expectedActionsMap = array("admin_post" => array("example_admin_post_callback", "example_admin_post_callback", "example_admin_post_callback"));
+        $expectedActionsMap = array("admin_post" => array("example_admin_post_callback", "example_admin_post_callback"), "test_hook" => array("example_admin_post_callback"));
 
         $ast = $this->setUpParsing(file_get_contents($testFilePath));
         $this->traverser->addVisitor($this->visitor);
@@ -75,6 +75,17 @@ final class AddActionParserTests extends TestCase
         $this->addActionParser->readActionsMapFromFile($filePathToWrite);
         // TODO remove file afterwards for clean up
         $this->assertSame($expectedActionsMap, $this->addActionParser->getActionsMap());
+    }
+
+    public function testActionsMapSetWithEmptyActionsMapFile(): void
+    {
+        $testFilePath = "./res/actions-map-empty.json";
+        $expected = [];
+
+        $this->addActionParser->readActionsMapFromFile($testFilePath);
+
+        $this->assertSame($expected, $this->addActionParser->getActionsMap());
+
     }
 
     protected function setUp(): void
