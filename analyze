@@ -5,6 +5,8 @@ namespace PsalmWpTaint;
 
 use stdClass;
 
+$noInstall = false;
+
 // Checking for current dir
 if (str_contains(__DIR__, '')) {
     chdir("./");
@@ -18,47 +20,52 @@ if ($argv[1] == "--help" || $argv[1] == "-h") {
     exit();
 }
 
-if ($argc != 3) {
+if ($argv[1] == "--no-install") {
+    $noInstall = true;
+}
+
+if ($argc != 3 && !$noInstall) {
     print_r("Invalid number of options. Use --help or -h to show list of options.\n");
     exit();
 }
 
 // Correct number of arguments and names
-if ($argv[1] == "--plugin_list") {
+if ($argv[1] == "--plugin_list" || $noInstall) {
     $filepath = $argv[2];
 
-    // Checking for correct filepaths for csv files
-    if (is_dir($filepath)) {
-        print_r("Path \"$filepath\" leads to a directory. Please input a path leading to the correct csv file.\n");
-        exit();
-    }
-
-    if (!file_exists($filepath) || !str_ends_with($filepath, ".csv")) {
-        print_r("File \"$filepath\" not found or not a .csv file.\n");
-        exit();
-    }
-
-    if (file_get_contents($filepath) == null) {
-        print_r("No data found in $filepath.\n");
-        exit();
-    }
-
-    // Installing plugins via wp cli
-    foreach (file($filepath) as $line) {
-        print_r("----------------------------------------\n");
-        [$plugin_slug, $plugin_version] = explode(",", $line);
-
-        if (is_dir("./wp-content/plugins/$plugin_slug/")) {
-            print_r("Plugin \"$plugin_slug\" already installed. Skipping installation.\n");
-            continue;
+    if (!$noInstall) {
+        // Checking for correct filepaths for csv files
+        if (is_dir($filepath)) {
+            print_r("Path \"$filepath\" leads to a directory. Please input a path leading to the correct csv file.\n");
+            exit();
         }
 
-        print_r("Installing plugin:\n \"$plugin_slug (v$plugin_version) \" ...\n");
-        exec("ddev wp plugin install $plugin_slug --version=$plugin_version");
-    }
-    print_r("Plugins installed successfully.\n");
-    print_r("----------------------------------------\n");
+        if (!file_exists($filepath) || !str_ends_with($filepath, ".csv")) {
+            print_r("File \"$filepath\" not found or not a .csv file.\n");
+            exit();
+        }
 
+        if (file_get_contents($filepath) == null) {
+            print_r("No data found in $filepath.\n");
+            exit();
+        }
+
+        // Installing plugins via wp cli
+        foreach (file($filepath) as $line) {
+            print_r("----------------------------------------\n");
+            [$plugin_slug, $plugin_version] = explode(",", $line);
+
+            if (is_dir("./wp-content/plugins/$plugin_slug/")) {
+                print_r("Plugin \"$plugin_slug\" already installed. Skipping installation.\n");
+                continue;
+            }
+
+            print_r("Installing plugin:\n \"$plugin_slug (v$plugin_version) \" ...\n");
+            exec("ddev wp plugin install $plugin_slug --version=$plugin_version");
+        }
+        print_r("Plugins installed successfully.\n");
+        print_r("----------------------------------------\n");
+    }
     // Check for correct psalm config
     if (!file_exists("./psalm.xml")) {
         print_r("File \"psalm.xml\" not found. Please make sure psalm is setup correctly.\n");
