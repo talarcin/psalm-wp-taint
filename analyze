@@ -3,7 +3,7 @@
 
 namespace PsalmWpTaint;
 
-require_once __DIR__ . '/src/FunctionBodyGetter.php';
+require_once __DIR__ . "/vendor/autoload.php";
 
 use stdClass;
 use Tuncay\PsalmWpTaint\src\FunctionBodyGetter;
