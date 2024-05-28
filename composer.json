@@ -6,7 +6,8 @@
   "autoload": {
     "psr-4": {
       "Tuncay\\PsalmWpTaint\\": [
-        "."
+        ".",
+        "src/FunctionBodyGetter.php"
       ]
     }
   },
