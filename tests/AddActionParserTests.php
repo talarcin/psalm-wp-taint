@@ -26,6 +26,7 @@ final class AddActionParserTests extends TestCase
         $this->traverser->traverse($ast);
 
         $this->assertSame(1, sizeof($this->addActionParser->foundExpressions));
+        $this->cleanUp();
     }
 
     public function testParse(): void
@@ -40,6 +41,7 @@ final class AddActionParserTests extends TestCase
         $this->addActionParser->parseFoundExpressions();
 
         $this->assertSame($expected, $this->addActionParser->getActionsMap());
+        $this->cleanUp();
     }
 
     public function testParsingFile(): void
@@ -75,8 +77,8 @@ final class AddActionParserTests extends TestCase
         $this->addActionParser->writeActionsMapToFile($filePathToWrite);
 
         $this->addActionParser->readActionsMapFromFile($filePathToWrite);
-        // TODO remove file afterwards for clean up
         $this->assertSame($expectedActionsMap, $this->addActionParser->getActionsMap());
+        $this->cleanUp();
     }
 
     public function testActionsMapSetWithEmptyActionsMapFile(): void
@@ -116,13 +118,14 @@ final class AddActionParserTests extends TestCase
 
     protected function setUp(): void
     {
-        $this->addActionParser = new AddActionParser();
+        $this->addActionParser = AddActionParser::getInstance();
         $this->traverser = new NodeTraverser();
-        $this->visitor = new MockNodeVisitor($this->addActionParser);
+        $this->visitor = new MockNodeVisitor();
     }
 
     protected function cleanUp(): void
     {
+        $this->addActionParser->removeActionsMap();
         $files = ["./res/actions-map.json", "./res/actions-map-multiple.json"];
 
         foreach ($files as $file) {
@@ -149,17 +152,10 @@ final class AddActionParserTests extends TestCase
 
 class MockNodeVisitor extends NodeVisitorAbstract
 {
-    private AddActionParser $addActionParser;
-
-    public function __construct(AddActionParser $addActionParser)
-    {
-        $this->addActionParser = $addActionParser;
-    }
-
     public function enterNode(Node $node): void
     {
-        if ($node instanceof Node\Expr && $this->addActionParser->isAddAction($node)) {
-            $this->addActionParser->addExpression($node);
+        if ($node instanceof Node\Expr && AddActionParser::getInstance()->isAddAction($node)) {
+            AddActionParser::getInstance()->addExpression($node);
         }
     }
 }

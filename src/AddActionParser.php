@@ -14,7 +14,7 @@ class AddActionParser
 {
     public array $foundExpressions = [];
 
-    private static AddActionParser $instance;
+    private static $instance;
     private array $actionsMap = [];
 
     protected function __construct()
@@ -35,7 +35,7 @@ class AddActionParser
     public static function getInstance(): AddActionParser
     {
         if (self::$instance === null) {
-            self::$instance = new self();
+            self::$instance = new AddActionParser();
         }
 
         return self::$instance;
@@ -107,6 +107,11 @@ class AddActionParser
     public function getActionsMap(): array
     {
         return $this->actionsMap;
+    }
+
+    public function removeActionsMap(): void
+    {
+        $this->actionsMap = [];
     }
 
     /**
