@@ -159,7 +159,7 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
     if ($noAnalysis) {
         $actionsMap = (array)json_decode(file_get_contents("./add-actions-map.json"));
         $functionBodyGetter = new FunctionBodyGetter($actionsMap);
-        $directory = new RecursiveDirectoryIterator('path/to/project/');
+        $directory = new RecursiveDirectoryIterator("./wp-content/plugins/");
         $iterator = new RecursiveIteratorIterator($directory);
         $regex = new RegexIterator($iterator, '/^.+\.php$/i', RegexIterator::GET_MATCH);
 
