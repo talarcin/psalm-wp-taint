@@ -6,7 +6,8 @@ use SimpleXMLElement;
 use Psalm\Plugin\PluginEntryPointInterface;
 use Psalm\Plugin\RegistrationInterface;
 use Tuncay\PsalmWpTaint\src\AddActionChecker;
-use Tuncay\PsalmWpTaint\src\AddActionCheckFinisher;
+use Tuncay\PsalmWpTaint\src\AddActionParserInitializer;
+use Tuncay\PsalmWpTaint\src\AfterAnalysisAddActionChecker;
 
 class Plugin implements PluginEntryPointInterface
 {
@@ -21,9 +22,12 @@ class Plugin implements PluginEntryPointInterface
         require_once "src/AddActionChecker.php";
         $registration->registerHooksFromClass(AddActionChecker::class);
 
-        require_once "src/AddActionCheckFinisher.php";
-        $registration->registerHooksFromClass(AddActionCheckFinisher::class);
-        
+        require_once "src/AddActionParserInitializer.php";
+        $registration->registerHooksFromClass(AddActionParserInitializer::class);
+
+        require_once "src/AfterAnalysisAddActionChecker.php";
+        $registration->registerHooksFromClass(AfterAnalysisAddActionChecker::class);
+
         foreach ($this->getStubFiles() as $file) {
             $registration->addStubFile($file);
         }

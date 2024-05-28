@@ -17,6 +17,7 @@ class AddActionChecker implements AfterExpressionAnalysisInterface
     {
         $expr = $event->getExpr();
 
+
         if (AddActionParser::getInstance()->isAddAction($expr)) {
             AddActionParser::getInstance()->addExpression($expr);
         }

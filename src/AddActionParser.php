@@ -14,8 +14,8 @@ class AddActionParser
 {
     public array $foundExpressions = [];
 
-    private static $instance;
-    private array $actionsMap = [];
+    protected static $instance;
+    protected array $actionsMap = [];
 
     protected function __construct()
     {
