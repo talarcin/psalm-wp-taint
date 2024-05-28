@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tuncay\PsalmWpTaint\src;
 
+use BadMethodCallException;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\FuncCall;
@@ -12,11 +13,32 @@ use PhpParser\Node\Scalar\String_;
 class AddActionParser
 {
     public array $foundExpressions = [];
+
+    private static AddActionParser $instance;
     private array $actionsMap = [];
 
-    public function __construct()
+    protected function __construct()
     {
 
+    }
+
+    protected function __clone()
+    {
+
+    }
+
+    public function __wakeup()
+    {
+        throw new BadMethodCallException('Cannot unserialize a singleton.');
+    }
+
+    public static function getInstance(): AddActionParser
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
 
     /**
