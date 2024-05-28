@@ -2,8 +2,6 @@
 
 namespace Tuncay\PsalmWpTaint\src;
 
-require_once "../vendor/autoload.php";
-
 use PhpParser\Error;
 use PhpParser\Node\Stmt\Function_;
 use PhpParser\NodeTraverser;

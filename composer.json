@@ -23,7 +23,8 @@
   },
   "require": {
     "vimeo/psalm": "dev-master",
-    "ext-simplexml": "*"
+    "ext-simplexml": "*",
+    "nikic/php-parser": "dev-master"
   },
   "require-dev": {
     "php-stubs/wordpress-stubs": "^6.5",
