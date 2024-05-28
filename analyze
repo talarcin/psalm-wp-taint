@@ -162,6 +162,13 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
         foreach ($files as $file) {
             if (is_file($file) && str_ends_with($file, ".php")) {
                 $functionBodyGetter->filterMatchingFunctionBodiesFromFile($file);
+            } else if (is_dir($file)) {
+                $dirFiles = scandir($file);
+                foreach ($dirFiles as $dirFile) {
+                    if (is_file($dirFile) && str_ends_with($dirFile, ".php")) {
+                        $functionBodyGetter->filterMatchingFunctionBodiesFromFile($file . "/" . $dirFile);
+                    }
+                }
             }
         }
 
