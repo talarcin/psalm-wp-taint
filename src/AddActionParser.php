@@ -70,8 +70,6 @@ class AddActionParser
                 $this->actionsMap[$args["hook"]][] = $args["callback"];
             }
         }
-
-        $this->foundExpressions = [];
     }
 
     /**

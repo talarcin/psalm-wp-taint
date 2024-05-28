@@ -126,6 +126,7 @@ final class AddActionParserTests extends TestCase
     protected function cleanUp(): void
     {
         $this->addActionParser->removeActionsMap();
+        $this->addActionParser->foundExpressions = [];
         $files = ["./res/actions-map.json", "./res/actions-map-multiple.json"];
 
         foreach ($files as $file) {
