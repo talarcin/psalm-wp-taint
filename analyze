@@ -5,6 +5,10 @@ namespace PsalmWpTaint;
 
 require_once "./vendor/autoload.php";
 
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RecursiveRegexIterator;
+use RegexIterator;
 use stdClass;
 use Tuncay\PsalmWpTaint\src\FunctionBodyGetter;
 
@@ -155,8 +159,11 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
     if ($noAnalysis) {
         $actionsMap = (array)json_decode(file_get_contents("./add-actions-map.json"));
         $functionBodyGetter = new FunctionBodyGetter($actionsMap);
-        $files = glob("./wp-content/plugins/**/*.php");
-        print_r($files);
+        $directory = new RecursiveDirectoryIterator('path/to/project/');
+        $iterator = new RecursiveIteratorIterator($directory);
+        $regex = new RegexIterator($iterator, '/^.+\.php$/i', RegexIterator::GET_MATCH);
+
+        print_r($regex);
 
         $functionBodyGetter->writeFunctionStmtsToFile("./psalm-result/matched-functions.php");
     }
