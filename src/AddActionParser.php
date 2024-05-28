@@ -9,7 +9,6 @@ use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Scalar\String_;
 
-// TODO: Maybe make class static to not need too many I/O operations
 class AddActionParser
 {
     public array $foundExpressions = [];
@@ -29,6 +28,13 @@ class AddActionParser
         return $expr instanceof FuncCall && $expr->name == 'add_action';
     }
 
+    public function addExpression(Expr $expr): void
+    {
+        if (!in_array($expr, $this->foundExpressions)) {
+            $this->foundExpressions[] = $expr;
+        }
+    }
+
     /**
      * @return void
      */
@@ -42,13 +48,23 @@ class AddActionParser
                 $this->actionsMap[$args["hook"]][] = $args["callback"];
             }
         }
+
+        $this->foundExpressions = [];
     }
 
+    /**
+     * @param string $filepath
+     * @return void
+     */
     public function writeActionsMapToFile(string $filepath): void
     {
         file_put_contents($filepath, json_encode($this->actionsMap));
     }
 
+    /**
+     * @param string $filepath
+     * @return void
+     */
     public function readActionsMapFromFile(string $filepath): void
     {
         if (!file_exists($filepath)) {
@@ -71,7 +87,6 @@ class AddActionParser
         return $this->actionsMap;
     }
 
-
     /**
      * @param Expr $expr
      * @return array
@@ -92,6 +107,5 @@ class AddActionParser
 
         return $args;
     }
-
 
 }
