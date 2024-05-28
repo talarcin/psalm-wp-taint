@@ -63,7 +63,7 @@ class FunctionBodyGetter
         try {
             return $parser->parse($code);
         } catch (Error $error) {
-            echo "Parse error: {$error->getMessage()}\n";
+            echo "Parse error in $filepath: {$error->getMessage()}\n";
             return [];
         }
 
