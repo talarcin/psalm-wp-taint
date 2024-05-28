@@ -154,11 +154,20 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
     }
     if ($noAnalysis) {
         $actionsMap = (array)json_decode(file_get_contents("./add-actions-map.json"));
-        print_r($actionsMap);
         $functionBodyGetter = new FunctionBodyGetter($actionsMap);
-        $installed_plugins = glob("./wp-content/plugins/*.php", GLOB_ONLYDIR);
+        $installed_plugins = glob("./wp-content/plugins/*", GLOB_ONLYDIR);
 
-        print_r($installed_plugins);
+
+        foreach ($installed_plugins as $plugin_path) {
+            $contents = scandir($plugin_path);
+            foreach ($contents as $content) {
+                if (str_ends_with($content, ".php")) {
+                    $functionBodyGetter->filterMatchingFunctionBodiesFromFile($content);
+                }
+            }
+        }
+
+        $functionBodyGetter->writeFunctionStmtsToFile("./psalm-result/matched-functions.php");
     }
 
 } else {
