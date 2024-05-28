@@ -161,9 +161,9 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
         $functionBodyGetter = new FunctionBodyGetter($actionsMap);
         $directory = new RecursiveDirectoryIterator("./wp-content/plugins/");
         $iterator = new RecursiveIteratorIterator($directory);
-        $regex = new RegexIterator($iterator, '/^.+\.php$/i', RegexIterator::GET_MATCH);
+        $regex = new RegexIterator($iterator, '/^.+\.php$/i', RecursiveRegexIterator::GET_MATCH);
 
-        print_r($regex);
+        print_r(iterator_to_array($regex));
 
         $functionBodyGetter->writeFunctionStmtsToFile("./psalm-result/matched-functions.php");
     }
