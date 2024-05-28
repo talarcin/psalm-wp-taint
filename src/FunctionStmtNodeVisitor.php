@@ -3,6 +3,7 @@
 namespace Tuncay\PsalmWpTaint\src;
 
 use PhpParser\Node;
+use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
 use PhpParser\NodeVisitorAbstract;
 
@@ -17,7 +18,7 @@ class FunctionStmtNodeVisitor extends NodeVisitorAbstract
 
     public function enterNode(Node $node): void
     {
-        if ($node instanceof Function_ && $this->functionBodyGetter->isMatchingFunctionName($node->name)) {
+        if (($node instanceof Function_ || $node instanceof ClassMethod) && $this->functionBodyGetter->isMatchingFunctionName($node->name)) {
             $this->functionBodyGetter->addFunctionStmt($node);
         }
     }
