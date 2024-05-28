@@ -16,13 +16,9 @@ class AddActionChecker implements AfterExpressionAnalysisInterface
     public static function afterExpressionAnalysis(AfterExpressionAnalysisEvent $event): ?bool
     {
         $expr = $event->getExpr();
-        $add_action_parser = AddActionParser::getInstance();
 
-        if ($add_action_parser->isAddAction($expr)) {
-            $add_action_parser->addExpression($expr);
-            $add_action_parser->readActionsMapFromFile("./actions-map.json");
-            $add_action_parser->parseFoundExpressions();
-            $add_action_parser->writeActionsMapToFile("./actions-map.json");
+        if (AddActionParser::getInstance()->isAddAction($expr)) {
+            AddActionParser::getInstance()->addExpression($expr);
         }
 
         return null;
