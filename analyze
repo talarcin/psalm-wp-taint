@@ -4,8 +4,10 @@
 namespace PsalmWpTaint;
 
 use stdClass;
+use Tuncay\PsalmWpTaint\src\FunctionBodyGetter;
 
 $noInstall = false;
+$noAnalysis = false;
 
 // Checking for current dir
 if (str_contains(__DIR__, '')) {
@@ -24,7 +26,11 @@ if ($argv[1] == "--no-install") {
     $noInstall = true;
 }
 
-if ($argc != 3 && !$noInstall) {
+if ($argv[2] == "--no-analysis") {
+    $noAnalysis = true;
+}
+
+if ($argc != 3 && !$noInstall && !$noAnalysis) {
     print_r("Invalid number of options. Use --help or -h to show list of options.\n");
     exit();
 }
@@ -66,82 +72,91 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
         print_r("Plugins installed successfully.\n");
         print_r("----------------------------------------\n");
     }
-    // Check for correct psalm config
-    if (!file_exists("./psalm.xml")) {
-        print_r("File \"psalm.xml\" not found. Please make sure psalm is setup correctly.\n");
-        exit();
-    }
-
-    print_r("File \"psalm.xml\" found.\n");
-    print_r("Getting installed plugins ...\n");
-    $installed_plugins = glob("./wp-content/plugins/*", GLOB_ONLYDIR);
-    print_r("Found " . sizeof($installed_plugins) . " plugins.\n");
-
-    $analysis_results = [];
-
-    // Run psalm taint analysis on each plugin separately
-    foreach ($installed_plugins as $plugin_path) {
-        // Running psalm for plugin $plugin_path
-        print_r("----------------------------------------\n");
-        print_r("Running psalm's taint analysis on $plugin_path ...\n");
-        change_psalm_project_dir($plugin_path, "./psalm.xml");
-        $output = [];
-        exec("./vendor/bin/psalm --taint-analysis", $output);
-
-        $single_result = new stdClass();
-        $single_result->plugin_slug = explode("/", $plugin_path)[3];
-
-        if (sizeof($output) <= 9) {
-            print_r("No errors found for $single_result->plugin_slug.\n");
-            continue;
+    if (!$noAnalysis) {
+        // Check for correct psalm config
+        if (!file_exists("./psalm.xml")) {
+            print_r("File \"psalm.xml\" not found. Please make sure psalm is setup correctly.\n");
+            exit();
         }
 
-        $errors = [];
+        print_r("File \"psalm.xml\" found.\n");
+        print_r("Getting installed plugins ...\n");
+        $installed_plugins = glob("./wp-content/plugins/*", GLOB_ONLYDIR);
+        print_r("Found " . sizeof($installed_plugins) . " plugins.\n");
 
-        for ($i = 0; $i < sizeof($output); $i++) {
-            $single_error = new stdClass();
-            if (str_contains($output[$i], "ERROR")) {
-                [$key, $error_type] = explode(": ", $output[$i]);
-                $i++;
-                [$at, $path] = explode(" ", $output[$i]);
+        $analysis_results = [];
 
-                $single_error->error_type = $error_type;
-                $single_error->error_path = $path;
-                $single_error->error_message = [];
-                $i += 2;
+        // Run psalm taint analysis on each plugin separately
+        foreach ($installed_plugins as $plugin_path) {
+            // Running psalm for plugin $plugin_path
+            print_r("----------------------------------------\n");
+            print_r("Running psalm's taint analysis on $plugin_path ...\n");
+            change_psalm_project_dir($plugin_path, "./psalm.xml");
+            $output = [];
+            exec("./vendor/bin/psalm --taint-analysis", $output);
 
-                while ($i < sizeof($output) && !str_contains($output[$i], "ERROR")) {
-                    if (trim($output[$i]) != "") {
-                        if (str_starts_with(trim($output[$i]), "--")) {
-                            break;
-                        }
-                        $node = array(
-                            "id" => trim($output[$i]),
-                            "stmt" => trim($output[$i + 1])
-                        );
-                        $single_error->error_message[] = $node;
-                        $i += 2;
-                        continue;
-                    }
-                    $i++;
-                }
-                $errors[] = $single_error;
+            $single_result = new stdClass();
+            $single_result->plugin_slug = explode("/", $plugin_path)[3];
+
+            if (sizeof($output) <= 9) {
+                print_r("No errors found for $single_result->plugin_slug.\n");
+                continue;
             }
+
+            $errors = [];
+
+            for ($i = 0; $i < sizeof($output); $i++) {
+                $single_error = new stdClass();
+                if (str_contains($output[$i], "ERROR")) {
+                    [$key, $error_type] = explode(": ", $output[$i]);
+                    $i++;
+                    [$at, $path] = explode(" ", $output[$i]);
+
+                    $single_error->error_type = $error_type;
+                    $single_error->error_path = $path;
+                    $single_error->error_message = [];
+                    $i += 2;
+
+                    while ($i < sizeof($output) && !str_contains($output[$i], "ERROR")) {
+                        if (trim($output[$i]) != "") {
+                            if (str_starts_with(trim($output[$i]), "--")) {
+                                break;
+                            }
+                            $node = array(
+                                "id" => trim($output[$i]),
+                                "stmt" => trim($output[$i + 1])
+                            );
+                            $single_error->error_message[] = $node;
+                            $i += 2;
+                            continue;
+                        }
+                        $i++;
+                    }
+                    $errors[] = $single_error;
+                }
+            }
+
+            $single_result->errors = $errors;
+            $analysis_results[] = $single_result;
         }
 
-        $single_result->errors = $errors;
-        $analysis_results[] = $single_result;
+        if (!is_dir("./psalm-result/")) {
+            mkdir("./psalm-result/");
+        }
+        if (!file_exists("./psalm-result/out.json")) {
+            fopen("./psalm-result/out.json", "w");
+        }
+        file_put_contents("./psalm-result/out.json", json_encode($analysis_results, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+        print_r("----------------------------------------\n");
+        print_r("Analysis results saved to \"./psalm-result/out.json\".\n");
+    }
+    if ($noAnalysis) {
+        $functionBodyGetter = new FunctionBodyGetter(json_decode(file_get_contents("./add-actions-map.json")));
+        $installed_plugins = glob("./wp-content/plugins/*.php", GLOB_ONLYDIR);
+
+        print_r($installed_plugins);
     }
 
-    if (!is_dir("./psalm-result/")) {
-        mkdir("./psalm-result/");
-    }
-    if (!file_exists("./psalm-result/out.json")) {
-        fopen("./psalm-result/out.json", "w");
-    }
-    file_put_contents("./psalm-result/out.json", json_encode($analysis_results, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-    print_r("----------------------------------------\n");
-    print_r("Analysis results saved to \"./psalm-result/out.json\".\n");
 } else {
     print_r("Invalid command! Check for usage with --help or -h.\n");
 }
