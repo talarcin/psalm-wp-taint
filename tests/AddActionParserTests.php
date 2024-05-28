@@ -44,7 +44,7 @@ final class AddActionParserTests extends TestCase
 
     public function testParsingFile(): void
     {
-        $testFilePath = "./res/test-file.php";
+        $testFilePath = "./res/psalm/test-file.php";
         $expectedSizeOfFoundExpressions = 3;
         $expectedActionsMap = array("admin_post" => array("example_admin_post_callback", "example_admin_post_callback"), "test_hook" => array("example_admin_post_callback"));
 
@@ -63,7 +63,7 @@ final class AddActionParserTests extends TestCase
 
     public function testWriteToFile(): void
     {
-        $testFilePath = "./res/test-file.php";
+        $testFilePath = "./res/psalm/test-file.php";
         $filePathToWrite = "./res/actions-map.json";
         $expectedActionsMap = array("admin_post" => array("example_admin_post_callback", "example_admin_post_callback"), "test_hook" => array("example_admin_post_callback"));
 
@@ -93,7 +93,7 @@ final class AddActionParserTests extends TestCase
 
     public function testParsingMultipleFiles(): void
     {
-        $testFilePaths = ["./res/test-file.php", "./res/test-file-2.php"];
+        $testFilePaths = ["./res/psalm/test-file.php", "./res/psalm/test-file-2.php"];
         $mapFilePath = "./res/actions-map-multiple.json";
         $expectedActionsMap = array("admin_post" => array("example_admin_post_callback", "example_admin_post_callback"),
             "test_hook" => array("example_admin_post_callback"),
