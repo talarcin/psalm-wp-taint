@@ -157,19 +157,19 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
         print_r("Analysis results saved to \"./psalm-result/out.json\".\n");
     }
     if ($noAnalysis) {
-        $actionsMap = (array)json_decode(file_get_contents("./add-actions-map.json"));
-        $functionBodyGetter = new FunctionBodyGetter($actionsMap);
-        $files = scanDirForPHPFiles("./wp-content/plugins/");
+        $psalmResults = json_decode(file_get_contents("./psalm-result/out.json"), true);
+        $firstExpressions = [];
 
-        foreach ($files as $key => $file) {
-            $functionBodyGetter->filterMatchingFunctionBodiesFromFile($file[0]);
+        foreach ($psalmResults as $pluginResults) {
+            foreach ($pluginResults["errors"] as $pluginError) {
+                $firstExpressions[] = $pluginError->error_message[1]->stmt;
+            }
         }
 
-        $functionBodyGetter->writeFunctionStmtsToFile("./psalm-result/matched-functions.php");
+        print_r($firstExpressions);
+    } else {
+        print_r("Invalid command! Check for usage with --help or -h.\n");
     }
-
-} else {
-    print_r("Invalid command! Check for usage with --help or -h.\n");
 }
 
 
