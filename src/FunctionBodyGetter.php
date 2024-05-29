@@ -16,8 +16,8 @@ class FunctionBodyGetter
 
     public function __construct(array $actionsMap)
     {
-        foreach ($actionsMap as $key => $callbackName) {
-            $this->functionNames = $callbackName;
+        foreach ($actionsMap as $key => $callbacks) {
+            $this->functionNames = array_merge($this->functionNames, $callbacks);
         }
     }
 
