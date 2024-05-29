@@ -162,7 +162,11 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
 
         foreach ($psalmResults as $pluginResults) {
             foreach ($pluginResults["errors"] as $pluginError) {
-                $firstExpressions[] = $pluginError["error_message"][1]["stmt"];
+
+                if (sizeof($pluginError["error_message"]) > 1)
+                    $firstExpressions[] = $pluginError["error_message"][1]["stmt"];
+                else
+                    $firstExpressions[] = $pluginError["error_message"][0]["stmt"];
             }
         }
     } else {
