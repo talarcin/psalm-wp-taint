@@ -164,9 +164,19 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
             foreach ($pluginResults["errors"] as $pluginError) {
 
                 if (sizeof($pluginError["error_message"]) > 1)
-                    $firstExpressions[] = $pluginError["error_message"][1]["stmt"];
+                    $firstExpressions[] = array("stmt" => $pluginError["error_message"][1]["stmt"], "found" => false);
             }
         }
+        print_r($firstExpressions);
+
+        $matchedFunctions = file_get_contents("./psalm-result/matched-functions.php");
+
+        foreach ($firstExpressions as $firstExpression) {
+            if (str_contains($matchedFunctions, $firstExpression["stmt"])) {
+                $firstExpression["found"] = true;
+            }
+        }
+        print_r($firstExpressions);
     } else {
         print_r("Invalid command! Check for usage with --help or -h.\n");
     }
