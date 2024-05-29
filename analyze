@@ -159,7 +159,6 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
     if ($noAnalysis) {
         $actionsMap = (array)json_decode(file_get_contents("./add-actions-map.json"));
         $functionBodyGetter = new FunctionBodyGetter($actionsMap);
-        print_r($functionBodyGetter->getFunctionNames());
         $files = scanDirForPHPFiles("./wp-content/plugins/");
 
         foreach ($files as $key => $file) {
