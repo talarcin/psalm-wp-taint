@@ -176,7 +176,8 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
                 $firstExpression["found"] = true;
             }
         }
-        print_r($firstExpressions);
+
+        file_put_contents("./psalm-result/first-expressions.json", json_encode($firstExpressions, JSON_UNESCAPED_UNICODE));
     } else {
         print_r("Invalid command! Check for usage with --help or -h.\n");
     }
