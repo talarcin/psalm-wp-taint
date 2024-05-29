@@ -18,7 +18,7 @@ class FunctionStmtNodeVisitor extends NodeVisitorAbstract
 
     public function enterNode(Node $node): void
     {
-        if (($node instanceof Function_ || $node instanceof ClassMethod) && $this->functionBodyGetter->isMatchingFunctionName($node->name)) {
+        if (($node instanceof Function_ || $node instanceof ClassMethod) && $this->functionBodyGetter->isMatchingFunctionName($node->name->name)) {
             $this->functionBodyGetter->addFunctionStmt($node);
         }
     }
