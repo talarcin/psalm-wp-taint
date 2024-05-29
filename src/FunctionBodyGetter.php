@@ -3,6 +3,7 @@
 namespace Tuncay\PsalmWpTaint\src;
 
 use PhpParser\Error;
+use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
 use PhpParser\NodeTraverser;
 use PhpParser\ParserFactory;
@@ -20,7 +21,7 @@ class FunctionBodyGetter
         }
     }
 
-    public function addFunctionStmt(Function_ $function): void
+    public function addFunctionStmt(Function_|ClassMethod $function): void
     {
         $this->functionStmts[] = $function;
     }
