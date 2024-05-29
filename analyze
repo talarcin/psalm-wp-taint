@@ -166,7 +166,7 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
                 if (sizeof($pluginError["error_message"]) > 1)
                     $firstExpressions[] = $pluginError["error_message"][1]["stmt"];
                 else
-                    $firstExpressions[] = $pluginError["error_message"][0]["stmt"];
+                    print_r($pluginError["error_message"]);
             }
         }
     } else {
