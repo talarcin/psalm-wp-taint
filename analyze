@@ -157,27 +157,17 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
         print_r("Analysis results saved to \"./psalm-result/out.json\".\n");
     }
     if ($noAnalysis) {
-        $psalmResults = json_decode(file_get_contents("./psalm-result/out.json"), true);
-        $firstExpressions = [];
+        $actionsMap = (array)json_decode(file_get_contents("./add-actions-map.json"));
+        $functionBodyGetter = new FunctionBodyGetter($actionsMap);
+        $files = scanDirForPHPFiles("./wp-content/plugins/");
 
-        foreach ($psalmResults as $pluginResults) {
-            foreach ($pluginResults["errors"] as $pluginError) {
-
-                if (sizeof($pluginError["error_message"]) > 1)
-                    $firstExpressions[] = array("stmt" => $pluginError["error_message"][1]["stmt"], "found" => false);
-            }
-        }
-        print_r($firstExpressions);
-
-        $matchedFunctions = file_get_contents("./psalm-result/matched-functions.php");
-
-        foreach ($firstExpressions as $firstExpression) {
-            if (str_contains($matchedFunctions, $firstExpression["stmt"])) {
-                $firstExpression["found"] = true;
-            }
+        foreach ($files as $key => $file) {
+            $functionBodyGetter->filterMatchingFunctionBodiesFromFile($file[0]);
         }
 
-        file_put_contents("./psalm-result/first-expressions.json", json_encode($firstExpressions, JSON_UNESCAPED_UNICODE));
+        $functionBodyGetter->writeFunctionStmtsToFile("./psalm-result/matched-functions.php");
+
+
     } else {
         print_r("Invalid command! Check for usage with --help or -h.\n");
     }
