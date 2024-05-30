@@ -9,3 +9,5 @@ add_action(
         "example_wp_ajax_callback"
     )
 );
+
+if (isset($_POST['adrotate_group_submit'])) add_action('init', 'adrotate_insert_group');

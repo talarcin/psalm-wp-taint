@@ -100,9 +100,10 @@ final class AddActionParserTests extends TestCase
         $expectedActionsMap = array("admin_post" => array("example_admin_post_callback", "example_admin_post_callback"),
             "test_hook" => array("example_admin_post_callback"),
             "admin_menu" => array("example_admin_menu_callback"),
-            "wp_ajax" => array("example_wp_ajax_callback")
+            "wp_ajax" => array("example_wp_ajax_callback"),
+            "init" => array("adrotate_insert_group"),
         );
-        $expectedSizeOfFoundExpressions = 5;
+        $expectedSizeOfFoundExpressions = 6;
 
         foreach ($testFilePaths as $testFilePath) {
             $ast = $this->setUpParsing(file_get_contents($testFilePath));

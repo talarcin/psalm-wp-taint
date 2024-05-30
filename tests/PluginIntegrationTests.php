@@ -10,7 +10,7 @@ class PluginIntegrationTests extends TestCase
         exec("./../vendor/bin/psalm --taint-analysis");
         $expectedActionsMap = array("admin_post" => array("example_admin_post_callback", "example_admin_post_callback"),
             "test_hook" => array("example_admin_post_callback"), "admin_menu" => array("example_admin_menu_callback"),
-            "wp_ajax" => array("example_wp_ajax_callback"));
+            "wp_ajax" => array("example_wp_ajax_callback"), "init" => array("adrotate_insert_group"));
 
         AddActionParser::getInstance()->readActionsMapFromFile("./../add-actions-map.json");
 

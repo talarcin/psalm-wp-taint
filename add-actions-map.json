@@ -1,1 +1,18 @@
-{"admin_menu":["example_admin_menu_callback"],"wp_ajax":["example_wp_ajax_callback"],"admin_post":["example_admin_post_callback","example_admin_post_callback"],"test_hook":["example_admin_post_callback"]}
+{
+  "admin_menu": [
+    "example_admin_menu_callback"
+  ],
+  "wp_ajax": [
+    "example_wp_ajax_callback"
+  ],
+  "init": [
+    "adrotate_insert_group"
+  ],
+  "admin_post": [
+    "example_admin_post_callback",
+    "example_admin_post_callback"
+  ],
+  "test_hook": [
+    "example_admin_post_callback"
+  ]
+}
