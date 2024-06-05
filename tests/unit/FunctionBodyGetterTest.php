@@ -1,14 +1,16 @@
 <?php
 
+namespace Tuncay\PsalmWpTaint\tests\unit;
+
 use PHPUnit\Framework\TestCase;
 use Tuncay\PsalmWpTaint\src\FunctionBodyGetter;
 
-class FunctionBodyGetterTests extends TestCase
+class FunctionBodyGetterTest extends TestCase
 {
     public function testGettingMatchingFunctionsBodies()
     {
         $actionsMap = array("admin_post" => array("testFunctionOne", "testFunctionTwo"));
-        $filepaths = array("./res/test-functions.php");
+        $filepaths = array("./tests/res/test-functions.php");
         $functionBodyGetter = $this->makeNewFunctionBodyGetter($actionsMap);
 
         foreach ($filepaths as $filepath) {
@@ -18,12 +20,12 @@ class FunctionBodyGetterTests extends TestCase
         $this->assertSame(2, sizeof($functionBodyGetter->getFunctionNames()));
         $this->assertSame(2, sizeof($functionBodyGetter->getFunctionStmts()));
 
-        $functionBodyGetter->writeFunctionStmtsToFile("./res/test-functions-result.php");
+        $functionBodyGetter->writeFunctionStmtsToFile("./tests/res/test-functions-result.php");
 
-        $expectedCode = file_get_contents("./res/test-functions.php");
+        $expectedCode = file_get_contents("./tests/res/test-functions.php");
         $expectedCode = preg_replace('/\s+/', '', $expectedCode);
-        $actualCode = preg_replace('/\s+/', '', file_get_contents("./res/test-functions-result.php"));
-        
+        $actualCode = preg_replace('/\s+/', '', file_get_contents("./tests/res/test-functions-result.php"));
+
         $this->assertSame($expectedCode, $actualCode);
     }
 
@@ -34,6 +36,6 @@ class FunctionBodyGetterTests extends TestCase
 
     protected function setUp(): void
     {
-        file_put_contents("./res/test-functions-result.php", "<?php");
+        file_put_contents("./tests/res/test-functions-result.php", "<?php");
     }
 }

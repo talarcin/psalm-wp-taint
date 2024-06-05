@@ -1,16 +1,17 @@
 <?php
 
 
+namespace Tuncay\PsalmWpTaint\tests\unit;
+
+use PhpParser\Error;
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
-use PhpParser\Parser;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
 use Tuncay\PsalmWpTaint\src\AddActionParser;
-use PhpParser\Error;
 
-final class AddActionParserTests extends TestCase
+final class AddActionParserTest extends TestCase
 {
     private AddActionParser $addActionParser;
     private NodeTraverser $traverser;
@@ -46,7 +47,7 @@ final class AddActionParserTests extends TestCase
 
     public function testParsingFile(): void
     {
-        $testFilePath = "./res/psalm/test-file.php";
+        $testFilePath = "./tests/res/psalm/test-file.php";
         $expectedSizeOfFoundExpressions = 3;
         $expectedActionsMap = array("admin_post" => array("example_admin_post_callback", "example_admin_post_callback"), "test_hook" => array("example_admin_post_callback"));
 
@@ -65,8 +66,8 @@ final class AddActionParserTests extends TestCase
 
     public function testWriteToFile(): void
     {
-        $testFilePath = "./res/psalm/test-file.php";
-        $filePathToWrite = "./res/actions-map.json";
+        $testFilePath = "./tests/res/psalm/test-file.php";
+        $filePathToWrite = "./tests/res/actions-map.json";
         $expectedActionsMap = array("admin_post" => array("example_admin_post_callback", "example_admin_post_callback"), "test_hook" => array("example_admin_post_callback"));
 
         $ast = $this->setUpParsing(file_get_contents($testFilePath));
@@ -83,7 +84,7 @@ final class AddActionParserTests extends TestCase
 
     public function testActionsMapSetWithEmptyActionsMapFile(): void
     {
-        $testFilePath = "./res/actions-map-empty.json";
+        $testFilePath = "./tests/res/actions-map-empty.json";
         $expected = [];
 
         $this->addActionParser->readActionsMapFromFile($testFilePath);
@@ -95,8 +96,8 @@ final class AddActionParserTests extends TestCase
 
     public function testParsingMultipleFiles(): void
     {
-        $testFilePaths = ["./res/psalm/test-file.php", "./res/psalm/test-file-2.php"];
-        $mapFilePath = "./res/actions-map-multiple.json";
+        $testFilePaths = ["./tests/res/psalm/test-file.php", "./tests/res/psalm/test-file-2.php"];
+        $mapFilePath = "./tests/res/actions-map-multiple.json";
         $expectedActionsMap = array("admin_post" => array("example_admin_post_callback", "example_admin_post_callback"),
             "test_hook" => array("example_admin_post_callback"),
             "admin_menu" => array("example_admin_menu_callback"),
@@ -128,7 +129,7 @@ final class AddActionParserTests extends TestCase
     {
         $this->addActionParser->removeActionsMap();
         $this->addActionParser->foundExpressions = [];
-        $files = ["./res/actions-map.json", "./res/actions-map-multiple.json"];
+        $files = ["./tests/res/actions-map.json", "./tests/res/actions-map-multiple.json"];
 
         foreach ($files as $file) {
             if (file_exists($file)) {
