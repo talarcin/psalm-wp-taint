@@ -33,7 +33,7 @@ final class AddActionParserTest extends TestCase
     public function testParse(): void
     {
         $code = '<?php add_action("admin_post", array("class", "callback"));';
-        $expected = array("admin_post" => array("callback"));
+        $expected = array("admin_post" => ["callback"]);
 
         $ast = $this->setUpParsing($code);
         $this->traverser->addVisitor($this->visitor);
@@ -49,7 +49,10 @@ final class AddActionParserTest extends TestCase
     {
         $testFilePath = "./tests/res/psalm/test-file.php";
         $expectedSizeOfFoundExpressions = 3;
-        $expectedActionsMap = array("admin_post" => array("example_admin_post_callback", "example_admin_post_callback"), "test_hook" => array("example_admin_post_callback"));
+        $expectedActionsMap = array(
+            "admin_post" => ["example_admin_post_callback", "example_admin_post_callback"],
+            "test_hook" => ["example_admin_post_callback"]
+        );
 
         $ast = $this->setUpParsing(file_get_contents($testFilePath));
         $this->traverser->addVisitor($this->visitor);
@@ -68,7 +71,10 @@ final class AddActionParserTest extends TestCase
     {
         $testFilePath = "./tests/res/psalm/test-file.php";
         $filePathToWrite = "./tests/res/actions-map.json";
-        $expectedActionsMap = array("admin_post" => array("example_admin_post_callback", "example_admin_post_callback"), "test_hook" => array("example_admin_post_callback"));
+        $expectedActionsMap = array(
+            "admin_post" => ["example_admin_post_callback", "example_admin_post_callback"],
+            "test_hook" => ["example_admin_post_callback"]
+        );
 
         $ast = $this->setUpParsing(file_get_contents($testFilePath));
         $this->traverser->addVisitor($this->visitor);
@@ -98,11 +104,12 @@ final class AddActionParserTest extends TestCase
     {
         $testFilePaths = ["./tests/res/psalm/test-file.php", "./tests/res/psalm/test-file-2.php"];
         $mapFilePath = "./tests/res/actions-map-multiple.json";
-        $expectedActionsMap = array("admin_post" => array("example_admin_post_callback", "example_admin_post_callback"),
-            "test_hook" => array("example_admin_post_callback"),
-            "admin_menu" => array("example_admin_menu_callback"),
-            "wp_ajax" => array("example_wp_ajax_callback"),
-            "init" => array("adrotate_insert_group"),
+        $expectedActionsMap = array(
+            "admin_post" => ["example_admin_post_callback", "example_admin_post_callback"],
+            "test_hook" => ["example_admin_post_callback"],
+            "admin_menu" => ["example_admin_menu_callback"],
+            "wp_ajax" => ["example_wp_ajax_callback"],
+            "init" => ["adrotate_insert_group"]
         );
         $expectedSizeOfFoundExpressions = 6;
 
@@ -116,6 +123,40 @@ final class AddActionParserTest extends TestCase
         $this->addActionParser->parseFoundExpressions();
         $this->assertSame($expectedActionsMap, $this->addActionParser->getActionsMap());
         $this->cleanUp();
+    }
+
+    public function testParsingFileThree(): void
+    {
+        $testFilePath = "./tests/res/psalm/test-file-3.php";
+        $expectedActionsMap = array(
+            'admin_head' => ['disable_all_in_one_free'],
+            'plugins_loaded' => ['aiosp_add_cap', "aioseop_init_class", 'version_updates'],
+            'admin_notices' => ["admin_notices_already_defined"],
+            'admin_init' => ['version_updates', 'aioseop_welcome', 'aioseop_scan_post_header'],
+            'init' => ['add_hooks', 'aioseop_load_modules'],
+            'shutdown' => ['aioseop_ajax_scan_header'],
+            'wp_ajax_aioseop_ajax_save_meta' => ['aioseop_ajax_save_meta'],
+            'wp_ajax_aioseop_ajax_save_url' => ['aioseop_ajax_save_url'],
+            'wp_ajax_aioseop_ajax_delete_url' => ['aioseop_ajax_delete_url'],
+            'wp_ajax_aioseop_ajax_scan_header' => ['aioseop_ajax_scan_header'],
+            'wp_ajax_aioseop_ajax_facebook_debug' => ['aioseop_ajax_facebook_debug'],
+            'wp_ajax_aioseop_ajax_save_settings' => ['aioseop_ajax_save_settings'],
+            'wp_ajax_aioseop_ajax_get_menu_links' => ['aioseop_ajax_get_menu_links'],
+            'wp_ajax_aioseo_dismiss_yst_notice' => ['aioseop_update_yst_detected_notice'],
+            'wp_ajax_aioseo_dismiss_visibility_notice' => ['aioseop_update_user_visibilitynotice'],
+            'wp_ajax_aioseo_dismiss_woo_upgrade_notice' => ['aioseop_woo_upgrade_notice_dismissed'],
+            'admin_enqueue_scripts' => ['aioseop_admin_enqueue_styles']
+        );
+        $expectedSizeOfFoundExpressions = 22;
+        $ast = $this->setUpParsing(file_get_contents($testFilePath));
+        $this->traverser->addVisitor($this->visitor);
+        $this->traverser->traverse($ast);
+
+        $this->assertSame($expectedSizeOfFoundExpressions, sizeof($this->addActionParser->foundExpressions));
+
+        $this->addActionParser->parseFoundExpressions();
+
+        $this->assertSame($expectedActionsMap, $this->addActionParser->getActionsMap());
     }
 
     protected function setUp(): void
@@ -148,9 +189,7 @@ final class AddActionParserTest extends TestCase
             echo "Parse error: {$error->getMessage()}\n";
             return [];
         }
-
     }
-
 }
 
 class MockNodeVisitor extends NodeVisitorAbstract

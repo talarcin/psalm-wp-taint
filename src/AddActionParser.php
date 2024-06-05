@@ -12,19 +12,16 @@ use PhpParser\Node\Scalar\String_;
 
 class AddActionParser
 {
-    public array $foundExpressions = [];
-
     protected static $instance;
+    public array $foundExpressions = [];
     protected array $actionsMap = [];
 
     protected function __construct()
     {
-
     }
 
     protected function __clone()
     {
-
     }
 
     public function __wakeup()
@@ -132,5 +129,4 @@ class AddActionParser
 
         return $args;
     }
-
 }
