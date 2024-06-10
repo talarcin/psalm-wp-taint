@@ -113,7 +113,7 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
 
             for ($i = 0; $i < sizeof($output); $i++) {
                 $single_error = new stdClass();
-                if (str_contains($output[$i], "ERROR")) { // TODO: Leads to wrong entries when statememnts contain ERROR string
+                if (str_contains($output[$i], "ERROR")) { // TODO: Leads to wrong entries when statements contain ERROR string
                     [$key, $error_type] = explode(": ", $output[$i]);
                     $i++;
                     [$at, $path] = explode(" ", $output[$i]);
