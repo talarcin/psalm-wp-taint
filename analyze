@@ -92,7 +92,7 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
         $installed_plugins = glob("./wp-content/plugins/*", GLOB_ONLYDIR);
         print_r("Found " . sizeof($installed_plugins) . " plugins.\n");
 
-        $outputs = array();
+        $outputs = [];
 
         // Run psalm taint analysis on each plugin separately
         foreach ($installed_plugins as $plugin_path) {
@@ -103,6 +103,8 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
             $plugin_slug = explode("/", $plugin_path)[3];
             $output = [];
             exec("./vendor/bin/psalm --taint-analysis", $output);
+
+            print_r($output);
 
             $outputs[] = array($plugin_slug => $output);
         }
