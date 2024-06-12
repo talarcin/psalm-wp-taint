@@ -18,7 +18,7 @@ class PsalmOutputParser
             $psalmErrors[] = $psalmError;
         }
 
-        return $psalmErrors;
+        return array("count" => count($psalmErrors), "errors" => $psalmErrors);
     }
 
     public function splitPsalmOutputIntoErrorMessages(array $output): array
