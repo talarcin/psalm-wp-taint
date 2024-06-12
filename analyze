@@ -5,12 +5,15 @@ namespace PsalmWpTaint;
 
 require_once "./vendor/autoload.php";
 
+use PsalmAnalysisHandler;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
 use RegexIterator;
 use stdClass;
 use Tuncay\PsalmWpTaint\src\FunctionBodyGetter;
+use Tuncay\PsalmWpTaint\src\PsalmAnalysisOutputHandler;
+use Tuncay\PsalmWpTaint\src\PsalmOutputParser;
 
 $noInstall = false;
 $noAnalysis = false;
@@ -90,7 +93,7 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
         $installed_plugins = glob("./wp-content/plugins/*", GLOB_ONLYDIR);
         print_r("Found " . sizeof($installed_plugins) . " plugins.\n");
 
-        $analysis_results = [];
+        $outputs = array();
 
         // Run psalm taint analysis on each plugin separately
         foreach ($installed_plugins as $plugin_path) {
@@ -98,53 +101,16 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
             print_r("----------------------------------------\n");
             print_r("Running psalm's taint analysis on $plugin_path ...\n");
             change_psalm_project_dir($plugin_path, "./psalm.xml");
+            $plugin_slug = explode("/", $plugin_path)[3];
             $output = [];
             exec("./vendor/bin/psalm --taint-analysis", $output);
 
-            $single_result = new stdClass();
-            $single_result->plugin_slug = explode("/", $plugin_path)[3];
-
-            if (sizeof($output) <= 9) {
-                print_r("No errors found for $single_result->plugin_slug.\n");
-                continue;
-            }
-
-            $errors = [];
-
-            for ($i = 0; $i < sizeof($output); $i++) {
-                $single_error = new stdClass();
-                if (str_contains($output[$i], "ERROR")) { // TODO: Leads to wrong entries when statements contain ERROR string
-                    [$key, $error_type] = explode(": ", $output[$i]);
-                    $i++;
-                    [$at, $path] = explode(" ", $output[$i]);
-
-                    $single_error->error_type = $error_type;
-                    $single_error->error_path = $path;
-                    $single_error->error_message = [];
-                    $i += 2;
-
-                    while ($i < sizeof($output) && !str_contains($output[$i], "ERROR")) {
-                        if (trim($output[$i]) != "") {
-                            if (str_starts_with(trim($output[$i]), "--")) {
-                                break;
-                            }
-                            $node = array(
-                                "id" => trim($output[$i]),
-                                "stmt" => trim($output[$i + 1])
-                            );
-                            $single_error->error_message[] = $node;
-                            $i += 2;
-                            continue;
-                        }
-                        $i++;
-                    }
-                    $errors[] = $single_error;
-                }
-            }
-
-            $single_result->errors = $errors;
-            $analysis_results[] = $single_result;
+            $outputs[] = array($plugin_slug => $output);
         }
+
+        $outputHandler = new PsalmAnalysisOutputHandler();
+        $analysisResults = $outputHandler->handle(new PsalmOutputParser(), $outputs);
+
 
         if (!is_dir("./psalm-result/")) {
             mkdir("./psalm-result/");
@@ -152,7 +118,7 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
         if (!file_exists("./psalm-result/out.json")) {
             fopen("./psalm-result/out.json", "w");
         }
-        file_put_contents("./psalm-result/out.json", json_encode($analysis_results, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+        file_put_contents("./psalm-result/out.json", json_encode($analysisResults, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
         print_r("----------------------------------------\n");
         print_r("Analysis results saved to \"./psalm-result/out.json\".\n");
     }

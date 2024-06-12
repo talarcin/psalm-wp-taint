@@ -6,10 +6,10 @@ use ArrayIterator;
 
 class PsalmPluginResult
 {
-    public string $pluginSlug;
+    private string $pluginSlug;
     private PsalmErrorArray $psalmErrors;
 
-    public function __construct()
+    public function __construct(string $pluginSlug)
     {
         $this->psalmErrors = new PsalmErrorArray();
     }
@@ -40,10 +40,12 @@ class PsalmErrorArray extends ArrayIterator
     {
         parent::__construct($errors);
     }
+
     public function current(): PsalmError
     {
         return parent::current();
     }
+
     public function offsetGet($offset): PsalmError
     {
         return parent::offsetGet($offset);
