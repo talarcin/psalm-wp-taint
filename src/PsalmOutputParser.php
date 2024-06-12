@@ -8,8 +8,10 @@ class PsalmOutputParser
     {
     }
 
-    public function parsePsalmOutput(array $output): array
+    public function parsePsalmOutput(array $output): array | bool
     {
+        if ($this->hasNoErrors($output)) return false;
+
         $errors = $this->splitPsalmOutputIntoErrorMessages($output);
         $psalmErrors = [];
 
@@ -21,7 +23,7 @@ class PsalmOutputParser
         return array("count" => count($psalmErrors), "errors" => $psalmErrors);
     }
 
-    public function splitPsalmOutputIntoErrorMessages(array $output): array
+    protected function splitPsalmOutputIntoErrorMessages(array $output): array
     {
         $errors = [];
         $currentError = [];
@@ -49,6 +51,11 @@ class PsalmOutputParser
         return $errors;
     }
 
+    private function hasNoErrors(array $output): bool
+    {
+        return count($output) <= 17;
+    }
+
     private function parseErrorMessage(array $error): PsalmError
     {
         $psalmError = new PsalmError();
@@ -73,4 +80,3 @@ class PsalmOutputParser
         return $psalmError;
     }
 }
-

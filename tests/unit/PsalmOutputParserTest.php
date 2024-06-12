@@ -15,178 +15,19 @@ class PsalmOutputParserTest extends TestCase
         $this->psalmOutputParser = new PsalmOutputParser();
     }
 
-    public function testSplitPsalmOutputIntoErrorMessagesWithOneError(): void
+    public function testParseErrorMessageWithNoError(): void
     {
         $output = [
             "Target PHP version: 8.3 (inferred from current PHP version) Enabled extensions: simplexml.",
             "",
             "Scanning files...",
             "",
-            "79 / 79...Getting stub files...",
+            "79 / 79...",
             "115 / 115...",
             "",
             "Analyzing files...",
             "",
             "░░░░░░░░░░░░░░░░░░░",
-            "",
-            "ERROR: TaintedHtml",
-            "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
-            "Detected tainted HTML (see https://psalm.dev/245)",
-            "  \$_POST",
-            "    <no known location>",
-            "",
-            "  call to Options::set - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:134:18",
-            "                        \$options->set(\$_POST);",
-            "",
-            "  Options::set#1 - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-            "        public function set(\$field, \$value = null): void",
-            "",
-            "  \$field - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-            "        public function set(\$field, \$value = null): void",
-            "",
-            "  call to update_option - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
-            "                        update_option(\$field, \$value);",
-            "",
-            "",
-            "",
-            "fatal: not a git repository (or any of the parent directories): .git",
-            "------------------------------",
-            "1 error found",
-            "------------------------------",
-            "",
-            "Checks took 1.63 seconds and used 221.030MB of memory",
-            "Psalm was able to infer types for 82.4017% of the codebase"
-        ];
-
-        $expected = array(
-            0 => [
-                "ERROR: TaintedHtml",
-                "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
-                "Detected tainted HTML (see https://psalm.dev/245)",
-                "\$_POST",
-                "<no known location>",
-                "",
-                "call to Options::set - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:134:18",
-                "\$options->set(\$_POST);",
-                "",
-                "Options::set#1 - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-                "public function set(\$field, \$value = null): void",
-                "",
-                "\$field - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-                "public function set(\$field, \$value = null): void",
-                "",
-                "call to update_option - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
-                "update_option(\$field, \$value);"
-            ]
-        );
-
-        $actual = $this->psalmOutputParser->splitPsalmOutputIntoErrorMessages($output);
-
-        $this->assertSame($expected, $actual);
-    }
-
-    public function testSplitPsalmOutputIntoErrorMessagesWithMultipleErrors(): void
-    {
-        $output = [
-            "Target PHP version: 8.3 (inferred from current PHP version) Enabled extensions: simplexml.",
-            "",
-            "Scanning files...",
-            "",
-            "79 / 79...Getting stub files...",
-            "115 / 115...",
-            "",
-            "Analyzing files...",
-            "",
-            "░░░░░░░░░░░░░░░░░░░",
-            "",
-            "ERROR: TaintedHtml",
-            "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:14:26",
-            "Detected tainted HTML (see https://psalm.dev/245)",
-            "  \$_POST",
-            "    <no known location>",
-            "",
-            "  call to Options::set - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:134:18",
-            "                        \$options->set(\$_POST);",
-            "",
-            "  Options::set#1 - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-            "        public function set(\$field, \$value = null): void",
-            "",
-            "  \$field - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-            "        public function set(\$field, \$value = null): void",
-            "",
-            "  arrayvalue-fetch - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:13:13",
-            "                        foreach (\$field as \$name => \$val) {",
-            "",
-            "  \$val - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:13:32",
-            "                        foreach (\$field as \$name => \$val) {",
-            "",
-            "  call to update_option - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:14:26",
-            "                                update_option(\$name, \$val);",
-            "",
-            "",
-            "",
-            "ERROR: TaintedHtml",
-            "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
-            "Detected tainted HTML (see https://psalm.dev/245)",
-            "  \$_POST",
-            "    <no known location>",
-            "",
-            "  call to Options::set - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:134:18",
-            "            \$options->set(\$_POST);",
-            "",
-            "  Options::set#1 - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-            "        public function set(\$field, \$value = null): void",
-            "",
-            "  \$field - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-            "        public function set(\$field, \$value = null): void",
-            "",
-            "  call to update_option - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
-            "                        update_option(\$field, \$value);",
-            "",
-            "",
-            "",
-            "ERROR: TaintedHtml",
-            "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-            "Detected tainted HTML (see https://psalm.dev/245)",
-            "  \$_POST",
-            "    <no known location>",
-            "",
-            "  \$_POST['vulnerable_plugin_reflected_xss'] - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-            "                        echo \$_POST['vulnerable_plugin_reflected_xss'];",
-            "",
-            "  call to echo - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-            "                        echo \$_POST['vulnerable_plugin_reflected_xss'];",
-            "",
-            "",
-            "",
-            "ERROR: TaintedTextWithQuotes",
-            "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-            "Detected tainted text with possible quotes (see https://psalm.dev/274)",
-            "  \$_POST",
-            "    <no known location>",
-            "",
-            "  \$_POST['vulnerable_plugin_reflected_xss'] - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-            "                        echo \$_POST['vulnerable_plugin_reflected_xss'];",
-            "",
-            "  call to echo - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-            "                        echo \$_POST['vulnerable_plugin_reflected_xss'];",
-            "",
-            "",
-            "",
-            "ERROR: TaintedFile",
-            "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:158:28",
-            "Detected tainted file handling (see https://psalm.dev/255)",
-            "  \$_POST",
-            "    <no known location>",
-            "",
-            "  \$_POST['vulnerable_plugin_arbitrary_file_read'] - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:158:28",
-            "                                echo file_get_contents(\$_POST['vulnerable_plugin_arbitrary_file_read']);",
-            "",
-            "  call to file_get_contents - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:158:28",
-            "                                echo file_get_contents(\$_POST['vulnerable_plugin_arbitrary_file_read']);",
-            "",
-            "",
-            "",
             "fatal: not a git repository (or any of the parent directories): .git",
             "------------------------------",
             "5 errors found",
@@ -195,96 +36,14 @@ class PsalmOutputParserTest extends TestCase
             "Checks took 1.63 seconds and used 221.030MB of memory",
             "Psalm was able to infer types for 82.4017% of the codebase"
         ];
-        $expected = array(
-            0 => [
-                "ERROR: TaintedHtml",
-                "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:14:26",
-                "Detected tainted HTML (see https://psalm.dev/245)",
-                "\$_POST",
-                "<no known location>",
-                "",
-                "call to Options::set - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:134:18",
-                "\$options->set(\$_POST);",
-                "",
-                "Options::set#1 - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-                "public function set(\$field, \$value = null): void",
-                "",
-                "\$field - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-                "public function set(\$field, \$value = null): void",
-                "",
-                "arrayvalue-fetch - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:13:13",
-                "foreach (\$field as \$name => \$val) {",
-                "",
-                "\$val - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:13:32",
-                "foreach (\$field as \$name => \$val) {",
-                "",
-                "call to update_option - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:14:26",
-                "update_option(\$name, \$val);",
-            ],
-            1 => [
-                "ERROR: TaintedHtml",
-                "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
-                "Detected tainted HTML (see https://psalm.dev/245)",
-                "\$_POST",
-                "<no known location>",
-                "",
-                "call to Options::set - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:134:18",
-                "\$options->set(\$_POST);",
-                "",
-                "Options::set#1 - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-                "public function set(\$field, \$value = null): void",
-                "",
-                "\$field - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-                "public function set(\$field, \$value = null): void",
-                "",
-                "call to update_option - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
-                "update_option(\$field, \$value);",
-            ],
-            2 => [
-                "ERROR: TaintedHtml",
-                "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-                "Detected tainted HTML (see https://psalm.dev/245)",
-                "\$_POST",
-                "<no known location>",
-                "",
-                "\$_POST['vulnerable_plugin_reflected_xss'] - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-                "echo \$_POST['vulnerable_plugin_reflected_xss'];",
-                "",
-                "call to echo - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-                "echo \$_POST['vulnerable_plugin_reflected_xss'];",
-            ],
-            3 => [
-                "ERROR: TaintedTextWithQuotes",
-                "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-                "Detected tainted text with possible quotes (see https://psalm.dev/274)",
-                "\$_POST",
-                "<no known location>",
-                "",
-                "\$_POST['vulnerable_plugin_reflected_xss'] - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-                "echo \$_POST['vulnerable_plugin_reflected_xss'];",
-                "",
-                "call to echo - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-                "echo \$_POST['vulnerable_plugin_reflected_xss'];",
-            ],
-            4 => [
-                "ERROR: TaintedFile",
-                "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:158:28",
-                "Detected tainted file handling (see https://psalm.dev/255)",
-                "\$_POST",
-                "<no known location>",
-                "",
-                "\$_POST['vulnerable_plugin_arbitrary_file_read'] - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:158:28",
-                "echo file_get_contents(\$_POST['vulnerable_plugin_arbitrary_file_read']);",
-                "",
-                "call to file_get_contents - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:158:28",
-                "echo file_get_contents(\$_POST['vulnerable_plugin_arbitrary_file_read']);",
-            ]
-        );
 
-        $actual = $this->psalmOutputParser->splitPsalmOutputIntoErrorMessages($output);
+        $expected = false;
+
+        $actual = $this->psalmOutputParser->parsePsalmOutput($output);
 
         $this->assertSame($expected, $actual);
     }
+
 
     public function testParseErrorMessageWithSingleError(): void
     {
@@ -340,6 +99,88 @@ class PsalmOutputParserTest extends TestCase
             array(
                 "id" => "call to Options::set - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:134:18",
                 "stmt" => "\$options->set(\$_POST);"
+            ),
+            array(
+                "id" => "Options::set#1 - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
+                "stmt" => "public function set(\$field, \$value = null): void"
+            ),
+            array(
+                "id" => "\$field - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
+                "stmt" => "public function set(\$field, \$value = null): void"
+            ),
+            array(
+                "id" => "call to update_option - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
+                "stmt" => "update_option(\$field, \$value);"
+            )
+        );
+
+
+        $expectedErrorArray = array(
+            0 => $expectedPsalmError,
+        );
+
+        $actual = $this->psalmOutputParser->parsePsalmOutput($output);
+
+        $this->assertSame(1, $actual["count"]);
+        for ($i = 0; $i < count($expectedErrorArray); $i++) {
+            $this->assertErrorObjectsAreSame($expectedErrorArray[$i], $actual["errors"][$i]);
+        }
+    }
+
+    public function testParseErrorMessageWithSingleErrorAndERRORInOutput(): void
+    {
+        $output = [
+            "Target PHP version: 8.3 (inferred from current PHP version) Enabled extensions: simplexml.",
+            "",
+            "Scanning files...",
+            "",
+            "79 / 79...Getting stub files...",
+            "115 / 115...",
+            "",
+            "Analyzing files...",
+            "",
+            "░░░░░░░░░░░░░░░░░░░",
+            "",
+            "ERROR: TaintedHtml",
+            "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
+            "Detected tainted HTML (see https://psalm.dev/245)",
+            "  \$_POST",
+            "    <no known location>",
+            "",
+            "  call to Options::set - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:134:18",
+            "                        \$options->set(\"ERROR:\" \. \$_POST);",
+            "",
+            "  Options::set#1 - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
+            "        public function set(\$field, \$value = null): void",
+            "",
+            "  \$field - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
+            "        public function set(\$field, \$value = null): void",
+            "",
+            "  call to update_option - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
+            "                        update_option(\$field, \$value);",
+            "",
+            "",
+            "",
+            "fatal: not a git repository (or any of the parent directories): .git",
+            "------------------------------",
+            "5 errors found",
+            "------------------------------",
+            "",
+            "Checks took 1.63 seconds and used 221.030MB of memory",
+            "Psalm was able to infer types for 82.4017% of the codebase"
+        ];
+
+        $expectedPsalmError = new PsalmError();
+        $expectedPsalmError->errorType = "TaintedHtml";
+        $expectedPsalmError->errorPath = "/home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18";
+        $expectedPsalmError->errorMessage = array(
+            array(
+                "id" => "\$_POST",
+                "stmt" => "<no known location>"
+            ),
+            array(
+                "id" => "call to Options::set - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:134:18",
+                "stmt" => "\$options->set(\"ERROR:\" \. \$_POST);"
             ),
             array(
                 "id" => "Options::set#1 - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
@@ -540,277 +381,6 @@ class PsalmOutputParserTest extends TestCase
         for ($i = 0; $i < count($expected); $i++) {
             $this->assertErrorObjectsAreSame($expected[$i], $actual["errors"][$i]);
         }
-    }
-
-    public function testSplitErrorMessageWithERRORInOutput(): void
-    {
-        $output = [
-            "Target PHP version: 8.3 (inferred from current PHP version) Enabled extensions: simplexml.",
-            "",
-            "Scanning files...",
-            "",
-            "79 / 79...Getting stub files...",
-            "115 / 115...",
-            "",
-            "Analyzing files...",
-            "",
-            "░░░░░░░░░░░░░░░░░░░",
-            "",
-            "ERROR: TaintedHtml",
-            "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
-            "Detected tainted HTML (see https://psalm.dev/245)",
-            "  \$_POST",
-            "    <no known location>",
-            "",
-            "  call to Options::set - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:134:18",
-            "                        \$options->set(\"ERROR:\" \. \$_POST);",
-            "",
-            "  Options::set#1 - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-            "        public function set(\$field, \$value = null): void",
-            "",
-            "  \$field - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-            "        public function set(\$field, \$value = null): void",
-            "",
-            "  call to update_option - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
-            "                        update_option(\$field, \$value);",
-            "",
-            "",
-            "",
-            "fatal: not a git repository (or any of the parent directories): .git",
-            "------------------------------",
-            "1 error found",
-            "------------------------------",
-            "",
-            "Checks took 1.63 seconds and used 221.030MB of memory",
-            "Psalm was able to infer types for 82.4017% of the codebase"
-        ];
-
-        $expected = array(
-            0 => [
-                "ERROR: TaintedHtml",
-                "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
-                "Detected tainted HTML (see https://psalm.dev/245)",
-                "\$_POST",
-                "<no known location>",
-                "",
-                "call to Options::set - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:134:18",
-                "\$options->set(\"ERROR:\" \. \$_POST);",
-                "",
-                "Options::set#1 - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-                "public function set(\$field, \$value = null): void",
-                "",
-                "\$field - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-                "public function set(\$field, \$value = null): void",
-                "",
-                "call to update_option - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
-                "update_option(\$field, \$value);"
-            ]
-        );
-
-        $actual = $this->psalmOutputParser->splitPsalmOutputIntoErrorMessages($output);
-
-        $this->assertSame($expected, $actual);
-    }
-
-    public function testSplitPsalmOutputIntoErrorMessagesWithERRORInOutput(): void
-    {
-        $output = [
-            "Target PHP version: 8.3 (inferred from current PHP version) Enabled extensions: simplexml.",
-            "",
-            "Scanning files...",
-            "",
-            "79 / 79...Getting stub files...",
-            "115 / 115...",
-            "",
-            "Analyzing files...",
-            "",
-            "░░░░░░░░░░░░░░░░░░░",
-            "",
-            "ERROR: TaintedHtml",
-            "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:14:26",
-            "Detected tainted HTML (see https://psalm.dev/245)",
-            "  \$_POST",
-            "    <no known location>",
-            "",
-            "  call to Options::set - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:134:18",
-            "                        \$options->set(\"ERROR:\" \. \$_POST);",
-            "",
-            "  Options::set#1 - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-            "        public function set(\$field, \$value = null): void",
-            "",
-            "  \$field - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-            "        public function set(\$field, \$value = null): void",
-            "",
-            "  arrayvalue-fetch - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:13:13",
-            "                        foreach (\$field as \$name => \$val) {",
-            "",
-            "  \$val - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:13:32",
-            "                        foreach (\$field as \$name => \$val) {",
-            "",
-            "  call to update_option - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:14:26",
-            "                                update_option(\$name, \$val);",
-            "",
-            "",
-            "",
-            "ERROR: TaintedHtml",
-            "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
-            "Detected tainted HTML (see https://psalm.dev/245)",
-            "  \$_POST",
-            "    <no known location>",
-            "",
-            "  call to Options::set - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:134:18",
-            "            \$options->set(\"ERROR:\" \. \$_POST);",
-            "",
-            "  Options::set#1 - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-            "        public function set(\$field, \$value = null): void",
-            "",
-            "  \$field - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-            "        public function set(\$field, \$value = null): void",
-            "",
-            "  call to update_option - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
-            "                        update_option(\$field, \$value);",
-            "",
-            "",
-            "",
-            "ERROR: TaintedHtml",
-            "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-            "Detected tainted HTML (see https://psalm.dev/245)",
-            "  \$_POST",
-            "    <no known location>",
-            "",
-            "  \$_POST['vulnerable_plugin_reflected_xss'] - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-            "                        echo \$_POST['vulnerable_plugin_reflected_xss'];",
-            "",
-            "  call to echo - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-            "                        echo \$_POST['vulnerable_plugin_reflected_xss'];",
-            "",
-            "",
-            "",
-            "ERROR: TaintedTextWithQuotes",
-            "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-            "Detected tainted text with possible quotes (see https://psalm.dev/274)",
-            "  \$_POST",
-            "    <no known location>",
-            "",
-            "  \$_POST['vulnerable_plugin_reflected_xss'] - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-            "                        echo \$_POST['vulnerable_plugin_reflected_xss'];",
-            "",
-            "  call to echo - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-            "                        echo \$_POST['vulnerable_plugin_reflected_xss'];",
-            "",
-            "",
-            "",
-            "ERROR: TaintedFile",
-            "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:158:28",
-            "Detected tainted file handling (see https://psalm.dev/255)",
-            "  \$_POST",
-            "    <no known location>",
-            "",
-            "  \$_POST['vulnerable_plugin_arbitrary_file_read'] - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:158:28",
-            "                                echo file_get_contents(\$_POST['vulnerable_plugin_arbitrary_file_read']);",
-            "",
-            "  call to file_get_contents - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:158:28",
-            "                                echo file_get_contents(\$_POST['vulnerable_plugin_arbitrary_file_read']);",
-            "",
-            "",
-            "",
-            "fatal: not a git repository (or any of the parent directories): .git",
-            "------------------------------",
-            "5 errors found",
-            "------------------------------",
-            "",
-            "Checks took 1.63 seconds and used 221.030MB of memory",
-            "Psalm was able to infer types for 82.4017% of the codebase"
-        ];
-        $expected = array(
-            0 => [
-                "ERROR: TaintedHtml",
-                "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:14:26",
-                "Detected tainted HTML (see https://psalm.dev/245)",
-                "\$_POST",
-                "<no known location>",
-                "",
-                "call to Options::set - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:134:18",
-                "\$options->set(\"ERROR:\" \. \$_POST);",
-                "",
-                "Options::set#1 - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-                "public function set(\$field, \$value = null): void",
-                "",
-                "\$field - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-                "public function set(\$field, \$value = null): void",
-                "",
-                "arrayvalue-fetch - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:13:13",
-                "foreach (\$field as \$name => \$val) {",
-                "",
-                "\$val - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:13:32",
-                "foreach (\$field as \$name => \$val) {",
-                "",
-                "call to update_option - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:14:26",
-                "update_option(\$name, \$val);",
-            ],
-            1 => [
-                "ERROR: TaintedHtml",
-                "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
-                "Detected tainted HTML (see https://psalm.dev/245)",
-                "\$_POST",
-                "<no known location>",
-                "",
-                "call to Options::set - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:134:18",
-                "\$options->set(\"ERROR:\" \. \$_POST);",
-                "",
-                "Options::set#1 - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-                "public function set(\$field, \$value = null): void",
-                "",
-                "\$field - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:10:22",
-                "public function set(\$field, \$value = null): void",
-                "",
-                "call to update_option - wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
-                "update_option(\$field, \$value);",
-            ],
-            2 => [
-                "ERROR: TaintedHtml",
-                "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-                "Detected tainted HTML (see https://psalm.dev/245)",
-                "\$_POST",
-                "<no known location>",
-                "",
-                "\$_POST['vulnerable_plugin_reflected_xss'] - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-                "echo \$_POST['vulnerable_plugin_reflected_xss'];",
-                "",
-                "call to echo - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-                "echo \$_POST['vulnerable_plugin_reflected_xss'];",
-            ],
-            3 => [
-                "ERROR: TaintedTextWithQuotes",
-                "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-                "Detected tainted text with possible quotes (see https://psalm.dev/274)",
-                "\$_POST",
-                "<no known location>",
-                "",
-                "\$_POST['vulnerable_plugin_reflected_xss'] - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-                "echo \$_POST['vulnerable_plugin_reflected_xss'];",
-                "",
-                "call to echo - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:146:9",
-                "echo \$_POST['vulnerable_plugin_reflected_xss'];",
-            ],
-            4 => [
-                "ERROR: TaintedFile",
-                "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:158:28",
-                "Detected tainted file handling (see https://psalm.dev/255)",
-                "\$_POST",
-                "<no known location>",
-                "",
-                "\$_POST['vulnerable_plugin_arbitrary_file_read'] - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:158:28",
-                "echo file_get_contents(\$_POST['vulnerable_plugin_arbitrary_file_read']);",
-                "",
-                "call to file_get_contents - wp-content/plugins/vulnerable-wp-plugin/admin/class-vulnerable-plugin-admin.php:158:28",
-                "echo file_get_contents(\$_POST['vulnerable_plugin_arbitrary_file_read']);",
-            ]
-        );
-
-        $actual = $this->psalmOutputParser->splitPsalmOutputIntoErrorMessages($output);
-
-        $this->assertSame($expected, $actual);
     }
 
     protected function assertErrorObjectsAreSame(PsalmError $expected, PsalmError $actual): void
