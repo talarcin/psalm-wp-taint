@@ -5,7 +5,6 @@ namespace PsalmWpTaint;
 
 require_once "./vendor/autoload.php";
 
-use PsalmAnalysisHandler;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
