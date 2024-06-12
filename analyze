@@ -166,8 +166,6 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
         }
 
         $functionBodyGetter->writeFunctionStmtsToFile("./psalm-result/matched-functions.php");
-
-
     } else {
         print_r("Invalid command! Check for usage with --help or -h.\n");
     }
