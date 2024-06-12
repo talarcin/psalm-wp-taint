@@ -18,16 +18,6 @@ class PsalmOutputParserTest extends TestCase
     public function testParseErrorMessageWithNoError(): void
     {
         $output = [
-            "Target PHP version: 8.3 (inferred from current PHP version) Enabled extensions: simplexml.",
-            "",
-            "Scanning files...",
-            "",
-            "79 / 79...",
-            "115 / 115...",
-            "",
-            "Analyzing files...",
-            "",
-            "░░░░░░░░░░░░░░░░░░░",
             "fatal: not a git repository (or any of the parent directories): .git",
             "------------------------------",
             "5 errors found",
