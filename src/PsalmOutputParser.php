@@ -8,7 +8,7 @@ class PsalmOutputParser
     {
     }
 
-    public function parsePsalmOutput(array $output): array | bool
+    public function parsePsalmOutput(array $output): array|bool
     {
         if ($this->hasNoErrors($output)) return false;
 
@@ -53,7 +53,7 @@ class PsalmOutputParser
 
     private function hasNoErrors(array $output): bool
     {
-        return count($output) <= 17;
+        return count($output) <= 8;
     }
 
     private function parseErrorMessage(array $error): PsalmError

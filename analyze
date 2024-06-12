@@ -103,9 +103,7 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
             $plugin_slug = explode("/", $plugin_path)[3];
             $output = [];
             exec("./vendor/bin/psalm --taint-analysis", $output);
-
-            print_r($output);
-
+            
             $outputs[] = array($plugin_slug => $output);
         }
 
