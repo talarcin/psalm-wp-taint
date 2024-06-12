@@ -362,6 +362,7 @@ class PsalmOutputParserTest extends TestCase
 
         $actual = $this->psalmOutputParser->parsePsalmOutput($output);
 
+        $this->assertSame(1, $actual["count"]);
         for ($i = 0; $i < count($expectedErrorArray); $i++) {
             $this->assertErrorObjectsAreSame($expectedErrorArray[$i], $actual["errors"][$i]);
         }
@@ -533,6 +534,8 @@ class PsalmOutputParserTest extends TestCase
         $expected = [$psalmErrorOne, $psalmErrorTwo, $psalmErrorThree, $psalmErrorFour, $psalmErrorFive];
 
         $actual = $this->psalmOutputParser->parsePsalmOutput($output);
+
+        $this->assertSame(5, $actual["count"]);
 
         for ($i = 0; $i < count($expected); $i++) {
             $this->assertErrorObjectsAreSame($expected[$i], $actual["errors"][$i]);
