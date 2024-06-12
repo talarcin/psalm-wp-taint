@@ -144,7 +144,6 @@ class PsalmAnalyisOutputHandlerTest extends TestCase
         );
 
         $actual = $this->psalmAnalyisOutputHandler->handle(new PsalmOutputParser(), $outputs);
-        print_r($actual);
 
         $this->assertPluginResultsAreSame($expected, $actual);
     }
