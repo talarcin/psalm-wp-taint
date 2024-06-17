@@ -5,14 +5,10 @@ namespace PsalmWpTaint;
 
 require_once "./vendor/autoload.php";
 
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use RecursiveRegexIterator;
-use RegexIterator;
-use stdClass;
 use Tuncay\PsalmWpTaint\src\FunctionBodyGetter;
 use Tuncay\PsalmWpTaint\src\PsalmAnalysisOutputHandler;
 use Tuncay\PsalmWpTaint\src\PsalmOutputParser;
+use Tuncay\PsalmWpTaint\src\Util;
 
 $noInstall = false;
 $noAnalysis = false;
@@ -89,7 +85,7 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
 
         print_r("File \"psalm.xml\" found.\n");
         print_r("Getting installed plugins ...\n");
-        $installed_plugins = glob("./wp-content/plugins/*", GLOB_ONLYDIR);
+        $installed_plugins = Util::getDirsIn("./wp-content/plugins");
         print_r("Found " . sizeof($installed_plugins) . " plugins.\n");
 
         $outputs = [];
@@ -99,12 +95,12 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
             // Running psalm for plugin $plugin_path
             print_r("----------------------------------------\n");
             print_r("Running psalm's taint analysis on $plugin_path ...\n");
-            change_psalm_project_dir($plugin_path, "./psalm.xml");
+            Util::change_psalm_project_dir($plugin_path, "./psalm.xml");
             $plugin_slug = explode("/", $plugin_path)[3];
             $output = [];
             exec("./vendor/bin/psalm --taint-analysis", $output);
-            
-            $outputs[] = array($plugin_slug => $output);
+
+            $outputs[$plugin_slug] = $output;
         }
 
         $outputHandler = new PsalmAnalysisOutputHandler();
@@ -124,7 +120,7 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
     if ($noAnalysis) {
         $actionsMap = (array)json_decode(file_get_contents("./add-actions-map.json"));
         $functionBodyGetter = new FunctionBodyGetter($actionsMap);
-        $files = scanDirForPHPFiles("./wp-content/plugins/");
+        $files = Util::scanDirForPHPFiles("./wp-content/plugins/");
 
         foreach ($files as $key => $file) {
             $functionBodyGetter->filterMatchingFunctionBodiesFromFile($file[0]);
@@ -134,37 +130,4 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
     } else {
         print_r("Invalid command! Check for usage with --help or -h.\n");
     }
-}
-
-
-function change_psalm_project_dir($plugin_dir_path, $psalm_xml_path): void
-{
-    $psalm_xml = simplexml_load_file($psalm_xml_path);
-
-    if (!$psalm_xml->projectFiles->directory) {
-        print_r("Configuring psalm.xml with correct project directory ...\n");
-
-        $psalm_xml->projectFiles->addChild("directory");
-        $psalm_xml->projectFiles->directory->addAttribute("name", $plugin_dir_path);
-    }
-
-    if (!$psalm_xml->projectFiles->directory["name"]) {
-        print_r("Configuring psalm.xml with correct project directory ...\n");
-        $psalm_xml->projectFiles->directory->addAttribute("name", $plugin_dir_path);
-    } else {
-        print_r("Configuring psalm.xml with correct project directory ...\n");
-        $psalm_xml->projectFiles->directory["name"] = $plugin_dir_path;
-    }
-
-    $psalm_xml->asXML("./psalm.xml");
-    print_r("Configuration of psalm.xml done!\n");
-}
-
-function scanDirForPHPFiles(string $directory): array
-{
-    $directoryIterator = new RecursiveDirectoryIterator($directory);
-    $iterator = new RecursiveIteratorIterator($directoryIterator);
-    $regex = new RegexIterator($iterator, '/^.+\.php$/i', RecursiveRegexIterator::GET_MATCH);
-
-    return iterator_to_array($regex);
 }
