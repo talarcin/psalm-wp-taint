@@ -12,7 +12,8 @@ class PsalmOutputParser
     {
         if ($this->hasNoErrors($output)) return false;
 
-        $errors = $this->splitPsalmOutputIntoErrorMessages($output);
+        $cleanedOutput = $this->cleanOutput($output);
+        $errors = $this->splitPsalmOutputIntoErrorMessages($cleanedOutput);
         $psalmErrors = [];
 
         foreach ($errors as $error) {
@@ -31,9 +32,8 @@ class PsalmOutputParser
         $errorEnded = false;
 
         foreach ($output as $index => $line) {
-            $line = trim($line);
 
-            if (str_starts_with($line, 'ERROR:')) {
+            if (str_starts_with($line, "ERROR")) {
                 $errorStarted = true;
                 $errorEnded = false;
             }
@@ -60,8 +60,12 @@ class PsalmOutputParser
     {
         $psalmError = new PsalmError();
 
-        $psalmError->errorType = trim(explode(':', $error[0])[1]);
-        $psalmError->errorPath = trim(explode(" ", $error[1])[1]);
+        $errorType = explode(":", $error[0])[1];
+        $errorPath = explode(" ", $error[1])[1];
+
+
+        $psalmError->errorType = trim($errorType);
+        $psalmError->errorPath = trim($errorPath);
 
         $messageItem = array("id" => "", "stmt" => "");
 
@@ -76,7 +80,19 @@ class PsalmOutputParser
                 $i = $i + 2;
             }
         }
-
         return $psalmError;
+    }
+
+    private function cleanOutput(array $output): array
+    {
+        $cleanedOutput = [];
+
+        foreach ($output as $line) {
+            $line = trim($line);
+            $line = Util::removeAnsiCodes($line);
+            $cleanedOutput[] = $line;
+        }
+
+        return $cleanedOutput;
     }
 }

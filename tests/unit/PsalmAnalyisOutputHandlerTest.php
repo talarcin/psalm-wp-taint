@@ -21,16 +21,6 @@ class PsalmAnalyisOutputHandlerTest extends TestCase
         $outputs = array(
             "testSlug" =>
                 [
-                    "Target PHP version: 8.3 (inferred from current PHP version) Enabled extensions: simplexml.",
-                    "",
-                    "Scanning files...",
-                    "",
-                    "79 / 79...Getting stub files...",
-                    "115 / 115...",
-                    "",
-                    "Analyzing files...",
-                    "",
-                    "░░░░░░░░░░░░░░░░░░░",
                     "",
                     "ERROR: TaintedHtml",
                     "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
@@ -61,16 +51,6 @@ class PsalmAnalyisOutputHandlerTest extends TestCase
                     "Psalm was able to infer types for 82.4017% of the codebase"
                 ],
             "testSlugTwo" => [
-                "Target PHP version: 8.3 (inferred from current PHP version) Enabled extensions: simplexml.",
-                "",
-                "Scanning files...",
-                "",
-                "79 / 79...Getting stub files...",
-                "115 / 115...",
-                "",
-                "Analyzing files...",
-                "",
-                "░░░░░░░░░░░░░░░░░░░",
                 "",
                 "ERROR: TaintedHtml",
                 "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
@@ -144,6 +124,8 @@ class PsalmAnalyisOutputHandlerTest extends TestCase
         );
 
         $actual = $this->psalmAnalyisOutputHandler->handle(new PsalmOutputParser(), $outputs);
+
+        print_r($actual);
 
         $this->assertPluginResultsAreSame($expected, $actual);
     }
