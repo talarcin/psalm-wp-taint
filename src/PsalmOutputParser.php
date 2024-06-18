@@ -73,7 +73,7 @@ class PsalmOutputParser
 
             if (strlen(trim($error[$i])) == 0) {
                 continue;
-            } else {
+            } else if (array_key_exists($i, $error) && array_key_exists($i + 1, $error)) {
                 $messageItem["id"] = $error[$i];
                 $messageItem["stmt"] = $error[$i + 1];
                 $psalmError->errorMessage[] = $messageItem;
