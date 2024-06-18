@@ -14,8 +14,10 @@ class PsalmAnalysisOutputHandler
         $results = array();
 
         foreach ($outputs as $pluginSlug => $output) {
-            $errors = $outputParser->parsePsalmOutput($output);
-            $results[$pluginSlug] = $errors;
+            if (is_array($output)) {
+                $errors = $outputParser->parsePsalmOutput($output);
+                $results[$pluginSlug] = $errors;
+            }
         }
 
         return $results;
