@@ -86,18 +86,21 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
         print_r("File \"psalm.xml\" found.\n");
         print_r("Getting installed plugins ...\n");
         $installedPlugins = Util::getDirsIn("./wp-content/plugins");
-        print_r("Found " . sizeof($installedPlugins) . " plugins.\n");
+        print_r("Found " . count($installedPlugins) . " plugins.\n");
 
         $outputs = [];
         $outputs["total"] = count($installedPlugins);
 
         // Run psalm taint analysis on each plugin separately
-        foreach ($installedPlugins as $plugin_path) {
+        foreach ($installedPlugins as $pluginPath) {
+            if($pluginPath == "~") {
+                continue;
+            }
             // Running psalm for plugin $plugin_path
             print_r("----------------------------------------\n");
-            print_r("Running psalm's taint analysis on $plugin_path ...\n");
-            Util::change_psalm_project_dir($plugin_path, "./psalm.xml");
-            $plugin_slug = explode("/", $plugin_path)[3];
+            print_r("Running psalm's taint analysis on $pluginPath ...\n");
+            Util::change_psalm_project_dir($pluginPath, "./psalm.xml");
+            $plugin_slug = explode("/", $pluginPath)[3];
             $output = [];
             exec("./vendor/bin/psalm --taint-analysis", $output);
 
