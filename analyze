@@ -21,7 +21,7 @@ if (str_contains(__DIR__, '')) {
 // Checking for correct arguments
 if ($argv[1] == "--help" || $argv[1] == "-h") {
     print_r("Usage:\n");
-    print_r("analyze --plugin_list ./absolute/path/to/file/with/plugins/list. \n");
+    print_r("analyze --plugin_list ./absolute/path/to/file/with/plugins/list.csv --output <output-file-name> (optional) \n");
     print_r("The plugin list should be a .csv file with the first column being the plugin name slugs and the second being the plugin versions.\n");
     exit();
 }
@@ -42,6 +42,7 @@ if ($argc != 3 && !$noInstall && !$noAnalysis) {
 // Correct number of arguments and names
 if ($argv[1] == "--plugin_list" || $noInstall) {
     $filepath = $argv[2];
+    $outputFileName = ($argv[3] == "--output" && $argv[4] != "") ? $argv[4] : "out";
 
     if (!$noInstall) {
         // Checking for correct filepaths for csv files
@@ -113,16 +114,16 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
         if (!is_dir("./psalm-result/")) {
             mkdir("./psalm-result/");
         }
-        if (!file_exists("./psalm-result/out.json")) {
-            fopen("./psalm-result/out.json", "w");
+        if (!file_exists("./psalm-result/$outputFileName.json")) {
+            fopen("./psalm-result/$outputFileName.json", "w");
         } else {
-            $file = fopen("./psalm-result/out.json", "w");
+            $file = fopen("./psalm-result/$outputFileName.json", "w");
             fwrite($file, "");
             fclose($file);
         }
-        file_put_contents("./psalm-result/out.json", json_encode($analysisResults, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+        file_put_contents("./psalm-result/$outputFileName.json", json_encode($analysisResults, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
         print_r("----------------------------------------\n");
-        print_r("Analysis results saved to \"./psalm-result/out.json\".\n");
+        print_r("Analysis results saved to \"./psalm-result/$outputFileName.json\".\n");
     }
     if ($noAnalysis) {
         $actionsMap = (array)json_decode(file_get_contents("./add-actions-map.json"));
