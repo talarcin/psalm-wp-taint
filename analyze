@@ -63,15 +63,15 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
         // Installing plugins via wp cli
         foreach (file($filepath) as $line) {
             print_r("----------------------------------------\n");
-            [$plugin_slug, $plugin_version] = explode(",", $line);
+            [$pluginSlug, $plugin_version] = explode(",", $line);
 
-            if (is_dir("./wp-content/plugins/$plugin_slug/")) {
-                print_r("Plugin \"$plugin_slug\" already installed. Skipping installation.\n");
+            if (is_dir("./wp-content/plugins/$pluginSlug/")) {
+                print_r("Plugin \"$pluginSlug\" already installed. Skipping installation.\n");
                 continue;
             }
 
-            print_r("Installing plugin:\n \"$plugin_slug (v$plugin_version) \" ...\n");
-            exec("ddev wp plugin install $plugin_slug --version=$plugin_version");
+            print_r("Installing plugin:\n \"$pluginSlug (v$plugin_version) \" ...\n");
+            exec("ddev wp plugin install $pluginSlug --version=$plugin_version");
         }
         print_r("Plugins installed successfully.\n");
         print_r("----------------------------------------\n");
@@ -88,8 +88,7 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
         $installedPlugins = Util::getDirsIn("./wp-content/plugins");
         print_r("Found " . count($installedPlugins) . " plugins.\n");
 
-        $outputs = [];
-        $outputs["total"] = count($installedPlugins);
+        $outputs = array("total" => count($installedPlugins), "results" => []);
 
         // Run psalm taint analysis on each plugin separately
         foreach ($installedPlugins as $pluginPath) {
@@ -100,11 +99,11 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
             print_r("----------------------------------------\n");
             print_r("Running psalm's taint analysis on $pluginPath ...\n");
             Util::change_psalm_project_dir($pluginPath, "./psalm.xml");
-            $plugin_slug = explode("/", $pluginPath)[3];
+            $pluginSlug = explode("/", $pluginPath)[3];
             $output = [];
             exec("./vendor/bin/psalm --taint-analysis", $output);
 
-            $outputs[$plugin_slug] = $output;
+            $outputs["results"][$pluginSlug] = $output;
         }
 
         $outputHandler = new PsalmAnalysisOutputHandler();
