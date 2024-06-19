@@ -115,6 +115,10 @@ if ($argv[1] == "--plugin_list" || $noInstall) {
         }
         if (!file_exists("./psalm-result/out.json")) {
             fopen("./psalm-result/out.json", "w");
+        } else {
+            $file = fopen("./psalm-result/out.json", "w");
+            fwrite($file, "");
+            fclose($file);
         }
         file_put_contents("./psalm-result/out.json", json_encode($analysisResults, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
         print_r("----------------------------------------\n");
