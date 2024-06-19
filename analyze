@@ -34,7 +34,7 @@ if ($argv[2] == "--no-analysis") {
     $noAnalysis = true;
 }
 
-if ($argc != 3 && !$noInstall && !$noAnalysis) {
+if (($argc != 3 || $argc != 5) && !$noInstall && !$noAnalysis) {
     print_r("Invalid number of options. Use --help or -h to show list of options.\n");
     exit();
 }
