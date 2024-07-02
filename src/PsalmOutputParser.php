@@ -60,19 +60,16 @@ class PsalmOutputParser
     {
         $psalmError = new PsalmError();
 
-        print_r($error[0]);
-        print_r($error[1]);
-
-        $errorType = explode(":", $error[0])[1];
-        $errorPath = explode(" ", $error[1])[1];
-
+        $descLineArray = explode(" - ", $error[0]);
+        $errorType = explode(":", $descLineArray[0])[1];
+        $errorPath = $descLineArray[1];
 
         $psalmError->errorType = trim($errorType);
         $psalmError->errorPath = trim($errorPath);
 
         $messageItem = array("id" => "", "stmt" => "");
 
-        for ($i = 3; $i < count($error); $i++) {
+        for ($i = 1; $i < count($error); $i++) {
 
             if (strlen(trim($error[$i])) == 0) {
                 continue;
