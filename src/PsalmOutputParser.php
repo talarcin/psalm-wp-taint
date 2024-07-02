@@ -60,6 +60,9 @@ class PsalmOutputParser
     {
         $psalmError = new PsalmError();
 
+        print_r($error[0]);
+        print_r($error[1]);
+
         $errorType = explode(":", $error[0])[1];
         $errorPath = explode(" ", $error[1])[1];
 
