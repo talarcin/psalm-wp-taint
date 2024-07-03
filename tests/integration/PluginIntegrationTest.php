@@ -73,7 +73,42 @@ class PluginIntegrationTest extends TestCase
         }
     }
 
+    public function testPluginAddActionWorksWithTwoPlugins() {
+        $pluginSlugs = ["adiaha-hotel", "audio-record"];
 
+        foreach ($pluginSlugs as $pluginSlug) {
+            Util::changePsalmProjectDir("./tests/res/psalm/plugins/" . $pluginSlug, "./psalm.xml");
+            exec("./vendor/bin/psalm --taint-analysis");
+        }
+
+        $expectedActionsMap = array(
+            'admin_bar_menu' => ['adi_add_admin_bar_link_adi'],
+            'admin_menu' => ['adivaha_main_menu'],
+            'init' => ['adivaha_booking_engine', 'ar_create_post_type_audio_record'],
+            'wp_ajax_updateEmail' => ['updateEmail'],
+            'wp_ajax_nopriv_updateEmail' => ['updateEmail'],
+            'wp_enqueue_scripts' => ['ar_enqueue_js_record'],
+            'wp_ajax_save_record' => ['save_record_callback'],
+            'wp_ajax_nopriv_save_record' => ['save_record_callback'],
+            'manage_audiorecord_posts_custom_column' => ['ar_custom_columns_record_audio'],
+            'admin_init' => ['ar_codex_admin_init'],
+            'before_delete_post' => ['ar_detele_post_delete_audio_also']
+        );
+
+        AddActionParser::getInstance()->readActionsMapFromFile("./add-actions-map.json");
+        $actualActionsMap = AddActionParser::getInstance()->getActionsMap();
+
+
+
+        foreach ($expectedActionsMap as $expectedKey => $expectedValue) {
+            $actualValue = $actualActionsMap[$expectedKey];
+
+            foreach ($expectedValue as $value) {
+                $this->assertTrue(in_array($value, $actualValue));
+            }
+        }
+
+    }
 
     protected function setUp(): void
     {
