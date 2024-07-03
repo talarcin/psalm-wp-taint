@@ -9,7 +9,7 @@ use RegexIterator;
 
 class Util
 {
-    public static function change_psalm_project_dir($pluginDirPath, $psalmXMLPath): void
+    public static function changePsalmProjectDir(string $pluginDirPath, string $psalmXMLPath): void
     {
         $psalm_xml = simplexml_load_file($psalmXMLPath);
 
@@ -48,12 +48,6 @@ class Util
         }
 
         return glob("$directory/*", GLOB_ONLYDIR);
-    }
-
-    public static function getPluginSlugFromPath(string $path): string
-    {
-        $tmp = explode("/", $path);
-        return end($tmp);
     }
 
     public static function removeAnsiCodes(string $line): string

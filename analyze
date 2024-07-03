@@ -99,7 +99,7 @@ if ($argv[1] == "--plugin-list" || $noInstall) {
             // Running psalm for plugin $plugin_path
             print_r("----------------------------------------\n");
             print_r("Running psalm's taint analysis on $pluginPath ...\n");
-            Util::change_psalm_project_dir($pluginPath, "./psalm.xml");
+            Util::changePsalmProjectDir($pluginPath, "./psalm.xml");
             $plugin_slug = explode("/", $pluginPath)[3];
             $output = [];
             exec("./vendor/bin/psalm --taint-analysis", $output);
