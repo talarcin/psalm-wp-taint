@@ -4,11 +4,14 @@ namespace Tuncay\PsalmWpTaint\tests\integration;
 
 use PHPUnit\Framework\TestCase;
 use Tuncay\PsalmWpTaint\src\AddActionParser;
+use Tuncay\PsalmWpTaint\src\Util;
 
 class PluginIntegrationTest extends TestCase
 {
     public function testPluginIsCalled(): void
     {
+        Util::changePsalmProjectDir("./tests/res/psalm/files", "./psalm.xml");
+
         exec("./vendor/bin/psalm --taint-analysis");
         $expectedActionsMap = array(
             "admin_post" => ["example_admin_post_callback", "example_admin_post_callback"],
@@ -45,6 +48,32 @@ class PluginIntegrationTest extends TestCase
             }
         }
     }
+
+    public function testPluginAddActionWorksWithOnePlugin() {
+        Util::changePsalmProjectDir("./tests/res/psalm/plugins/adiaha-hotel", "./psalm.xml");
+        exec("./vendor/bin/psalm --taint-analysis");
+
+        $expectedActionsMap = array(
+            'admin_bar_menu' => ['adi_add_admin_bar_link_adi'],
+            'admin_menu' => ['adivaha_main_menu'],
+            'init' => ['adivaha_booking_engine'],
+            'wp_ajax_updateEmail' => ['updateEmail'],
+            'wp_ajax_nopriv_updateEmail' => ['updateEmail'],
+        );
+
+        AddActionParser::getInstance()->readActionsMapFromFile("./add-actions-map.json");
+        $actualActionsMap = AddActionParser::getInstance()->getActionsMap();
+
+        foreach ($expectedActionsMap as $expectedKey => $expectedValue) {
+            $actualValue = $actualActionsMap[$expectedKey];
+
+            foreach ($expectedValue as $value) {
+                $this->assertTrue(in_array($value, $actualValue));
+            }
+        }
+    }
+
+
 
     protected function setUp(): void
     {
