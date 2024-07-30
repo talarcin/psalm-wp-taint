@@ -47,7 +47,7 @@ final class AddActionParserTest extends TestCase
 
     public function testParsingFile(): void
     {
-        $testFilePath = "./tests/res/psalm/test-file.php";
+        $testFilePath = "./tests/res/psalm/files/test-file.php";
         $expectedSizeOfFoundExpressions = 3;
         $expectedActionsMap = array(
             "admin_post" => ["example_admin_post_callback", "example_admin_post_callback"],
@@ -69,7 +69,7 @@ final class AddActionParserTest extends TestCase
 
     public function testWriteToFile(): void
     {
-        $testFilePath = "./tests/res/psalm/test-file.php";
+        $testFilePath = "./tests/res/psalm/files/test-file.php";
         $filePathToWrite = "./tests/res/actions-map.json";
         $expectedActionsMap = array(
             "admin_post" => ["example_admin_post_callback", "example_admin_post_callback"],
@@ -102,7 +102,7 @@ final class AddActionParserTest extends TestCase
 
     public function testParsingMultipleFiles(): void
     {
-        $testFilePaths = ["./tests/res/psalm/test-file.php", "./tests/res/psalm/test-file-2.php"];
+        $testFilePaths = ["./tests/res/psalm/files/test-file.php", "./tests/res/psalm/files/test-file-2.php"];
         $mapFilePath = "./tests/res/actions-map-multiple.json";
         $expectedActionsMap = array(
             "admin_post" => ["example_admin_post_callback", "example_admin_post_callback"],
@@ -127,7 +127,7 @@ final class AddActionParserTest extends TestCase
 
     public function testParsingFileThree(): void
     {
-        $testFilePath = "./tests/res/psalm/test-file-3.php";
+        $testFilePath = "./tests/res/psalm/files/test-file-3.php";
         $expectedActionsMap = array(
             'admin_head' => ['disable_all_in_one_free'],
             'plugins_loaded' => ['aiosp_add_cap', "aioseop_init_class", 'version_updates'],
