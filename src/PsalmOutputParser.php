@@ -64,6 +64,7 @@ class PsalmOutputParser
         $errorType = explode(":", $descLineArray[0])[1];
         $errorPath = $descLineArray[1];
 
+
         $psalmError->errorType = trim($errorType);
         $psalmError->errorPath = trim($errorPath);
 

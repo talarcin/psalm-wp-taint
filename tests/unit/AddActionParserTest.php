@@ -18,6 +18,7 @@ final class AddActionParserTest extends TestCase
     private MockNodeVisitor $visitor;
 
 
+
     public function testIsAddAction(): void
     {
         $code = '<?php add_action("admin_post", array("class", "callback"));';

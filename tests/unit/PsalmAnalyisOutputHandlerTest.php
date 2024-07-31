@@ -22,9 +22,7 @@ class PsalmAnalyisOutputHandlerTest extends TestCase
             "testSlug" =>
                 [
                     "",
-                    "ERROR: TaintedHtml",
-                    "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
-                    "Detected tainted HTML (see https://psalm.dev/245)",
+                    "ERROR: TaintedHtml - /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18 - Detected tainted HTML (see https://psalm.dev/245)",
                     "  \$_POST",
                     "    <no known location>",
                     "",
@@ -52,9 +50,7 @@ class PsalmAnalyisOutputHandlerTest extends TestCase
                 ],
             "testSlugTwo" => [
                 "",
-                "ERROR: TaintedHtml",
-                "at /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18",
-                "Detected tainted HTML (see https://psalm.dev/245)",
+                "ERROR: TaintedHtml - /home/tuncay/GitHub/wp-test-site/wp-content/plugins/vulnerable-wp-plugin/admin/Options.php:17:18 - Detected tainted HTML (see https://psalm.dev/245)",
                 "  \$_POST",
                 "    <no known location>",
                 "",
@@ -131,12 +127,12 @@ class PsalmAnalyisOutputHandlerTest extends TestCase
     protected function assertPluginResultsAreSame(array $expected, array $actual): void
     {
         foreach ($expected as $key => $value) {
-            $this->assertArrayHasKey($key, $actual);
-            $this->assertErrorsAreSame($value, $actual[$key]);
+            $this->assertArrayHasKey($key, $actual['results']);
+            $this->assertErrorsAreSame($value, $actual['results'][$key]);
         }
     }
 
-    protected function assertErrorsAreSame($expected, $actual): void
+    protected function assertErrorsAreSame(array $expected, array $actual): void
     {
         $this->assertSame($expected["count"], $actual["count"]);
 
