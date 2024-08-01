@@ -130,8 +130,8 @@ if ($argv[1] == "--plugin-list" || $noInstall) {
         $functionBodyGetter = new FunctionBodyGetter($actionsMap);
         $files = Util::scanDirForPHPFiles("./wp-content/plugins/");
 
-        foreach ($files as $key => $file) {
-            $functionBodyGetter->filterMatchingFunctionBodiesFromFile($file[0]);
+        foreach ($files as $file) {
+            $functionBodyGetter->filterMatchingFunctionBodiesFromFile($file);
         }
 
         $functionBodyGetter->writeFunctionStmtsToFile("./psalm-result/matched-functions.php");

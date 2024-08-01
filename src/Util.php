@@ -38,7 +38,13 @@ class Util
         $iterator = new RecursiveIteratorIterator($directoryIterator);
         $regex = new RegexIterator($iterator, '/^.+\.php$/i', RecursiveRegexIterator::GET_MATCH);
 
-        return iterator_to_array($regex);
+		$files = [];
+
+		foreach (iterator_to_array($regex) as $key => $file) {
+			$files[] = $key;
+		}
+
+        return $files;
     }
 
     public static function getDirsIn(string $directory): array|false
