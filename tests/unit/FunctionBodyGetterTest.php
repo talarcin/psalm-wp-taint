@@ -29,6 +29,16 @@ class FunctionBodyGetterTest extends TestCase
         $this->assertSame($expectedCode, $actualCode);
     }
 
+	public function testParseErrorReturnsEmptyArray(): void {
+		$actionsMap = array("admin_post" => array("testFunctionOne", "testFunctionTwo"));
+		$functionBodyGetter = $this->makeNewFunctionBodyGetter($actionsMap);
+		$filepath = "./tests/res/test-functions-corrupt.php";
+
+		$this->assertSame(false, $functionBodyGetter->filterMatchingFunctionBodiesFromFile($filepath));
+
+
+	}
+
     private function makeNewFunctionBodyGetter(array $actionsMap): FunctionBodyGetter
     {
         return new FunctionBodyGetter($actionsMap);

@@ -86,6 +86,7 @@ if ($argv[1] == "--plugin-list" || $noInstall) {
 
         print_r("File \"psalm.xml\" found.\n");
         print_r("Getting installed plugins ...\n");
+        // TODO: make directory with plugins a dynamic input value by user
         $installedPlugins = Util::getDirsIn("./wp-content/plugins");
         print_r("Found " . count($installedPlugins) . " plugins.\n");
 

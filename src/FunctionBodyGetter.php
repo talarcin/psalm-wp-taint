@@ -36,13 +36,24 @@ class FunctionBodyGetter
         return $this->functionNames;
     }
 
-    public function filterMatchingFunctionBodiesFromFile(string $filepath): void
+	/**
+	 * @param string $filepath
+	 *
+	 * @return bool
+	 * Return true when parsing worked, else false
+	 */
+    public function filterMatchingFunctionBodiesFromFile(string $filepath): bool
     {
         $ast = $this->parseFile($filepath);
+
+		if($ast == -1) return false;
+
         $traverser = new NodeTraverser();
         $visitor = new FunctionStmtNodeVisitor($this);
         $traverser->addVisitor($visitor);
         $traverser->traverse($ast);
+
+		return true;
     }
 
     public function writeFunctionStmtsToFile(string $filepath): void
@@ -56,7 +67,7 @@ class FunctionBodyGetter
         return in_array($functionName, $this->functionNames);
     }
 
-    private function parseFile(string $filepath): array
+    private function parseFile(string $filepath): array|int
     {
         $parser = (new ParserFactory())->createForNewestSupportedVersion();
         $code = file_get_contents($filepath);
@@ -65,7 +76,7 @@ class FunctionBodyGetter
             return $parser->parse($code);
         } catch (Error $error) {
             echo "Parse error in $filepath: {$error->getMessage()}\n";
-            return [];
+            return -1;
         }
 
     }
