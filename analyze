@@ -19,18 +19,18 @@ if (str_contains(__DIR__, '')) {
 }
 
 // Checking for correct arguments
-if ($argv[1] == "--help" || $argv[1] == "-h") {
+if ($argv[1] == "-help" || $argv[1] == "-h") {
     print_r("Usage:\n");
-    print_r("analyze --plugin_list ./absolute/path/to/file/with/plugins/list.csv --output <output-file-name> (optional) \n");
+    print_r("analyze -plugin_list ./absolute/path/to/file/with/plugins/list.csv -output <output-file-name> (optional) \n");
     print_r("The plugin list should be a .csv file with the first column being the plugin name slugs and the second being the plugin versions.\n");
     exit();
 }
 
-if ($argv[1] == "--no-install") {
+if ($argv[1] == "-no-install") {
     $noInstall = true;
 }
 
-if ($argv[2] == "--no-analysis") {
+if ($argv[2] == "-no-analysis") {
     $noAnalysis = true;
 }
 
@@ -40,9 +40,9 @@ if (($argc != 3 && $argc != 5) && !$noInstall && !$noAnalysis) {
 }
 
 // Correct number of arguments and names
-if ($argv[1] == "--plugin-list" || $noInstall) {
+if ($argv[1] == "-plugin-list" || $noInstall) {
     $filepath = $argv[2];
-    $outputFileName = ($argv[3] == "--output" && $argv[4] != "") ? $argv[4] : "out";
+    $outputFileName = ($argv[3] == "-output" && $argv[4] != "") ? $argv[4] : "out";
 
     if (!$noInstall) {
         // Checking for correct filepaths for csv files
