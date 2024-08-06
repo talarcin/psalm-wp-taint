@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Tuncay\PsalmWpTaint\src;
 
+use Tuncay\PsalmWpTaint\src\PsalmError\PsalmResult;
+
 class FuzzableActionSelector
 {
   private array $fuzzableActions;
   private array $addActionsMap;
-  private array $psalmResults;
+  private PsalmResult $psalmResult;
 
   public function __construct(array $addActionsMap, array $psalmResults)
   {
