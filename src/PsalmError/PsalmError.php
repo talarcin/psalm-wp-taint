@@ -1,6 +1,7 @@
 <?php
+declare(strict_types=1);
 
-namespace Tuncay\PsalmWpTaint\src;
+namespace Tuncay\PsalmWpTaint\src\PsalmError;
 
 class PsalmError {
 	public string $errorType;

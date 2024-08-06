@@ -2,9 +2,9 @@
 
 namespace Tuncay\PsalmWpTaint\tests\unit;
 
+use Tuncay\PsalmWpTaint\src\PsalmError\PsalmError;
 use PHPUnit\Framework\TestCase;
 use Tuncay\PsalmWpTaint\src\PsalmAnalysisOutputHandler;
-use Tuncay\PsalmWpTaint\src\PsalmError;
 use Tuncay\PsalmWpTaint\src\PsalmOutputParser;
 
 class PsalmAnalyisOutputHandlerTest extends TestCase

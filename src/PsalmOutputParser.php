@@ -2,6 +2,8 @@
 
 namespace Tuncay\PsalmWpTaint\src;
 
+use Tuncay\PsalmWpTaint\src\PsalmError\PsalmError;
+
 class PsalmOutputParser
 {
     public function __construct()
