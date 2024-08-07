@@ -2,9 +2,13 @@
 
 namespace Tuncay\PsalmWpTaint\tests\unit;
 
+use Psalm\Internal\Cli\Psalm;
 use Tuncay\PsalmWpTaint\src\PsalmError\PsalmError;
 use PHPUnit\Framework\TestCase;
 use Tuncay\PsalmWpTaint\src\PsalmAnalysisOutputHandler;
+use Tuncay\PsalmWpTaint\src\PsalmError\PsalmErrorCollection;
+use Tuncay\PsalmWpTaint\src\PsalmError\PsalmPluginResult;
+use Tuncay\PsalmWpTaint\src\PsalmError\PsalmResult;
 use Tuncay\PsalmWpTaint\src\PsalmOutputParser;
 
 class PsalmAnalyisOutputHandlerTest extends TestCase
@@ -104,43 +108,30 @@ class PsalmAnalyisOutputHandlerTest extends TestCase
             )
         );
 
-        $expected = array(
-            "testSlug" => [
-                "count" => 1,
-                "errors" => [
-                    $expectedPsalmError
-                ]
-            ],
-            "testSlugTwo" => [
-                "count" => 1,
-                "errors" => [
-                    $expectedPsalmError
-                ]
-            ]
-        );
+		$expectedPsalmErrorCollectionOne = new PsalmErrorCollection();
+		$expectedPsalmErrorCollectionOne[] = $expectedPsalmError;
 
-        $actual = $this->psalmAnalyisOutputHandler->handle(new PsalmOutputParser(), $outputs);
+	    $expectedPsalmErrorCollectionTwo = new PsalmErrorCollection();
+	    $expectedPsalmErrorCollectionTwo[] = $expectedPsalmError;
 
-        $this->assertPluginResultsAreSame($expected, $actual);
-    }
+		$expectedPluginResultOne = new PsalmPluginResult();
+		$expectedPluginResultTwo = new PsalmPluginResult();
 
-    protected function assertPluginResultsAreSame(array $expected, array $actual): void
-    {
-        foreach ($expected as $key => $value) {
-            $this->assertArrayHasKey($key, $actual['results']);
-            $this->assertErrorsAreSame($value, $actual['results'][$key]);
-        }
-    }
 
-    protected function assertErrorsAreSame(array $expected, array $actual): void
-    {
-        $this->assertSame($expected["count"], $actual["count"]);
+		$expectedPluginResultOne->pluginSlug = "testSlug";
+		$expectedPluginResultOne->psalmErrors = $expectedPsalmErrorCollectionOne;
+		$expectedPluginResultOne->count = 1;
+		$expectedPluginResultTwo->pluginSlug = "testSlugTwo";
+		$expectedPluginResultTwo->psalmErrors = $expectedPsalmErrorCollectionTwo;
+		$expectedPluginResultTwo->count = 1;
 
-        $expectedErrors = $expected["errors"];
-        $actualErrors = $actual["errors"];
+		$expected = new PsalmResult();
+		$expected->addResult($expectedPluginResultOne);
+		$expected->addResult($expectedPluginResultTwo);
+		$expected->total = 2;
+		$expected->totalTaintedPlugins = 2;
+		$actual = $this->psalmAnalyisOutputHandler->handle(new PsalmOutputParser(), $outputs);
 
-        foreach ($expectedErrors as $key => $expectedError) {
-            $this->assertTrue($expectedError->equals($actualErrors[$key]));
-        }
+		$this->assertTrue($expected->equals($actual));
     }
 }

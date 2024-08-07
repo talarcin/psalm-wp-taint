@@ -3,6 +3,8 @@
 namespace Tuncay\PsalmWpTaint\src;
 
 use Tuncay\PsalmWpTaint\src\PsalmError\PsalmError;
+use Tuncay\PsalmWpTaint\src\PsalmError\PsalmErrorCollection;
+use Tuncay\PsalmWpTaint\src\PsalmError\PsalmPluginResult;
 
 class PsalmOutputParser
 {
@@ -10,20 +12,24 @@ class PsalmOutputParser
     {
     }
 
-    public function parsePsalmOutput(array $output): array|bool
+    public function parsePsalmOutput(array $output): PsalmPluginResult|bool
     {
         if ($this->hasNoErrors($output)) return false;
 
+		$pluginResult = new PsalmPluginResult();
         $cleanedOutput = $this->cleanOutput($output);
         $errors = $this->splitPsalmOutputIntoErrorMessages($cleanedOutput);
-        $psalmErrors = [];
+        $psalmErrors = new PsalmErrorCollection();
 
         foreach ($errors as $error) {
             $psalmError = $this->parseErrorMessage($error);
             $psalmErrors[] = $psalmError;
         }
 
-        return array("count" => count($psalmErrors), "errors" => $psalmErrors);
+		$pluginResult->count = count($psalmErrors);
+		$pluginResult->psalmErrors = $psalmErrors;
+
+        return $pluginResult;
     }
 
     protected function splitPsalmOutputIntoErrorMessages(array $output): array

@@ -2,6 +2,8 @@
 
 namespace Tuncay\PsalmWpTaint\src;
 
+use Tuncay\PsalmWpTaint\src\PsalmError\PsalmResult;
+
 class PsalmAnalysisOutputHandler
 {
 
@@ -9,25 +11,25 @@ class PsalmAnalysisOutputHandler
     {
     }
 
-    public function handle(PsalmOutputParser $outputParser, array $outputs): array
+    public function handle(PsalmOutputParser $outputParser, array $outputs): PsalmResult
     {
-        $results = array(
-            "total" => count($outputs),
-            "total_tainted_plugins" => 0,
-            "total_no_taint" => 0,
-            "results" => []
-        );
+		$results = new PsalmResult();
+		$results->total = count($outputs);
+		$results->totalNoTaint = 0;
+		$results->totalTaintedPlugins = 0;
 
         foreach ($outputs as $pluginSlug => $output) {
             if (is_array($output)) {
-                $errors = $outputParser->parsePsalmOutput($output);
-                if (!$errors) {
-                    $results["total_no_taint"]++;
+                $pluginResult = $outputParser->parsePsalmOutput($output);
+                if (!$pluginResult) {
+					$results->totalNoTaint++;
                 } else {
-                    $results["total_tainted_plugins"]++;
+					$results->totalTaintedPlugins++;
                 }
 
-                $results["results"][$pluginSlug] = $errors;
+				$pluginResult->pluginSlug = $pluginSlug;
+
+                $results->addResult($pluginResult);
             }
         }
 
