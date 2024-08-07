@@ -12,13 +12,14 @@ class FuzzableActionSelector
   private array $addActionsMap;
   private PsalmResult $psalmResult;
 
-  public function __construct(array $addActionsMap, array $psalmResults)
+  public function __construct(array $addActionsMap, PsalmResult $psalmResult)
   {
     $this->addActionsMap = $addActionsMap;
-    $this->psalmResults = $psalmResults;
+    $this->psalmResult = $psalmResult;
+    $this->fuzzableActions = [];
   }
 
-  public function scanFilesForFunctionNames(): bool
+  public function scanFilesForFunctionNames(string $dirPath): bool
   {
     return false;
   }
@@ -28,7 +29,10 @@ class FuzzableActionSelector
     return false;
   }
 
-  private function selectActionToFuzz(): void {
-
+  public function getFuzzableActions(): array
+  {
+    return $this->fuzzableActions;
   }
+
+  private function selectActionToFuzz(): void {}
 }
