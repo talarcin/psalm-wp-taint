@@ -10,8 +10,8 @@ use Tuncay\PsalmWpTaint\src\PsalmError\PsalmResult;
 
 class FuzzableActionSelectorTest extends TestCase
 {
-  private const string TEST_DIR_PATH = "./tests/res/test.php";
-  private array $addActionsMap = ["admin_menu" => ["adivaha_main_menu", "audio_record_menu"], "init" => ["aivaha_booking_engine", "audio_record_engine"]];
+  private const string TEST_DIR_PATH = "./tests/res/fuzzable-action-selector/";
+  private array $addActionsMap = ["admin_menu" => ["testFunctionName", "testFunctionNameTwo", "testFunctionNameThree"], "init" => ["aivaha_booking_engine", "audio_record_engine"]];
   private FuzzableActionSelector $fuzzableActionSelector;
 
   protected function setUp(): void
@@ -23,13 +23,13 @@ class FuzzableActionSelectorTest extends TestCase
     $psalmPluginResultOne = new PsalmPluginResult("testSlugOne", 1);
     $psalmErrorOne = new PsalmError("TaintedHtml", "./test.php");
     $psalmErrorOne->errorMessage[] = ["id" => "\$_POST", "stmt" => "<no known location>"];
-    $psalmErrorOne->errorMessage[] = ["id" => "call to testFunctionName - ./test.php:10:5", "stmt" => "return testFunctionName();"];
+    $psalmErrorOne->errorMessage[] = ["id" => "call to testFunctionName - ./test.php:6:5", "stmt" => "return testFunctionName();"];
     $psalmPluginResultOne->psalmErrors[] = $psalmErrorOne;
 
     $psalmPluginResultTwo = new PsalmPluginResult("testSlugTwo", 2);
     $psalmErrorTwo = new PsalmError("TaintedHtml", "./test.php");
     $psalmErrorTwo->errorMessage[] = ["id" => "\$_POST", "stmt" => "<no known location>"];
-    $psalmErrorTwo->errorMessage[] = ["id" => "call to testFunctionNameTwo - ./test.php:10:5", "stmt" => "return testFunctionNameTwo();"];
+    $psalmErrorTwo->errorMessage[] = ["id" => "call to testFunctionNameTwo - ./test.php:12:5", "stmt" => "return testFunctionNameTwo();"];
     $psalmErrorThree = new PsalmError("TaintedHtml", "./test.php");
     $psalmErrorThree->errorMessage[] = ["id" => "\$_GET", "stmt" => "<no known location>"];
     $psalmErrorThree->errorMessage[] = ["id" => "call to testFunctionNameThree - ./test.php:25:5", "stmt" => "return testFunctionNameThree();"];
@@ -42,11 +42,12 @@ class FuzzableActionSelectorTest extends TestCase
     $this->fuzzableActionSelector = new FuzzableActionSelector($this->addActionsMap, $psalmResults);
   }
 
-  public function testScanFilesForFunctionsNames(): void
+  public function testSelectActionsToFuzz(): void
   {
-    $this->fuzzableActionSelector->scanFilesForFunctionNames(self::TEST_DIR_PATH);
+    $dirIsOk = $this->fuzzableActionSelector->selectActionsToFuzz(self::TEST_DIR_PATH);
+
+    $this->assertTrue($dirIsOk);
+
     $this->assertSame(["admin_menu"], $this->fuzzableActionSelector->getFuzzableActions());
   }
-
-  public function testWriteFuzzableActionsToFile(): void {}
 }
