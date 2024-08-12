@@ -31,11 +31,11 @@ class FuzzableActionSelector
     if (!$this->scanFilesForFunctionNames($dirPath)) return false;
 
     foreach ($this->addActionsMap as $action => $callbacks) {
-      if (in_array($action, $this->fuzzableActions)) continue;
 
       foreach ($callbacks as $callback) {
         if (in_array($callback, $this->interestingCallbackFunctions)) {
-          $this->fuzzableActions[] = $callback;
+          if (in_array($action, $this->fuzzableActions)) continue;
+          $this->fuzzableActions[] = $action;
         }
       }
     }
@@ -61,9 +61,10 @@ class FuzzableActionSelector
         $funcName = "";
 
         for ($i = $startingIndex; $i >= 0; $i--) {
-          if (!str_contains("function", $lines[$i])) continue;
+          $trimmedLine = trim($lines[$i]);
+          if (!str_contains($trimmedLine, "function")) continue;
 
-          $funcDeclarationParts = explode(" ", trim($lines[$i]));
+          $funcDeclarationParts = explode(" ", $trimmedLine);
 
           if ($funcDeclarationParts[0] != "function") {
             $funcName = $funcDeclarationParts[2];
@@ -71,7 +72,7 @@ class FuzzableActionSelector
             $funcName = $funcDeclarationParts[1];
           }
 
-          $funcName = str_contains("(", $funcName) ? explode("(", $funcName)[0] : $funcName;
+          $funcName = str_contains($funcName, "(") ? explode("(", $funcName)[0] : $funcName;
           $this->interestingCallbackFunctions[] = $funcName;
 
           break;
@@ -84,7 +85,10 @@ class FuzzableActionSelector
 
   public function writeFuzzableActionsToFile(string $filename): bool
   {
-    return false;
+    $fileContentAsJson = json_encode($this->fuzzableActions);
+    file_put_contents($filename . ".json", $fileContentAsJson);
+
+    return true;
   }
 
   public function getFuzzableActions(): array

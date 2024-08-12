@@ -12,17 +12,18 @@ function testFunctionNameTwo(bool $doIt): string
   $doItTwice = $doIt && 1 == 1 ? "yes" : "no";
   return $doItTwice;
 }
-
-
-function testFunctionNameThree(): void
+class Test
 {
-  switch ("yes") {
-    case 'no':
-      print_r("ok, fine");
-      break;
+  public function testFunctionNameThree(): void
+  {
+    switch ("yes") {
+      case 'no':
+        print_r("ok, fine");
+        break;
 
-    default:
-      print_r("not fine");
-      break;
+      default:
+        print_r("not fine");
+        break;
+    }
   }
 }

@@ -10,7 +10,8 @@ use Tuncay\PsalmWpTaint\src\PsalmError\PsalmResult;
 
 class FuzzableActionSelectorTest extends TestCase
 {
-  private const string TEST_DIR_PATH = "./tests/res/fuzzable-action-selector/";
+  private const string TEST_DIR_PATH = "./tests/res/fuzzable-action-selector";
+  private const string FUZZABLE_ACTIONS_FILE = "./tests/res/fuzzable-action-selector/fuzzable-actions";
   private array $addActionsMap = ["admin_menu" => ["testFunctionName", "testFunctionNameTwo", "testFunctionNameThree"], "init" => ["aivaha_booking_engine", "audio_record_engine"]];
   private FuzzableActionSelector $fuzzableActionSelector;
 
@@ -49,5 +50,15 @@ class FuzzableActionSelectorTest extends TestCase
     $this->assertTrue($dirIsOk);
 
     $this->assertSame(["admin_menu"], $this->fuzzableActionSelector->getFuzzableActions());
+  }
+
+  public function testWriteFuzzableActionsToFile(): void
+  {
+    $this->fuzzableActionSelector->selectActionsToFuzz(self::TEST_DIR_PATH);
+    $this->fuzzableActionSelector->writeFuzzableActionsToFile(self::FUZZABLE_ACTIONS_FILE);
+    $fuzzableActions = file_get_contents(self::FUZZABLE_ACTIONS_FILE . ".json");
+    $fuzzableActions = json_decode($fuzzableActions);
+
+    $this->assertSame("admin_menu", $fuzzableActions[0]);
   }
 }
