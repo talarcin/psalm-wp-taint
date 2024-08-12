@@ -9,6 +9,9 @@ use Countable;
 use IteratorAggregate;
 use Traversable;
 
+/**
+ * @author Tuncay Alarcin
+ */
 class PsalmErrorCollection implements IteratorAggregate, ArrayAccess, Countable {
 	protected array $psalmErrors;
 

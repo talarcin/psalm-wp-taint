@@ -3,6 +3,9 @@ declare( strict_types=1 );
 
 namespace Tuncay\PsalmWpTaint\src\PsalmError;
 
+/**
+ * @author Tuncay Alarcin
+ */
 class PsalmPluginResult {
 	public string $pluginSlug;
 	public int $count;
@@ -15,7 +18,7 @@ class PsalmPluginResult {
 	}
 
 	/**
-	 * Compares if given PsalmPluginResults fields are equal to current PsalmPluginResults
+	 * Compares if given PsalmPluginResults fields are equal to current PsalmPluginResults.
 	 *
 	 * @param PsalmPluginResult $other
 	 *

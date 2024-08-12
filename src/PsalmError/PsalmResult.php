@@ -4,6 +4,9 @@ declare( strict_types=1 );
 
 namespace Tuncay\PsalmWpTaint\src\PsalmError;
 
+/**
+ * @author Tuncay Alarcin
+ */
 class PsalmResult {
 	public int $total;
 	public int $totalTaintedPlugins;
@@ -17,14 +20,33 @@ class PsalmResult {
 		$this->results             = [];
 	}
 
+	/**
+	 * Adds given PsalmPluginResult to list of stored results.
+	 *
+	 * @param PsalmPluginResult $result
+	 *
+	 * @return void
+	 */
 	public function addResult( PsalmPluginResult $result ): void {
 		$this->results[] = $result;
 	}
 
+	/**
+	 * Returns stored PsalmPluginResults
+	 *
+	 * @return array
+	 */
 	public function getResults(): array {
 		return $this->results;
 	}
 
+	/**
+	 * Compares if given PsalmResults fields are equal to current PsalmResults.
+	 *
+	 * @param PsalmResult $other
+	 *
+	 * @return bool
+	 */
 	public function equals( PsalmResult $other ): bool {
 		return $this->total === $other->total
 		       && $this->totalTaintedPlugins === $other->totalTaintedPlugins
