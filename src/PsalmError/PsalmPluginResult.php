@@ -14,6 +14,13 @@ class PsalmPluginResult {
 		$this->psalmErrors = new PsalmErrorCollection();
 	}
 
+	/**
+	 * Compares if given PsalmPluginResults fields are equal to current PsalmPluginResults
+	 *
+	 * @param PsalmPluginResult $other
+	 *
+	 * @return bool
+	 */
 	public function equals( PsalmPluginResult $other ): bool {
 		return $this->pluginSlug === $other->pluginSlug
 		       && $this->count === $other->count
