@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tuncay\PsalmWpTaint\src;
 
-use Tuncay\PsalmWpTaint\src\PsalmError\PsalmErrorCollection;
 use Tuncay\PsalmWpTaint\src\PsalmError\PsalmResult;
 
 class FuzzableActionSelector
