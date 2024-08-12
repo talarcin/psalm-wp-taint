@@ -6,12 +6,25 @@ use Tuncay\PsalmWpTaint\src\PsalmError\PsalmError;
 use Tuncay\PsalmWpTaint\src\PsalmError\PsalmErrorCollection;
 use Tuncay\PsalmWpTaint\src\PsalmError\PsalmPluginResult;
 
+/**
+ * @author Tuncay Alarcin
+ */
 class PsalmOutputParser
 {
     public function __construct()
     {
     }
 
+	/**
+	 * Parses the given output of a psalm taint analysis and builds a PsalmPluginResult object.
+	 *
+	 * Separates the given output in error messages and parses each individually to build a list of errors
+	 * and then build the PsalmPluginResult.
+	 *
+	 * @param array $output
+	 *
+	 * @return PsalmPluginResult|bool
+	 */
     public function parsePsalmOutput(array $output): PsalmPluginResult|bool
     {
         if ($this->hasNoErrors($output)) return false;

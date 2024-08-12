@@ -1,125 +1,155 @@
 <?php
 
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace Tuncay\PsalmWpTaint\src;
 
 use Tuncay\PsalmWpTaint\src\PsalmError\PsalmResult;
 
-class FuzzableActionSelector
-{
-  private array $fuzzableActions;
-  private array $addActionsMap;
-  private PsalmResult $psalmResult;
-  private array $interestingFilenames;
-  private array $interestingLineNumbers;
-  private array $interestingCallbackFunctions;
+/**
+ * @author Tuncay Alarcin
+ */
+class FuzzableActionSelector {
+	private array $fuzzableActions;
+	private array $addActionsMap;
+	private PsalmResult $psalmResult;
+	private array $interestingFilenames;
+	private array $interestingLineNumbers;
+	private array $interestingCallbackFunctions;
 
-  public function __construct(array $addActionsMap, PsalmResult $psalmResult)
-  {
-    $this->addActionsMap = $addActionsMap;
-    $this->psalmResult = $psalmResult;
-    $this->fuzzableActions = [];
-    $this->interestingFilenames = [];
-    $this->interestingCallbackFunctions = [];
-    $this->getInterestingFileNamesFromPsalmResult();
-  }
+	public function __construct( array $addActionsMap, PsalmResult $psalmResult ) {
+		$this->addActionsMap                = $addActionsMap;
+		$this->psalmResult                  = $psalmResult;
+		$this->fuzzableActions              = [];
+		$this->interestingFilenames         = [];
+		$this->interestingCallbackFunctions = [];
+		$this->getInterestingFileNamesFromPsalmResult();
+	}
 
-  public function selectActionsToFuzz(string $dirPath): bool
-  {
-    if (!$this->scanFilesForFunctionNames($dirPath)) return false;
+	/**
+	 * Retrieves interesting actions to fuzz from found interesting callbacks.
+	 *
+	 * @param string $dirPath
+	 *
+	 * @return bool
+	 *
+	 * Returns false, when given path is not a directory, and true if everything worked.
+	 */
+	public function selectActionsToFuzz( string $dirPath ): bool {
+		if ( ! $this->scanFilesForFunctionNames( $dirPath ) ) {
+			return false;
+		}
 
-    foreach ($this->addActionsMap as $action => $callbacks) {
+		foreach ( $this->addActionsMap as $action => $callbacks ) {
 
-      foreach ($callbacks as $callback) {
-        if (in_array($callback, $this->interestingCallbackFunctions)) {
-          if (in_array($action, $this->fuzzableActions)) continue;
-          $this->fuzzableActions[] = $action;
-        }
-      }
-    }
+			foreach ( $callbacks as $callback ) {
+				if ( in_array( $callback, $this->interestingCallbackFunctions ) ) {
+					if ( in_array( $action, $this->fuzzableActions ) ) {
+						continue;
+					}
+					$this->fuzzableActions[] = $action;
+				}
+			}
+		}
 
-    return true;
-  }
+		return true;
+	}
 
-  private function scanFilesForFunctionNames(string $dirPath): bool
-  {
-    if (! is_dir($dirPath)) return false;
+	private function scanFilesForFunctionNames( string $dirPath ): bool {
+		if ( ! is_dir( $dirPath ) ) {
+			return false;
+		}
 
-    $phpFilesInTargetDir = Util::scanDirForPHPFiles($dirPath);
+		$phpFilesInTargetDir = Util::scanDirForPHPFiles( $dirPath );
 
-    foreach ($phpFilesInTargetDir as $filepath) {
-      $filename = $this->getPHPFileNameFromPath($filepath);
-      $matchingKeys = array_keys($this->interestingFilenames, $filename);
+		foreach ( $phpFilesInTargetDir as $filepath ) {
+			$filename     = $this->getPHPFileNameFromPath( $filepath );
+			$matchingKeys = array_keys( $this->interestingFilenames, $filename );
 
-      if (count($matchingKeys) == 0) continue;
+			if ( count( $matchingKeys ) == 0 ) {
+				continue;
+			}
 
-      foreach ($matchingKeys as $key) {
-        $startingIndex = $this->interestingLineNumbers[$key] - 1;
-        $lines = file($filepath);
-        $funcName = "";
+			foreach ( $matchingKeys as $key ) {
+				$startingIndex = $this->interestingLineNumbers[ $key ] - 1;
+				$lines         = file( $filepath );
+				$funcName      = "";
 
-        for ($i = $startingIndex; $i >= 0; $i--) {
-          $trimmedLine = trim($lines[$i]);
-          if (!str_contains($trimmedLine, "function")) continue;
+				for ( $i = $startingIndex; $i >= 0; $i -- ) {
+					$trimmedLine = trim( $lines[ $i ] );
+					if ( ! str_contains( $trimmedLine, "function" ) ) {
+						continue;
+					}
 
-          $funcDeclarationParts = explode(" ", $trimmedLine);
+					$funcDeclarationParts = explode( " ", $trimmedLine );
 
-          if ($funcDeclarationParts[0] != "function") {
-            $funcName = $funcDeclarationParts[2];
-          } else {
-            $funcName = $funcDeclarationParts[1];
-          }
+					if ( $funcDeclarationParts[0] != "function" ) {
+						$funcName = $funcDeclarationParts[2];
+					} else {
+						$funcName = $funcDeclarationParts[1];
+					}
 
-          $funcName = str_contains($funcName, "(") ? explode("(", $funcName)[0] : $funcName;
-          $this->interestingCallbackFunctions[] = $funcName;
+					$funcName                             = str_contains( $funcName, "(" ) ? explode( "(", $funcName )[0] : $funcName;
+					$this->interestingCallbackFunctions[] = $funcName;
 
-          break;
-        }
-      }
-    }
+					break;
+				}
+			}
+		}
 
-    return true;
-  }
+		return true;
+	}
 
-  public function writeFuzzableActionsToFile(string $filename): bool
-  {
-    $fileContentAsJson = json_encode($this->fuzzableActions);
-    file_put_contents($filename . ".json", $fileContentAsJson);
+	/**
+	 * Writes actions to fuzz to a .json file at given filepath with given name.
+	 *
+	 * @param string $filename
+	 *
+	 * @return bool
+	 */
+	public function writeFuzzableActionsToFile( string $filename ): bool {
+		$fileContentAsJson = json_encode( $this->fuzzableActions );
+		file_put_contents( $filename . ".json", $fileContentAsJson );
 
-    return true;
-  }
+		return true;
+	}
 
-  public function getFuzzableActions(): array
-  {
-    return $this->fuzzableActions;
-  }
+	/**
+	 * Retrieves the list of actions to fuzz.
+	 *
+	 * @return array
+	 */
+	public function getFuzzableActions(): array {
+		return $this->fuzzableActions;
+	}
 
-  private function getInterestingFileNamesFromPsalmResult(): void
-  {
-    foreach ($this->psalmResult->getResults() as $pluginResult) {
-      $pluginErrors = $pluginResult->psalmErrors;
+	private function getInterestingFileNamesFromPsalmResult(): void {
+		foreach ( $this->psalmResult->getResults() as $pluginResult ) {
+			$pluginErrors = $pluginResult->psalmErrors;
 
-      foreach ($pluginErrors as $error) {
-        if ($error->errorType != "TaintedHtml") continue;
+			foreach ( $pluginErrors as $error ) {
+				if ( $error->errorType != "TaintedHtml" ) {
+					continue;
+				}
 
-        $tmp = explode("/", $error->errorMessage[1]["id"]);
-        $tmp = explode(":", array_pop($tmp));
-        $filename = $tmp[0];
-        $lineNumber = $tmp[1];
+				$tmp        = explode( "/", $error->errorMessage[1]["id"] );
+				$tmp        = explode( ":", array_pop( $tmp ) );
+				$filename   = $tmp[0];
+				$lineNumber = $tmp[1];
 
-        $this->interestingFilenames[] = $filename;
-        $this->interestingLineNumbers[] = intval($lineNumber);
-      }
-    }
-  }
+				$this->interestingFilenames[]   = $filename;
+				$this->interestingLineNumbers[] = intval( $lineNumber );
+			}
+		}
+	}
 
-  private function getPHPFileNameFromPath(string $filepath): string|false
-  {
-    if (!str_ends_with($filepath, ".php")) return false;
+	private function getPHPFileNameFromPath( string $filepath ): string|false {
+		if ( ! str_ends_with( $filepath, ".php" ) ) {
+			return false;
+		}
 
-    $filename = array_pop(explode("/", $filepath));
+		$tmp = explode( "/", $filepath );
 
-    return $filename;
-  }
+		return array_pop( $tmp );
+	}
 }

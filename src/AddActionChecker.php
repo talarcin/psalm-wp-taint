@@ -7,12 +7,11 @@ namespace Tuncay\PsalmWpTaint\src;
 use Psalm\Plugin\EventHandler\AfterExpressionAnalysisInterface;
 use Psalm\Plugin\EventHandler\Event\AfterExpressionAnalysisEvent;
 
+/**
+ * @author Tuncay Alarcin
+ */
 class AddActionChecker implements AfterExpressionAnalysisInterface
 {
-    /**
-     * @param AfterExpressionAnalysisEvent $event
-     * @return bool|null
-     */
     public static function afterExpressionAnalysis(AfterExpressionAnalysisEvent $event): ?bool
     {
         $expr = $event->getExpr();

@@ -4,6 +4,9 @@ namespace Tuncay\PsalmWpTaint\src;
 
 use Tuncay\PsalmWpTaint\src\PsalmError\PsalmResult;
 
+/**
+ * @author Tuncay Alarcin
+ */
 class PsalmAnalysisOutputHandler
 {
 
@@ -11,6 +14,17 @@ class PsalmAnalysisOutputHandler
     {
     }
 
+	/**
+	 * Builds a PsalmResult object from given psalm taint analysis output.
+	 *
+	 * Orchestrates the parsing via PsalmOutputParser and handles the correct
+	 * order of parsing the output.
+	 *
+	 * @param PsalmOutputParser $outputParser
+	 * @param array $outputs
+	 *
+	 * @return PsalmResult
+	 */
     public function handle(PsalmOutputParser $outputParser, array $outputs): PsalmResult
     {
 		$results = new PsalmResult();

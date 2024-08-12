@@ -9,6 +9,9 @@ use PhpParser\NodeTraverser;
 use PhpParser\ParserFactory;
 use PhpParser\PrettyPrinter\Standard;
 
+/**
+ * @author Tuncay Alarcin
+ */
 class FunctionBodyGetter
 {
     private array $functionStmts = [];
@@ -21,26 +24,44 @@ class FunctionBodyGetter
         }
     }
 
+	/**
+	 * Adds the given function statement to the list of function statements.
+	 *
+	 * @param Function_|ClassMethod $function
+	 *
+	 * @return void
+	 */
     public function addFunctionStmt(Function_|ClassMethod $function): void
     {
         $this->functionStmts[] = $function;
     }
 
+	/**
+	 * Retrieves the list of function statements.
+	 *
+	 * @return array
+	 */
     public function getFunctionStmts(): array
     {
         return $this->functionStmts;
     }
 
+	/**
+	 * Retrieves the list of the found function names.
+	 *
+	 * @return array
+	 */
     public function getFunctionNames(): array
     {
         return $this->functionNames;
     }
 
 	/**
+	 * Filters function bodies from file at given filepath matching the found function names.
+	 *
 	 * @param string $filepath
 	 *
 	 * @return bool
-	 * Return true when parsing worked, else false
 	 */
     public function filterMatchingFunctionBodiesFromFile(string $filepath): bool
     {
@@ -56,12 +77,26 @@ class FunctionBodyGetter
 		return true;
     }
 
+	/**
+	 * Writes found function statements to file at given path.
+	 *
+	 * @param string $filepath
+	 *
+	 * @return void
+	 */
     public function writeFunctionStmtsToFile(string $filepath): void
     {
         $prettyPrinter = new Standard();
         file_put_contents($filepath, $prettyPrinter->prettyPrintFile($this->functionStmts));
     }
 
+	/**
+	 * Checks if given function name matches any of the found function names.
+	 *
+	 * @param string $functionName
+	 *
+	 * @return bool
+	 */
     public function isMatchingFunctionName(string $functionName): bool
     {
         return in_array($functionName, $this->functionNames);

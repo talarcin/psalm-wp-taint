@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace Tuncay\PsalmWpTaint\src;
 
@@ -10,123 +10,135 @@ use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Scalar\String_;
 
-class AddActionParser
-{
-    protected static $instance;
-    public array $foundExpressions = [];
-    protected array $actionsMap = [];
+/**
+ * @author Tuncay Alarcin
+ */
+class AddActionParser {
+	protected static $instance;
+	public array $foundExpressions = [];
+	protected array $actionsMap = [];
 
-    protected function __construct()
-    {
-    }
+	protected function __construct() {
+	}
 
-    protected function __clone()
-    {
-    }
+	protected function __clone() {
+	}
 
-    public function __wakeup()
-    {
-        throw new BadMethodCallException('Cannot unserialize a singleton.');
-    }
+	public function __wakeup() {
+		throw new BadMethodCallException( 'Cannot unserialize a singleton.' );
+	}
 
-    public static function getInstance(): AddActionParser
-    {
-        if (self::$instance === null) {
-            self::$instance = new AddActionParser();
-        }
+	/**
+	 * Retrieves singleton instance of AddActionParser.
+	 *
+	 * @return AddActionParser
+	 */
+	public static function getInstance(): AddActionParser {
+		if ( self::$instance === null ) {
+			self::$instance = new AddActionParser();
+		}
 
-        return self::$instance;
-    }
+		return self::$instance;
+	}
 
-    /**
-     * @param Expr $expr
-     * @return bool
-     */
-    public function isAddAction(Expr $expr): bool
-    {
-        return $expr instanceof FuncCall && $expr->name == 'add_action';
-    }
+	/**
+	 * Checks whether given expression is a function call of function add_action().
+	 *
+	 * @param Expr $expr
+	 *
+	 * @return bool
+	 */
+	public function isAddAction( Expr $expr ): bool {
+		return $expr instanceof FuncCall && $expr->name == 'add_action';
+	}
 
-    public function addExpression(Expr $expr): void
-    {
-        if (!in_array($expr, $this->foundExpressions)) {
-            $this->foundExpressions[] = $expr;
-        }
-    }
+	public function addExpression( Expr $expr ): void {
+		if ( ! in_array( $expr, $this->foundExpressions ) ) {
+			$this->foundExpressions[] = $expr;
+		}
+	}
 
-    /**
-     * @return void
-     */
-    public function parseFoundExpressions(): void
-    {
-        foreach ($this->foundExpressions as $expr) {
-            $args = $this->getArgs($expr);
-            if (!array_key_exists($args["hook"], $this->actionsMap)) {
-                $this->actionsMap[$args["hook"]] = array($args["callback"]);
-            } else {
-                $this->actionsMap[$args["hook"]][] = $args["callback"];
-            }
-        }
-    }
+	/**
+	 * Parses found add_action() expressions.
+	 *
+	 * When called the function retrieves the add_action() function calls arguments and
+	 * adds the given hooks and callback function names to the actionsMap.
+	 *
+	 * @return void
+	 */
+	public function parseFoundExpressions(): void {
+		foreach ( $this->foundExpressions as $expr ) {
+			$args = $this->getArgs( $expr );
+			if ( ! array_key_exists( $args["hook"], $this->actionsMap ) ) {
+				$this->actionsMap[ $args["hook"] ] = array( $args["callback"] );
+			} else {
+				$this->actionsMap[ $args["hook"] ][] = $args["callback"];
+			}
+		}
+	}
 
-    /**
-     * @param string $filepath
-     * @return void
-     */
-    public function writeActionsMapToFile(string $filepath): void
-    {
-        file_put_contents($filepath, json_encode($this->actionsMap));
-    }
+	/**
+	 * Writes the actionsMap to a .json file at given filepath.
+	 *
+	 * @param string $filepath
+	 *
+	 * @return void
+	 */
+	public function writeActionsMapToFile( string $filepath ): void {
+		file_put_contents( $filepath, json_encode( $this->actionsMap ) );
+	}
 
-    /**
-     * @param string $filepath
-     * @return void
-     */
-    public function readActionsMapFromFile(string $filepath): void
-    {
-        if (!file_exists($filepath)) {
-            return;
-        }
+	/**
+	 * Tries to read a .json file at the given filepath and decodes it to the actionsMap.
+	 *
+	 * @param string $filepath
+	 *
+	 * @return void
+	 */
+	public function readActionsMapFromFile( string $filepath ): void {
+		if ( ! file_exists( $filepath ) ) {
+			return;
+		}
 
-        $file = file_get_contents($filepath);
-        if ($file == null) {
-            return;
-        }
+		$file = file_get_contents( $filepath );
+		if ( $file == null ) {
+			return;
+		}
 
-        $this->actionsMap = json_decode($file, true);
-    }
+		$this->actionsMap = json_decode( $file, true );
+	}
 
-    /**
-     * @return array
-     */
-    public function getActionsMap(): array
-    {
-        return $this->actionsMap;
-    }
+	/**
+	 * Retrieves the actionsMap.
+	 *
+	 * @return array
+	 */
+	public function getActionsMap(): array {
+		return $this->actionsMap;
+	}
 
-    public function removeActionsMap(): void
-    {
-        $this->actionsMap = [];
-    }
+	/**
+	 * Clears the actionsMap.
+	 *
+	 * @return void
+	 */
+	public function removeActionsMap(): void {
+		$this->actionsMap = [];
+	}
 
-    /**
-     * @param Expr $expr
-     * @return array
-     */
-    private function getArgs(Expr $expr): array
-    {
-        $args = array("hook" => "", "callback" => "");
+	private function getArgs( Expr $expr ): array {
+		$args = array( "hook" => "", "callback" => "" );
 
-        foreach ($expr->args as $arg) {
-            if ($arg->value instanceof String_ && $args["hook"] == "") {
-                $args["hook"] = $arg->value->value;
-            } else if ($arg->value instanceof String_ && $args["callback"] == "") {
-                $args["callback"] = $arg->value->value;
-            } else if ($arg->value instanceof Array_) {
-                $args["callback"] = $arg->value->items[1]->value->value;
-            }
-        }
+		foreach ( $expr->args as $arg ) {
+			if ( $arg->value instanceof String_ && $args["hook"] == "" ) {
+				$args["hook"] = $arg->value->value;
+			} else if ( $arg->value instanceof String_ && $args["callback"] == "" ) {
+				$args["callback"] = $arg->value->value;
+			} else if ( $arg->value instanceof Array_ ) {
+				$args["callback"] = $arg->value->items[1]->value->value;
+			}
+		}
 
-        return $args;
-    }
+		return $args;
+	}
 }
