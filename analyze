@@ -5,138 +5,124 @@ namespace PsalmWpTaint;
 
 require_once "./vendor/autoload.php";
 
+use AnalyzeCommand;
+use PsalmWpTaintAnalysis;
 use Tuncay\PsalmWpTaint\src\FunctionBodyGetter;
+use Tuncay\PsalmWpTaint\src\FuzzableActionSelector;
 use Tuncay\PsalmWpTaint\src\PsalmAnalysisOutputHandler;
 use Tuncay\PsalmWpTaint\src\PsalmOutputParser;
 use Tuncay\PsalmWpTaint\src\Util;
 
-$noInstall = false;
-$noAnalysis = false;
+$command = new AnalyzeCommand();
+$command->parse($argv);
+
+PsalmWpTaintAnalysis::run($command);
 
 // Checking for current dir
 if (str_contains(__DIR__, '')) {
-    chdir("./");
-}
-
-// Checking for correct arguments
-if ($argv[1] == "-help" || $argv[1] == "-h") {
-    print_r("Usage:\n");
-    print_r("analyze -plugin_list ./absolute/path/to/file/with/plugins/list.csv -output <output-file-name> (optional) \n");
-    print_r("The plugin list should be a .csv file with the first column being the plugin name slugs and the second being the plugin versions.\n");
-    exit();
-}
-
-if ($argv[1] == "-no-install") {
-    $noInstall = true;
-}
-
-if ($argv[2] == "-no-analysis") {
-    $noAnalysis = true;
-}
-
-if (($argc != 3 && $argc != 5) && !$noInstall && !$noAnalysis) {
-    print_r("Invalid number of options. Use --help or -h to show list of options.\n");
-    exit();
+  chdir("./");
 }
 
 // Correct number of arguments and names
-if ($argv[1] == "-plugin-list" || $noInstall) {
-    $filepath = $argv[2];
-    $outputFileName = ($argv[3] == "-output" && $argv[4] != "") ? $argv[4] : "out";
+if ($command->plugin_csv_list != "" || $command->noInstall) {
+  $filepath = $argv[2];
+  $outputFileName = ($argv[3] == "-output" && $argv[4] != "") ? $argv[4] : "out";
 
-    if (!$noInstall) {
-        // Checking for correct filepaths for csv files
-        if (is_dir($filepath)) {
-            print_r("Path \"$filepath\" leads to a directory. Please input a path leading to the correct csv file.\n");
-            exit();
-        }
-
-        if (!file_exists($filepath) || !str_ends_with($filepath, ".csv")) {
-            print_r("File \"$filepath\" not found or not a .csv file.\n");
-            exit();
-        }
-
-        if (file_get_contents($filepath) == null) {
-            print_r("No data found in $filepath.\n");
-            exit();
-        }
-
-        // Installing plugins via wp cli
-        foreach (file($filepath) as $line) {
-            print_r("----------------------------------------\n");
-            [$plugin_slug, $plugin_version] = explode(",", $line);
-
-            if (is_dir("./wp-content/plugins/$plugin_slug/")) {
-                print_r("Plugin \"$plugin_slug\" already installed. Skipping installation.\n");
-                continue;
-            }
-
-            print_r("Installing plugin:\n \"$plugin_slug (v$plugin_version) \" ...\n");
-            exec("ddev wp plugin install $plugin_slug --version=$plugin_version");
-        }
-        print_r("Plugins installed successfully.\n");
-        print_r("----------------------------------------\n");
+  if (!$noInstall) {
+    // Checking for correct filepaths for csv files
+    if (is_dir($filepath)) {
+      print_r("Path \"$filepath\" leads to a directory. Please input a path leading to the correct csv file.\n");
+      exit();
     }
-    if (!$noAnalysis) {
-        // Check for correct psalm config
-        if (!file_exists("./psalm.xml")) {
-            print_r("File \"psalm.xml\" not found. Please make sure psalm is setup correctly.\n");
-            exit();
-        }
 
-        print_r("File \"psalm.xml\" found.\n");
-        print_r("Getting installed plugins ...\n");
-        // TODO: make directory with plugins a dynamic input value by user
-        $installedPlugins = Util::getDirsIn("./wp-content/plugins");
-        print_r("Found " . count($installedPlugins) . " plugins.\n");
-
-        $outputs = [];
-
-        // Run psalm taint analysis on each plugin separately
-        foreach ($installedPlugins as $pluginPath) {
-            if (str_ends_with($pluginPath, "~")) {
-                continue;
-            }
-            // Running psalm for plugin $plugin_path
-            print_r("----------------------------------------\n");
-            print_r("Running psalm's taint analysis on $pluginPath ...\n");
-            Util::changePsalmProjectDir($pluginPath, "./psalm.xml");
-            $plugin_slug = explode("/", $pluginPath)[3];
-            $output = [];
-            exec("./vendor/bin/psalm --taint-analysis", $output);
-
-            $outputs[$plugin_slug] = $output;
-        }
-
-        $outputHandler = new PsalmAnalysisOutputHandler();
-        $analysisResults = $outputHandler->handle(new PsalmOutputParser(), $outputs);
-
-
-        if (!is_dir("./psalm-result/")) {
-            mkdir("./psalm-result/");
-        }
-        if (!file_exists("./psalm-result/$outputFileName.json")) {
-            fopen("./psalm-result/$outputFileName.json", "w");
-        } else {
-            $file = fopen("./psalm-result/$outputFileName.json", "w");
-            fwrite($file, "");
-            fclose($file);
-        }
-        file_put_contents("./psalm-result/$outputFileName.json", json_encode($analysisResults, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-        print_r("----------------------------------------\n");
-        print_r("Analysis results saved to \"./psalm-result/$outputFileName.json\".\n");
+    if (!file_exists($filepath) || !str_ends_with($filepath, ".csv")) {
+      print_r("File \"$filepath\" not found or not a .csv file.\n");
+      exit();
     }
-    if ($noAnalysis) {
-        $actionsMap = (array)json_decode(file_get_contents("./add-actions-map.json"));
-        $functionBodyGetter = new FunctionBodyGetter($actionsMap);
-        $files = Util::scanDirForPHPFiles("./wp-content/plugins/");
 
-        foreach ($files as $file) {
-            $functionBodyGetter->filterMatchingFunctionBodiesFromFile($file);
-        }
+    if (file_get_contents($filepath) == null) {
+      print_r("No data found in $filepath.\n");
+      exit();
+    }
 
-        $functionBodyGetter->writeFunctionStmtsToFile("./psalm-result/matched-functions.php");
+    // Installing plugins via wp cli
+    foreach (file($filepath) as $line) {
+      print_r("----------------------------------------\n");
+      [$plugin_slug, $plugin_version] = explode(",", $line);
+
+      if (is_dir("./wp-content/plugins/$plugin_slug/")) {
+        print_r("Plugin \"$plugin_slug\" already installed. Skipping installation.\n");
+        continue;
+      }
+
+      print_r("Installing plugin:\n \"$plugin_slug (v$plugin_version) \" ...\n");
+      exec("ddev wp plugin install $plugin_slug --version=$plugin_version");
+    }
+    print_r("Plugins installed successfully.\n");
+    print_r("----------------------------------------\n");
+  }
+  if (!$noAnalysis) {
+    // Check for correct psalm config
+    if (!file_exists("./psalm.xml")) {
+      print_r("File \"psalm.xml\" not found. Please make sure psalm is setup correctly.\n");
+      exit();
+    }
+
+    print_r("File \"psalm.xml\" found.\n");
+    print_r("Getting installed plugins ...\n");
+    // TODO: make directory with plugins a dynamic input value by user
+    $installedPlugins = Util::getDirsIn("./wp-content/plugins");
+    print_r("Found " . count($installedPlugins) . " plugins.\n");
+
+    $outputs = [];
+
+    // Run psalm taint analysis on each plugin separately
+    foreach ($installedPlugins as $pluginPath) {
+      if (str_ends_with($pluginPath, "~")) {
+        continue;
+      }
+      // Running psalm for plugin $pluginPath
+      print_r("----------------------------------------\n");
+      print_r("Running psalm's taint analysis on $pluginPath ...\n");
+      Util::changePsalmProjectDir($pluginPath, "./psalm.xml");
+      $plugin_slug = explode("/", $pluginPath)[3];
+      $output = [];
+      exec("./vendor/bin/psalm --taint-analysis", $output);
+
+      $outputs[$plugin_slug] = $output;
+    }
+
+    $outputHandler = new PsalmAnalysisOutputHandler();
+    $analysisResults = $outputHandler->handle(new PsalmOutputParser(), $outputs);
+    $addActionsMap = (array)json_decode(file_get_contents("./add-actions-map.json"));
+    $fuzzableActionSelector = new FuzzableActionSelector($addActionsMap, $analysisResults);
+
+
+    if (!is_dir("./psalm-result/")) {
+      mkdir("./psalm-result/");
+    }
+    if (!file_exists("./psalm-result/$outputFileName.json")) {
+      fopen("./psalm-result/$outputFileName.json", "w");
     } else {
-        print_r("Invalid command! Check for usage with --help or -h.\n");
+      $file = fopen("./psalm-result/$outputFileName.json", "w");
+      fwrite($file, "");
+      fclose($file);
     }
+    file_put_contents("./psalm-result/$outputFileName.json", json_encode($analysisResults, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+    print_r("----------------------------------------\n");
+    print_r("Analysis results saved to \"./psalm-result/$outputFileName.json\".\n");
+  }
+  if ($noAnalysis) {
+    $actionsMap = (array)json_decode(file_get_contents("./add-actions-map.json"));
+    $functionBodyGetter = new FunctionBodyGetter($actionsMap);
+    $files = Util::scanDirForPHPFiles("./wp-content/plugins/");
+
+    foreach ($files as $file) {
+      $functionBodyGetter->filterMatchingFunctionBodiesFromFile($file);
+    }
+
+    $functionBodyGetter->writeFunctionStmtsToFile("./psalm-result/matched-functions.php");
+  } else {
+    print_r("Invalid command! Check for usage with --help or -h.\n");
+  }
 }
