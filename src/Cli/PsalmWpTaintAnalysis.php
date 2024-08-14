@@ -2,7 +2,6 @@
 
 namespace Tuncay\PsalmWpTaint\src\Cli;
 
-use RunAnalyzeCommand;
 use Tuncay\PsalmWpTaint\src\PsalmAnalysisOutputHandler;
 use Tuncay\PsalmWpTaint\src\PsalmOutputParser;
 use Tuncay\PsalmWpTaint\src\Util;
@@ -18,11 +17,11 @@ final class PsalmWpTaintAnalysis {
 
 		$pluginsDir = $command->pluginsDirectory != '' ? $command->pluginsDirectory : "./wp-content/plugins/";
 
-		if ( ! $command->noInstall && $command->pluginCsvList ) {
+		if ( $command->install && $command->pluginCsvList ) {
 			self::installPlugins( file( $command->pluginCsvList ), $pluginsDir );
 		}
 
-		if ( ! $command->noAnalysis ) {
+		if ( $command->analyze ) {
 			if ( ! self::checkPsalmXMLFile() ) {
 				return;
 			}
@@ -41,7 +40,7 @@ final class PsalmWpTaintAnalysis {
 			$addActionsMap          = (array) json_decode( file_get_contents( "./add_actions_map.json" ) );
 			$fuzzableActionSelector = new FuzzableActionSelector( $addActionsMap, $analysisResults );
 			$fuzzableActionSelector->selectActionsToFuzz( $pluginsDir );
-			self::saveResults($analysisResults, $fuzzableActionSelector, $command->outputFilename);
+			self::saveResults( $analysisResults, $fuzzableActionSelector, $command->outputFilename );
 		}
 	}
 
