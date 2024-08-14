@@ -18,7 +18,7 @@ class RunAnalyzeCommand extends Command
       ->option('-i --noInstall', 'Skips installation of plugins from .csv file')
       ->option('-a --noAnalyze', 'Skips analysis of plugins')
       ->usage(
-        '<bold> analyze</end> <comment>--no-install --no-analyze <./plugins.csv> <./psalm-result/></end> ## details 1<eol/>' .
+        '<bold> analyze</end> <comment>--noInstall --noAnalyze <./plugins.csv> <./psalm-result/></end> ## details 1<eol/>' .
           '<bold> analyze</end> <comment>-i -a <./data/plugins.csv> <./out/> <./plugins/></end> ## details 2<eol/>'
       );
   }
