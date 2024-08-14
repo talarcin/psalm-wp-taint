@@ -12,11 +12,11 @@ class RunAnalyzeCommand extends Command
     parent::__construct('run', 'Run analyze script');
 
     $this
-      ->argument('<plugin_csv_list>', 'The .csv list containing the plugin slugs and versions of the plugins to install.')
-      ->argument('<output_filename>', 'The absolute path to the output directory.')
+      ->argument('<plugin-csv-list>', 'The .csv list containing the plugin slugs and versions of the plugins to install.')
+      ->argument('<output-filename>', 'The absolute path to the output directory.')
       ->argument('[plugins_directory]', 'Optional argument to set other installation directory of plugins. Default: /wp-content/plugins/')
-      ->option('-i --noInstall', 'Skips installation of plugins from .csv file')
-      ->option('-a --noAnalyze', 'Skips analysis of plugins')
+      ->option('-i --no-install', 'Skips installation of plugins from .csv file')
+      ->option('-a --no-analyze', 'Skips analysis of plugins')
       ->usage(
         '<bold> analyze</end> <comment>--noInstall --noAnalyze <./plugins.csv> <./psalm-result/></end> ## details 1<eol/>' .
           '<bold> analyze</end> <comment>-i -a <./data/plugins.csv> <./out/> <./plugins/></end> ## details 2<eol/>'
