@@ -8,7 +8,7 @@ class AnalyzeCommand extends Command
 
   public function __construct()
   {
-    parent::__construct('analyze', 'Run analyze script');
+    parent::__construct('run', 'Run analyze script');
 
     $this
       ->argument('<plugin_csv_list>', 'The .csv list containing the plugin slugs and versions of the plugins to install.')
@@ -24,9 +24,11 @@ class AnalyzeCommand extends Command
 
   public function parseCommand(array $argv): Parser|false
   {
-    $this->parse($argv);
+    $parser = $this->parse($argv);
 
     if (!$this->checkCorrectCsvFilepath($this->plugin_csv_list)) return false;
+
+    return $parser;
   }
 
   private function checkCorrectCsvFilepath(string $filepath): bool
