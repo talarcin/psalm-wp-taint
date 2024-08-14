@@ -16,7 +16,7 @@ class RunAnalyzeCommand extends Command
       ->argument('<output_filename>', 'The absolute path to the output directory.')
       ->argument('[plugins_directory]', 'Optional argument to set other installation directory of plugins. Default: /wp-content/plugins/')
       ->option('-i --noInstall', 'Skips installation of plugins from .csv file')
-      ->option('-a --noAalyze', 'Skips analysis of plugins')
+      ->option('-a --noAnalyze', 'Skips analysis of plugins')
       ->usage(
         '<bold> analyze</end> <comment>--no-install --no-analyze <./plugins.csv> <./psalm-result/></end> ## details 1<eol/>' .
           '<bold> analyze</end> <comment>-i -a <./data/plugins.csv> <./out/> <./plugins/></end> ## details 2<eol/>'
