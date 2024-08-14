@@ -13,7 +13,7 @@ class RunAnalyzeCommand extends Command
 
     $this
       ->argument('<plugin_csv_list>', 'The .csv list containing the plugin slugs and versions of the plugins to install.')
-      ->argument('<output_directory>', 'The absolute path to the output directory.')
+      ->argument('<output_filename>', 'The absolute path to the output directory.')
       ->argument('[plugins_directory]', 'Optional argument to set other installation directory of plugins. Default: /wp-content/plugins/')
       ->option('-i --noInstall', 'Skips installation of plugins from .csv file')
       ->option('-a --noAalyze', 'Skips analysis of plugins')

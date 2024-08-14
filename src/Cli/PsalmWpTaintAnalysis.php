@@ -41,6 +41,7 @@ final class PsalmWpTaintAnalysis {
 			$addActionsMap          = (array) json_decode( file_get_contents( "./add_actions_map.json" ) );
 			$fuzzableActionSelector = new FuzzableActionSelector( $addActionsMap, $analysisResults );
 			$fuzzableActionSelector->selectActionsToFuzz( $pluginsDir );
+			self::saveResults($analysisResults, $fuzzableActionSelector, $command->output_filename);
 		}
 	}
 
@@ -82,7 +83,7 @@ final class PsalmWpTaintAnalysis {
 		}
 	}
 
-	private static function saveResults( PsalmResult $psalmResult, FuzzableActionSelector $fuzzableActionSelector, string $outputFilename ) {
+	private static function saveResults( PsalmResult $psalmResult, FuzzableActionSelector $fuzzableActionSelector, string $outputFilename ): void {
 		if ( ! is_dir( "./psalm-result/" ) ) {
 			mkdir( "./psalm-result/" );
 		}
