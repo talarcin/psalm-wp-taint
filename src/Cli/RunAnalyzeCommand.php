@@ -27,6 +27,8 @@ class RunAnalyzeCommand extends Command
   {
     $parser = $this->parse($argv);
 
+	print_r($parser->values());
+
     if (!$this->checkCorrectCsvFilepath($this->plugin_csv_list)) return false;
 
     return $parser;
