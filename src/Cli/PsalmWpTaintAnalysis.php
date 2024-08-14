@@ -16,10 +16,10 @@ final class PsalmWpTaintAnalysis {
 			chdir( "./" );
 		}
 
-		$pluginsDir = $command->plugins_directory != '' ? $command->plugins_directory : "./wp-content/plugins/";
+		$pluginsDir = $command->pluginsDirectory != '' ? $command->pluginsDirectory : "./wp-content/plugins/";
 
-		if ( ! $command->noInstall && $command->plugin_csv_list ) {
-			self::installPlugins( file( $command->plugin_csv_list ), $pluginsDir );
+		if ( ! $command->noInstall && $command->pluginCsvList ) {
+			self::installPlugins( file( $command->pluginCsvList ), $pluginsDir );
 		}
 
 		if ( ! $command->noAnalysis ) {
@@ -41,7 +41,7 @@ final class PsalmWpTaintAnalysis {
 			$addActionsMap          = (array) json_decode( file_get_contents( "./add_actions_map.json" ) );
 			$fuzzableActionSelector = new FuzzableActionSelector( $addActionsMap, $analysisResults );
 			$fuzzableActionSelector->selectActionsToFuzz( $pluginsDir );
-			self::saveResults($analysisResults, $fuzzableActionSelector, $command->output_filename);
+			self::saveResults($analysisResults, $fuzzableActionSelector, $command->outputFilename);
 		}
 	}
 
