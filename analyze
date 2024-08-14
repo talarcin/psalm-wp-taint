@@ -1,16 +1,19 @@
 #!/usr/bin/env php
 <?php
 
-namespace PsalmWpTaint;
+namespace Tuncay\PsalmWpTaint;
 
 require_once "./vendor/autoload.php";
 
-use AnalyzeCommand;
-use PsalmWpTaintAnalysis;
 
-$command = new AnalyzeCommand();
-$commandCorrect = $command->parseCommand($argv);
+use Tuncay\PsalmWpTaint\src\Cli\PsalmWpTaintAnalysis;
+use Tuncay\PsalmWpTaint\src\Cli\RunAnalyzeCommand;
 
-if (!$commandCorrect) exit();
+$command        = new RunAnalyzeCommand();
+$commandCorrect = $command->parseCommand( $argv );
 
-PsalmWpTaintAnalysis::run($command);
+if ( ! $commandCorrect ) {
+	exit();
+}
+
+PsalmWpTaintAnalysis::run( $command );

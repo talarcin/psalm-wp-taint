@@ -1,9 +1,10 @@
 <?php
+namespace Tuncay\PsalmWpTaint\src\Cli;
 
 use Ahc\Cli\Input\Command;
 use Ahc\Cli\Input\Parser;
 
-class AnalyzeCommand extends Command
+class RunAnalyzeCommand extends Command
 {
 
   public function __construct()
