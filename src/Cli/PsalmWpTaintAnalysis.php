@@ -33,6 +33,7 @@ final class PsalmWpTaintAnalysis {
 			$installedPlugins = Util::getDirsIn( $pluginsDir );
 			print_r( "Found " . count( $installedPlugins ) . " plugins in $pluginsDir.\n" );
 			$outputs = self::runPsalmAnalysisOnAllFoundPlugins( $installedPlugins );
+			print_r( $outputs );
 
 			$outputHandler          = new PsalmAnalysisOutputHandler();
 			$analysisResults        = $outputHandler->handle( new PsalmOutputParser(), $outputs );

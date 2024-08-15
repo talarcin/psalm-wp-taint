@@ -16,6 +16,7 @@ class FuzzableActionSelector {
 	private array $interestingFilenames;
 	private array $interestingLineNumbers;
 	private array $interestingCallbackFunctions;
+	private const array INTERESTING_TAINT_ERRORS = [ "TaintedHtml" ];
 
 	public function __construct( array $addActionsMap, PsalmResult $psalmResult ) {
 		$this->addActionsMap                = $addActionsMap;
@@ -40,12 +41,6 @@ class FuzzableActionSelector {
 		if ( ! $this->scanFilesForFunctionNames( $dirPath ) ) {
 			return false;
 		}
-
-		print_r( "Found filenames and lineno:\n" );
-		print_r( $this->interestingFilenames );
-		print_r( PHP_EOL );
-		print_r( $this->interestingLineNumbers );
-		print_r( $this->addActionsMap );
 
 		foreach ( $this->addActionsMap as $action => $callbacks ) {
 
@@ -135,7 +130,7 @@ class FuzzableActionSelector {
 			$pluginErrors = $pluginResult->psalmErrors;
 
 			foreach ( $pluginErrors as $error ) {
-				if ( $error->errorType != "TaintedHtml" ) {
+				if ($error->errorType != "TaintedHtml") {
 					continue;
 				}
 

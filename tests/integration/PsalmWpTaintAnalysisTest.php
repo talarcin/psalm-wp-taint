@@ -33,6 +33,9 @@ class PsalmWpTaintAnalysisTest extends TestCase {
 
 		PsalmWpTaintAnalysis::run( $command );
 
+		$expectedFuzzableActions = [ "admin_post_tainted", "admin_post_tainted_two" ];
+		$actual                  = json_decode( file_get_contents( "./psalm-result/actions_to_fuzz-output.json" ) );
 
+		$this->assertSame( $expectedFuzzableActions, $actual );
 	}
 }
