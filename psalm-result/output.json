@@ -1,0 +1,66 @@
+{
+    "total": 1,
+    "totalTaintedPlugins": 1,
+    "totalNoTaint": 0,
+    "results": {
+        "tainted-plugin": {
+            "count": 3,
+            "errors": [
+                {
+                    "errorType": "TaintedHtml",
+                    "errorPath": "\u001b]8;;file:///home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php#L7\u001b\\tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7\u001b[0m\u001b]8;;\u001b\\",
+                    "errorMessage": [
+                        {
+                            "id": "$_POST",
+                            "stmt": "<no known location>"
+                        },
+                        {
+                            "id": "$_POST['tainted'] - \u001b]8;;file:///home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php#L7\u001b\\tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7\u001b[0m\u001b]8;;\u001b\\",
+                            "stmt": "echo $_POST\u001b[0m[\"tainted\"];"
+                        },
+                        {
+                            "id": "call to echo - \u001b]8;;file:///home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php#L7\u001b\\tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7\u001b[0m\u001b]8;;\u001b\\",
+                            "stmt": "echo $_POST[\"tainted\"]\u001b[0m;"
+                        }
+                    ]
+                },
+                {
+                    "errorType": "TaintedTextWithQuotes",
+                    "errorPath": "\u001b]8;;file:///home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php#L7\u001b\\tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7\u001b[0m\u001b]8;;\u001b\\",
+                    "errorMessage": [
+                        {
+                            "id": "$_POST",
+                            "stmt": "<no known location>"
+                        },
+                        {
+                            "id": "$_POST['tainted'] - \u001b]8;;file:///home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php#L7\u001b\\tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7\u001b[0m\u001b]8;;\u001b\\",
+                            "stmt": "echo $_POST\u001b[0m[\"tainted\"];"
+                        },
+                        {
+                            "id": "call to echo - \u001b]8;;file:///home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php#L7\u001b\\tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7\u001b[0m\u001b]8;;\u001b\\",
+                            "stmt": "echo $_POST[\"tainted\"]\u001b[0m;"
+                        }
+                    ]
+                },
+                {
+                    "errorType": "TaintedHtml",
+                    "errorPath": "\u001b]8;;file:///home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php#L11\u001b\\tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:11:11\u001b[0m\u001b]8;;\u001b\\",
+                    "errorMessage": [
+                        {
+                            "id": "$_POST",
+                            "stmt": "<no known location>"
+                        },
+                        {
+                            "id": "$_POST['taintedTwo'] - \u001b]8;;file:///home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php#L11\u001b\\tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:11:11\u001b[0m\u001b]8;;\u001b\\",
+                            "stmt": "print_r( $_POST\u001b[0m[\"taintedTwo\"] );"
+                        },
+                        {
+                            "id": "call to print_r - \u001b]8;;file:///home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php#L11\u001b\\tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:11:11\u001b[0m\u001b]8;;\u001b\\",
+                            "stmt": "print_r( $_POST[\"taintedTwo\"]\u001b[0m );"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

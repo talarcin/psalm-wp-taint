@@ -7,7 +7,7 @@ use Tuncay\PsalmWpTaint\src\Cli\RunAnalyzeCommand;
 
 class RunAnalyzeCommandTest extends TestCase {
 	public function testRunAnalyzeCommandParseCorrectArgs(): void {
-		$args = [ "run", "./tests/res/test.csv", "outputName", "optionalPluginsDir", "-i", "-n" ];
+		$args = [ "run", "outputName", "optionalPluginsDir", "./tests/res/test.csv", "-i", "-n" ];
 
 		$command  = new RunAnalyzeCommand();
 		$actual   = $command->parseCommand( $args );
@@ -15,9 +15,9 @@ class RunAnalyzeCommandTest extends TestCase {
 			"help"             => null,
 			"version"          => "",
 			"verbosity"        => 0,
-			"pluginCsvList"    => "./tests/res/test.csv",
 			"outputFilename"   => "outputName",
 			"pluginsDirectory" => "optionalPluginsDir",
+			"pluginCsvFile"    => "./tests/res/test.csv",
 			"install"          => true,
 			"analyze"          => false,
 		];
@@ -26,13 +26,19 @@ class RunAnalyzeCommandTest extends TestCase {
 	}
 
 	public function testRunAnalyzeCommandParseWrongArgs(): void {
-		$args    = ["run", "./tests/res/", "outputName", "optionalPluginsDir", "-i", "-n" ];
+		$args    = [ "run", "outputName", "optionalPluginsDir", "./tests/res/", "-i", "-n" ];
 		$command = new RunAnalyzeCommand();
 		$actual  = $command->parseCommand( $args );
 
 		$this->assertFalse( $actual );
 
-		$args    = ["run", "./tests/res/test-empt.json", "outputName", "optionalPluginsDir", "-i", "-n" ];
+		$args    = [ "run", "outputName", "optionalPluginsDir", "./tests/res/test-empt.json", "-i", "-n" ];
+		$command = new RunAnalyzeCommand();
+		$actual  = $command->parseCommand( $args );
+
+		$this->assertFalse( $actual );
+
+		$args    = [ "run", "outputName", "optionalPluginsDir", "-i", "-n" ];
 		$command = new RunAnalyzeCommand();
 		$actual  = $command->parseCommand( $args );
 

@@ -12,8 +12,8 @@ class PsalmPluginResult {
 	public PsalmErrorCollection $psalmErrors;
 
 	public function __construct( string $pluginSlug = "", int $count = 1 ) {
-		$this->pluginSlug = $pluginSlug;
-		$this->count = $count;
+		$this->pluginSlug  = $pluginSlug;
+		$this->count       = $count;
 		$this->psalmErrors = new PsalmErrorCollection();
 	}
 
@@ -28,6 +28,10 @@ class PsalmPluginResult {
 		return $this->pluginSlug === $other->pluginSlug
 		       && $this->count === $other->count
 		       && $this->psalmErrorsAreEqual( $other->psalmErrors );
+	}
+
+	public function printAsArray(): array {
+		return [ "count" => $this->count, "errors" => (array) $this->psalmErrors->getIterator() ];
 	}
 
 	private function psalmErrorsAreEqual( PsalmErrorCollection $other ): bool {

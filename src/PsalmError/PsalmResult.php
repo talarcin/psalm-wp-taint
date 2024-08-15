@@ -40,6 +40,21 @@ class PsalmResult {
 		return $this->results;
 	}
 
+	public function printAsArray(): array {
+		$results = [];
+
+		foreach ( $this->results as $result ) {
+			$results[ $result->pluginSlug ] = $result->printAsArray();
+		}
+
+		return [
+			"total"               => $this->total,
+			"totalTaintedPlugins" => $this->totalTaintedPlugins,
+			"totalNoTaint"        => $this->totalNoTaint,
+			"results"             => $results
+		];
+	}
+
 	/**
 	 * Compares if given PsalmResults fields are equal to current PsalmResults.
 	 *

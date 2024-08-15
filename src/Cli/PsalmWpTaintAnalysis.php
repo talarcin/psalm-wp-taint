@@ -7,6 +7,7 @@ use Tuncay\PsalmWpTaint\src\PsalmOutputParser;
 use Tuncay\PsalmWpTaint\src\Util;
 use Tuncay\PsalmWpTaint\src\FuzzableActionSelector;
 use Tuncay\PsalmWpTaint\src\PsalmError\PsalmResult;
+use function WappoVendor\last;
 
 final class PsalmWpTaintAnalysis {
 
@@ -17,8 +18,8 @@ final class PsalmWpTaintAnalysis {
 
 		$pluginsDir = $command->pluginsDirectory != '' ? $command->pluginsDirectory : "./wp-content/plugins/";
 
-		if ( $command->install && $command->pluginCsvList ) {
-			self::installPlugins( file( $command->pluginCsvList ), $pluginsDir );
+		if ( $command->install && $command->pluginCsvFile ) {
+			self::installPlugins( file( $command->pluginCsvFile ), $pluginsDir );
 		}
 
 		if ( $command->analyze ) {
@@ -31,15 +32,14 @@ final class PsalmWpTaintAnalysis {
 
 			$installedPlugins = Util::getDirsIn( $pluginsDir );
 			print_r( "Found " . count( $installedPlugins ) . " plugins in $pluginsDir.\n" );
-
-			$outputs = [];
-			self::runPsalmAnalysisOnAllFoundPlugins( $installedPlugins, $outputs );
+			$outputs = self::runPsalmAnalysisOnAllFoundPlugins( $installedPlugins );
 
 			$outputHandler          = new PsalmAnalysisOutputHandler();
 			$analysisResults        = $outputHandler->handle( new PsalmOutputParser(), $outputs );
-			$addActionsMap          = (array) json_decode( file_get_contents( "./add_actions_map.json" ) );
+			$addActionsMap          = (array) json_decode( file_get_contents( "./add-actions-map.json" ) );
 			$fuzzableActionSelector = new FuzzableActionSelector( $addActionsMap, $analysisResults );
 			$fuzzableActionSelector->selectActionsToFuzz( $pluginsDir );
+
 			self::saveResults( $analysisResults, $fuzzableActionSelector, $command->outputFilename );
 		}
 	}
@@ -63,7 +63,8 @@ final class PsalmWpTaintAnalysis {
 		print_r( "----------------------------------------\n" );
 	}
 
-	private static function runPsalmAnalysisOnAllFoundPlugins( array $pluginDirPaths, array $outputs ): void {
+	private static function runPsalmAnalysisOnAllFoundPlugins( array $pluginDirPaths ): array {
+		$outputs = [];
 		foreach ( $pluginDirPaths as $pluginDirPath ) {
 			if ( str_ends_with( $pluginDirPath, "~" ) ) {
 				continue;
@@ -73,13 +74,16 @@ final class PsalmWpTaintAnalysis {
 			print_r( "Running psalm's taint analysis on $pluginDirPath ...\n" );
 
 			Util::changePsalmProjectDir( $pluginDirPath, "./psalm.xml" );
-			$pluginSlug = explode( "/", $pluginDirPath )[3];
+			$tmp        = explode( "/", $pluginDirPath );
+			$pluginSlug = end( $tmp );
 			$output     = [];
 
 			exec( "./vendor/bin/psalm --taint-analysis", $output );
 
 			$outputs[ $pluginSlug ] = $output;
 		}
+
+		return $outputs;
 	}
 
 	private static function saveResults( PsalmResult $psalmResult, FuzzableActionSelector $fuzzableActionSelector, string $outputFilename ): void {
@@ -95,7 +99,7 @@ final class PsalmWpTaintAnalysis {
 			fclose( $file );
 		}
 
-		file_put_contents( "./psalm-result/$outputFilename.json", json_encode( $psalmResult, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT ) );
+		file_put_contents( "./psalm-result/$outputFilename.json", json_encode( $psalmResult->printAsArray(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT ) );
 		$fuzzableActionSelector->writeFuzzableActionsToFile( "./psalm-result/actions_to_fuzz-$outputFilename" );
 
 		print_r( "----------------------------------------\n" );

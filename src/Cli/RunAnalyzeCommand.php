@@ -11,21 +11,22 @@ class RunAnalyzeCommand extends Command {
 		parent::__construct( 'run', 'Run analyze script' );
 
 		$this
-			->argument( '<plugin-csv-list>', 'The .csv list containing the plugin slugs and versions of the plugins to install.' )
 			->argument( '<output-filename>', 'The absolute path to the output directory.' )
 			->argument( '[plugins-directory]', 'Optional argument to set other installation directory of plugins. Default: /wp-content/plugins/' )
-			->option( '-i --install', 'Skips installation of plugins from .csv file' )
+			->argument( '[plugin-csv-file]', 'The .csv file containing the list of plugin slugs and versions of the plugins to install. Required when install option is used.' )
+			->option( '-i --install', 'Install plugins from .csv file' )
 			->option( '-n --no-analyze', 'Skips analysis of plugins' )
 			->usage(
-				'<bold> analyze</end> <comment>--install --no-analyze <./plugins.csv> <./psalm-result/></end> ## details 1<eol/>' .
-				'<bold> analyze</end> <comment>-i -n <./data/plugins.csv> <./out/> <./plugins/></end> ## details 2<eol/>'
+				'<bold> analyze</end> <comment><./psalm-result/> [./plugins.csv] --install --no-analyze</end> ## details 1<eol/>' .
+				'<bold> analyze</end> <comment><./out/> <./plugins/> -n</end> ## details 2<eol/>' .
+				'<bold> analyze</end> <comment><./out/> [./plugins.csv] [./plugins/] -i -n</end> ## details 3<eol/>'
 			);
 	}
 
 	public function parseCommand( array $argv ): Parser|false {
 		$parser = $this->parse( $argv );
 
-		if ( ! $this->checkCorrectCsvFilepath( $this->pluginCsvList ) ) {
+		if ( $this->install && ( $this->pluginCsvFile == null || ! $this->checkCorrectCsvFilepath( $this->pluginCsvFile ) ) ) {
 			return false;
 		}
 

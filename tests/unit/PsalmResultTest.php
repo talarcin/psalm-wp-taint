@@ -36,4 +36,27 @@ class PsalmResultTest extends TestCase {
 
 		$this->assertFalse( $psalmResultsOne->equals( $psalmResultsTwo ) );
 	}
+
+	public function testPrintResultAsArray(): void {
+		$psalmResult = new PsalmResult();
+		$psalmResult->addResult( new PsalmPluginResult( "test", 2 ) );
+		$psalmResult->addResult( new PsalmPluginResult( "tes", 4 ) );
+		$expected = [
+			"total"               => 0,
+			"totalTaintedPlugins" => 0,
+			"totalNoTaint"        => 0,
+			"results"             => [
+				"test" => [
+					"count"  => 2,
+					"errors" => []
+				],
+				"tes"  => [
+					"count"  => 4,
+					"errors" => []
+				]
+			]
+		];
+
+		$this->assertSame( $expected, $psalmResult->printAsArray() );
+	}
 }
