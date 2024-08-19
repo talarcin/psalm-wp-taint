@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report>
+  <item>
+    <link>https://psalm.dev/245</link>
+    <severity>error</severity>
+    <line_from>7</line_from>
+    <line_to>7</line_to>
+    <type>TaintedHtml</type>
+    <message>Detected tainted HTML</message>
+    <file_name>tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_name>
+    <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_path>
+    <snippet>echo $_POST["tainted"];</snippet>
+    <selected_text>$_POST["tainted"]</selected_text>
+    <from>157</from>
+    <to>174</to>
+    <snippet_from>151</snippet_from>
+    <snippet_to>175</snippet_to>
+    <column_from>7</column_from>
+    <column_to>24</column_to>
+    <shortcode>245</shortcode>
+    <error_level>-2</error_level>
+    <taint_trace>
+      <label>$_POST</label>
+      <entry_path_type></entry_path_type>
+    </taint_trace>
+    <taint_trace>
+      <label>$_POST['tainted']</label>
+      <line_from>7</line_from>
+      <line_to>7</line_to>
+      <file_name>tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_name>
+      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_path>
+      <snippet>echo $_POST["tainted"];</snippet>
+      <from>157</from>
+      <to>163</to>
+      <snippet_from>151</snippet_from>
+      <column_from>7</column_from>
+      <column_to>13</column_to>
+    </taint_trace>
+    <taint_trace>
+      <label>call to echo</label>
+      <line_from>7</line_from>
+      <line_to>7</line_to>
+      <file_name>tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_name>
+      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_path>
+      <snippet>echo $_POST["tainted"];</snippet>
+      <from>157</from>
+      <to>174</to>
+      <snippet_from>151</snippet_from>
+      <column_from>7</column_from>
+      <column_to>24</column_to>
+    </taint_trace>
+    <other_references></other_references>
+  </item>
+  <item>
+    <link>https://psalm.dev/274</link>
+    <severity>error</severity>
+    <line_from>7</line_from>
+    <line_to>7</line_to>
+    <type>TaintedTextWithQuotes</type>
+    <message>Detected tainted text with possible quotes</message>
+    <file_name>tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_name>
+    <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_path>
+    <snippet>echo $_POST["tainted"];</snippet>
+    <selected_text>$_POST["tainted"]</selected_text>
+    <from>157</from>
+    <to>174</to>
+    <snippet_from>151</snippet_from>
+    <snippet_to>175</snippet_to>
+    <column_from>7</column_from>
+    <column_to>24</column_to>
+    <shortcode>274</shortcode>
+    <error_level>-2</error_level>
+    <taint_trace>
+      <label>$_POST</label>
+      <entry_path_type></entry_path_type>
+    </taint_trace>
+    <taint_trace>
+      <label>$_POST['tainted']</label>
+      <line_from>7</line_from>
+      <line_to>7</line_to>
+      <file_name>tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_name>
+      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_path>
+      <snippet>echo $_POST["tainted"];</snippet>
+      <from>157</from>
+      <to>163</to>
+      <snippet_from>151</snippet_from>
+      <column_from>7</column_from>
+      <column_to>13</column_to>
+    </taint_trace>
+    <taint_trace>
+      <label>call to echo</label>
+      <line_from>7</line_from>
+      <line_to>7</line_to>
+      <file_name>tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_name>
+      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_path>
+      <snippet>echo $_POST["tainted"];</snippet>
+      <from>157</from>
+      <to>174</to>
+      <snippet_from>151</snippet_from>
+      <column_from>7</column_from>
+      <column_to>24</column_to>
+    </taint_trace>
+    <other_references></other_references>
+  </item>
+  <item>
+    <link>https://psalm.dev/245</link>
+    <severity>error</severity>
+    <line_from>11</line_from>
+    <line_to>11</line_to>
+    <type>TaintedHtml</type>
+    <message>Detected tainted HTML</message>
+    <file_name>tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_name>
+    <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_path>
+    <snippet>print_r( $_POST["taintedTwo"] );</snippet>
+    <selected_text>$_POST["taintedTwo"]</selected_text>
+    <from>224</from>
+    <to>244</to>
+    <snippet_from>214</snippet_from>
+    <snippet_to>247</snippet_to>
+    <column_from>11</column_from>
+    <column_to>31</column_to>
+    <shortcode>245</shortcode>
+    <error_level>-2</error_level>
+    <taint_trace>
+      <label>$_POST</label>
+      <entry_path_type></entry_path_type>
+    </taint_trace>
+    <taint_trace>
+      <label>$_POST['taintedTwo']</label>
+      <line_from>11</line_from>
+      <line_to>11</line_to>
+      <file_name>tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_name>
+      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_path>
+      <snippet>print_r( $_POST["taintedTwo"] );</snippet>
+      <from>224</from>
+      <to>230</to>
+      <snippet_from>214</snippet_from>
+      <column_from>11</column_from>
+      <column_to>17</column_to>
+    </taint_trace>
+    <taint_trace>
+      <label>call to print_r</label>
+      <line_from>11</line_from>
+      <line_to>11</line_to>
+      <file_name>tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_name>
+      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_path>
+      <snippet>print_r( $_POST["taintedTwo"] );</snippet>
+      <from>224</from>
+      <to>244</to>
+      <snippet_from>214</snippet_from>
+      <column_from>11</column_from>
+      <column_to>31</column_to>
+    </taint_trace>
+    <other_references></other_references>
+  </item>
+</report>

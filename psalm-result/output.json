@@ -8,55 +8,55 @@
             "errors": [
                 {
                     "errorType": "TaintedHtml",
-                    "errorPath": "\u001b]8;;file:///home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php#L7\u001b\\tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7\u001b[0m\u001b]8;;\u001b\\",
+                    "errorPath": "",
                     "errorMessage": [
                         {
-                            "id": "$_POST",
-                            "stmt": "<no known location>"
+                            "id": "at /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7",
+                            "stmt": "Detected tainted HTML (see https://psalm.dev/245)"
                         },
                         {
-                            "id": "$_POST['tainted'] - \u001b]8;;file:///home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php#L7\u001b\\tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7\u001b[0m\u001b]8;;\u001b\\",
-                            "stmt": "echo $_POST\u001b[0m[\"tainted\"];"
+                            "id": "<no known location>",
+                            "stmt": ""
                         },
                         {
-                            "id": "call to echo - \u001b]8;;file:///home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php#L7\u001b\\tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7\u001b[0m\u001b]8;;\u001b\\",
-                            "stmt": "echo $_POST[\"tainted\"]\u001b[0m;"
+                            "id": "echo $_POST\u001b[0m[\"tainted\"];",
+                            "stmt": ""
                         }
                     ]
                 },
                 {
                     "errorType": "TaintedTextWithQuotes",
-                    "errorPath": "\u001b]8;;file:///home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php#L7\u001b\\tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7\u001b[0m\u001b]8;;\u001b\\",
+                    "errorPath": "",
                     "errorMessage": [
                         {
-                            "id": "$_POST",
-                            "stmt": "<no known location>"
+                            "id": "at /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7",
+                            "stmt": "Detected tainted text with possible quotes (see https://psalm.dev/274)"
                         },
                         {
-                            "id": "$_POST['tainted'] - \u001b]8;;file:///home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php#L7\u001b\\tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7\u001b[0m\u001b]8;;\u001b\\",
-                            "stmt": "echo $_POST\u001b[0m[\"tainted\"];"
+                            "id": "<no known location>",
+                            "stmt": ""
                         },
                         {
-                            "id": "call to echo - \u001b]8;;file:///home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php#L7\u001b\\tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7\u001b[0m\u001b]8;;\u001b\\",
-                            "stmt": "echo $_POST[\"tainted\"]\u001b[0m;"
+                            "id": "echo $_POST\u001b[0m[\"tainted\"];",
+                            "stmt": ""
                         }
                     ]
                 },
                 {
                     "errorType": "TaintedHtml",
-                    "errorPath": "\u001b]8;;file:///home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php#L11\u001b\\tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:11:11\u001b[0m\u001b]8;;\u001b\\",
+                    "errorPath": "",
                     "errorMessage": [
                         {
-                            "id": "$_POST",
-                            "stmt": "<no known location>"
+                            "id": "at /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:11:11",
+                            "stmt": "Detected tainted HTML (see https://psalm.dev/245)"
                         },
                         {
-                            "id": "$_POST['taintedTwo'] - \u001b]8;;file:///home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php#L11\u001b\\tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:11:11\u001b[0m\u001b]8;;\u001b\\",
-                            "stmt": "print_r( $_POST\u001b[0m[\"taintedTwo\"] );"
+                            "id": "<no known location>",
+                            "stmt": ""
                         },
                         {
-                            "id": "call to print_r - \u001b]8;;file:///home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php#L11\u001b\\tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:11:11\u001b[0m\u001b]8;;\u001b\\",
-                            "stmt": "print_r( $_POST[\"taintedTwo\"]\u001b[0m );"
+                            "id": "print_r( $_POST\u001b[0m[\"taintedTwo\"] );",
+                            "stmt": ""
                         }
                     ]
                 }

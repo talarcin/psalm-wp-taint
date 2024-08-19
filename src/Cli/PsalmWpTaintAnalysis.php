@@ -79,6 +79,7 @@ final class PsalmWpTaintAnalysis {
 			$pluginSlug = end( $tmp );
 			$output     = [];
 
+			// TODO: Output as XML to xml file and pass to PsalmXMLTaintReport
 			exec( "./vendor/bin/psalm --taint-analysis", $output );
 
 			$outputs[ $pluginSlug ] = $output;
