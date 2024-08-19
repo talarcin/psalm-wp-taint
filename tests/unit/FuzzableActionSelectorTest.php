@@ -10,8 +10,8 @@ use Tuncay\PsalmWpTaint\src\PsalmError\PsalmResult;
 
 class FuzzableActionSelectorTest extends TestCase
 {
-  private const string TEST_DIR_PATH = "./tests/res/fuzzable-action-selector";
-  private const string FUZZABLE_ACTIONS_FILE = "./tests/res/fuzzable-action-selector/fuzzable-actions";
+  private const TEST_DIR_PATH = "./tests/res/fuzzable-action-selector";
+  private const FUZZABLE_ACTIONS_FILE = "./tests/res/fuzzable-action-selector/fuzzable-actions";
   private array $addActionsMap = ["admin_menu" => ["testFunctionName", "testFunctionNameTwo", "testFunctionNameThree"], "init" => ["aivaha_booking_engine", "audio_record_engine"]];
   private FuzzableActionSelector $fuzzableActionSelector;
 
@@ -60,5 +60,10 @@ class FuzzableActionSelectorTest extends TestCase
     $fuzzableActions = json_decode($fuzzableActions);
 
     $this->assertSame("admin_menu", $fuzzableActions[0]);
+  }
+
+  public function testSelectActionsToFuzzWithNonexistentDir(): void
+  {
+    $this->assertFalse($this->fuzzableActionSelector->selectActionsToFuzz("./tests/res/nonexistendir/"));
   }
 }

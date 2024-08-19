@@ -34,9 +34,10 @@ class PsalmAnalysisOutputHandler
 
         foreach ($outputs as $pluginSlug => $output) {
             if (is_array($output)) {
-                $pluginResult = $outputParser->parsePsalmOutput($output);
+                $pluginResult = $outputParser->parsePsalmReport($output);
                 if (!$pluginResult) {
 					$results->totalNoTaint++;
+					continue;
                 } else {
 					$results->totalTaintedPlugins++;
                 }
