@@ -25,7 +25,7 @@
   "require": {
     "vimeo/psalm": "5.25.0",
     "ext-simplexml": "*",
-    "nikic/php-parser": "5.1.0",
+    "nikic/php-parser": "4.19.1",
     "adhocore/cli": "0.9.1"
   },
   "require-dev": {
