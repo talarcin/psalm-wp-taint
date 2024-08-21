@@ -70,7 +70,7 @@ final class PsalmWpTaintAnalysis
 
   private static function runPsalmAnalysisOnAllFoundPlugins(array $pluginDirPaths): array
   {
-    $reportts = [];
+    $reports = [];
     foreach ($pluginDirPaths as $pluginDirPath) {
       if (str_ends_with($pluginDirPath, "~")) {
         continue;
@@ -83,7 +83,6 @@ final class PsalmWpTaintAnalysis
       $tmp        = explode("/", $pluginDirPath);
       $pluginSlug = end($tmp);
 
-      // TODO: Output as XML to xml file and pass to PsalmXMLTaintReport
       exec("./vendor/bin/psalm --taint-analysis --output-format=xml > ./psalm-report.xml");
       $report = new PsalmXMLTaintReport("./psalm-report.xml");
 
