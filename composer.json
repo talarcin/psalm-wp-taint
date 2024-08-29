@@ -19,7 +19,7 @@
   ],
   "extra": {
     "psalm": {
-      "pluginClass": "Plugin"
+      "pluginClass": "PsalmWpTaint\\Plugin"
     }
   },
   "require": {
