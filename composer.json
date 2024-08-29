@@ -23,10 +23,10 @@
     }
   },
   "require": {
-    "vimeo/psalm": "5.25.0",
+    "vimeo/psalm": "dev-master",
     "ext-simplexml": "*",
-    "nikic/php-parser": "4.19.1",
-    "adhocore/cli": "0.9.1"
+    "nikic/php-parser": "dev-master",
+    "adhocore/cli": "v1.7.1"
   },
   "require-dev": {
     "php-stubs/wordpress-stubs": "^6.5",
