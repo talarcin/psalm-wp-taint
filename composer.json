@@ -1,6 +1,6 @@
 {
   "name": "tuncay/psalm-wp-taint",
-  "version": "0.0.1-dev",
+  "version": "0.0.2",
   "description": "A psalm plugin that adds stubs for psalm to define custom taint sinks for wordpress projects",
   "type": "psalm-plugin",
   "license": "proprietary",
@@ -19,7 +19,7 @@
   ],
   "extra": {
     "psalm": {
-      "pluginClass": "Plugin"
+      "pluginClass": "Tuncay\\PsalmWpTaint\\Plugin"
     }
   },
   "require": {
