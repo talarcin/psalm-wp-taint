@@ -19,7 +19,7 @@
   ],
   "extra": {
     "psalm": {
-      "pluginClass": "Plugin"
+      "pluginClass": "Tuncay\\PsalmWpTaint\\Plugin"
     }
   },
   "require": {
