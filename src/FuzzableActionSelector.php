@@ -16,15 +16,17 @@ class FuzzableActionSelector {
 	private array $interestingFilenames;
 	private array $interestingLineNumbers;
 	private array $interestingCallbackFunctions;
+	private string $pluginsRelDir;
 	private const array INTERESTING_TAINT_ERRORS = [ "TaintedHtml" ];
 
-	public function __construct( array $addActionsMap, PsalmResult $psalmResult ) {
+	public function __construct( array $addActionsMap, PsalmResult $psalmResult, string $pluginsDir ) {
 		$this->addActionsMap                = $addActionsMap;
 		$this->psalmResult                  = $psalmResult;
 		$this->fuzzableActions              = [];
 		$this->interestingFilenames         = [];
 		$this->interestingLineNumbers       = [];
 		$this->interestingCallbackFunctions = [];
+		$this->pluginsRelDir                = str_starts_with( $pluginsDir, "." ) ? explode( ".", $pluginsDir )[1] : $pluginsDir;
 		$this->getInterestingFileNamesFromPsalmResult();
 	}
 
@@ -65,8 +67,11 @@ class FuzzableActionSelector {
 		$phpFilesInTargetDir = Util::scanDirForPHPFiles( $dirPath );
 
 		foreach ( $phpFilesInTargetDir as $filepath ) {
-			$filename     = $this->getPHPFileNameFromPath( $filepath );
-			$matchingKeys = array_keys( $this->interestingFilenames, $filename );
+			$filteredFilenames = array_filter( $this->interestingFilenames, function ( $value, $key ) use ( $filepath ) {
+				return str_ends_with( $filepath, $value );
+			}, ARRAY_FILTER_USE_BOTH );
+
+			$matchingKeys = array_keys( $filteredFilenames );
 
 			if ( count( $matchingKeys ) == 0 ) {
 				continue;
@@ -130,13 +135,13 @@ class FuzzableActionSelector {
 			$pluginErrors = $pluginResult->psalmErrors;
 
 			foreach ( $pluginErrors as $error ) {
-				if ($error->errorType != "TaintedHtml") {
+				if ( $error->errorType != "TaintedHtml" ) {
 					continue;
 				}
 
-				$tmp        = explode( "/", $error->errorMessage[1]["id"] );
+				$tmp        = explode( " - ", $error->errorMessage[1]["id"] );
 				$tmp        = explode( ":", array_pop( $tmp ) );
-				$filename   = $tmp[0];
+				$filename   = explode( $this->pluginsRelDir, $tmp[0] )[1];
 				$lineNumber = $tmp[1];
 
 				$this->interestingFilenames[]   = $filename;

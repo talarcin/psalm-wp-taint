@@ -1,62 +1,181 @@
 {
-    "total": 1,
-    "totalTaintedPlugins": 1,
+    "total": 2,
+    "totalTaintedPlugins": 2,
     "totalNoTaint": 0,
     "results": {
-        "tainted-plugin": {
+        "ainted-plugin": {
             "count": 3,
             "errors": [
                 {
                     "errorType": "TaintedHtml",
-                    "errorPath": "/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php",
+                    "errorPath": "/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/ainted-plugin/tainted.php",
                     "errorMessage": [
                         {
                             "id": "$_POST",
                             "stmt": "<no known location>"
                         },
                         {
-                            "id": "$_POST['tainted'] - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7",
+                            "id": "$_POST['tainted'] - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/ainted-plugin/tainted.php:7:7",
                             "stmt": "echo $_POST[\"tainted\"];"
                         },
                         {
-                            "id": "call to echo - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7",
+                            "id": "call to echo - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/ainted-plugin/tainted.php:7:7",
                             "stmt": "echo $_POST[\"tainted\"];"
                         }
                     ]
                 },
                 {
                     "errorType": "TaintedTextWithQuotes",
-                    "errorPath": "/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php",
+                    "errorPath": "/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/ainted-plugin/tainted.php",
                     "errorMessage": [
                         {
                             "id": "$_POST",
                             "stmt": "<no known location>"
                         },
                         {
-                            "id": "$_POST['tainted'] - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7",
+                            "id": "$_POST['tainted'] - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/ainted-plugin/tainted.php:7:7",
                             "stmt": "echo $_POST[\"tainted\"];"
                         },
                         {
-                            "id": "call to echo - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7",
+                            "id": "call to echo - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/ainted-plugin/tainted.php:7:7",
                             "stmt": "echo $_POST[\"tainted\"];"
                         }
                     ]
                 },
                 {
                     "errorType": "TaintedHtml",
-                    "errorPath": "/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php",
+                    "errorPath": "/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/ainted-plugin/tainted.php",
                     "errorMessage": [
                         {
                             "id": "$_POST",
                             "stmt": "<no known location>"
                         },
                         {
-                            "id": "$_POST['taintedTwo'] - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:11:11",
+                            "id": "$_POST['taintedTwo'] - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/ainted-plugin/tainted.php:11:11",
                             "stmt": "print_r( $_POST[\"taintedTwo\"] );"
                         },
                         {
-                            "id": "call to print_r - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:11:11",
+                            "id": "call to print_r - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/ainted-plugin/tainted.php:11:11",
                             "stmt": "print_r( $_POST[\"taintedTwo\"] );"
+                        }
+                    ]
+                }
+            ]
+        },
+        "elementor": {
+            "count": 3,
+            "errors": [
+                {
+                    "errorType": "TaintedCallable",
+                    "errorPath": "/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/common/modules/connect/admin.php",
+                    "errorMessage": [
+                        {
+                            "id": "$_GET",
+                            "stmt": "<no known location>"
+                        },
+                        {
+                            "id": "$_GET['action'] - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/common/modules/connect/admin.php:63:26",
+                            "stmt": "$method = 'action_' . $_GET['action'];"
+                        },
+                        {
+                            "id": "concat - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/common/modules/connect/admin.php:63:14",
+                            "stmt": "$method = 'action_' . $_GET['action'];"
+                        },
+                        {
+                            "id": "$method - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/common/modules/connect/admin.php:63:4",
+                            "stmt": "$method = 'action_' . $_GET['action'];"
+                        },
+                        {
+                            "id": "array['1'] - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/common/modules/connect/admin.php:66:29",
+                            "stmt": "call_user_func( [ $app, $method ] );"
+                        }
+                    ]
+                },
+                {
+                    "errorType": "TaintedHtml",
+                    "errorPath": "/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php",
+                    "errorMessage": [
+                        {
+                            "id": "$_GET",
+                            "stmt": "<no known location>"
+                        },
+                        {
+                            "id": "$_GET['post_type'] - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php:527:17",
+                            "stmt": "$post_type = $_GET['post_type'];"
+                        },
+                        {
+                            "id": "$post_type - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php:527:4",
+                            "stmt": "$post_type = $_GET['post_type'];"
+                        },
+                        {
+                            "id": "$post_data - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php:555:3",
+                            "stmt": "$post_data['post_type'] = $post_type;"
+                        },
+                        {
+                            "id": "call to Elementor\\Core\\Documents_Manager::create - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php:557:60",
+                            "stmt": "$document = Plugin::$instance->documents->create( $type, $post_data, $meta );"
+                        },
+                        {
+                            "id": "Elementor\\Core\\Documents_Manager::create#2 - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php:347:33",
+                            "stmt": "public function create( $type, $post_data = [], $meta_data = [] ) {"
+                        },
+                        {
+                            "id": "$post_data - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php:347:33",
+                            "stmt": "public function create( $type, $post_data = [], $meta_data = [] ) {"
+                        },
+                        {
+                            "id": "$post_data - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php:371:3",
+                            "stmt": "$post_data['meta_input'] = $meta_data;"
+                        },
+                        {
+                            "id": "call to wp_insert_post - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php:373:30",
+                            "stmt": "$post_id = wp_insert_post( $post_data );"
+                        }
+                    ]
+                },
+                {
+                    "errorType": "TaintedHtml",
+                    "errorPath": "/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php",
+                    "errorMessage": [
+                        {
+                            "id": "$_GET",
+                            "stmt": "<no known location>"
+                        },
+                        {
+                            "id": "$_GET['post_type'] - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php:527:17",
+                            "stmt": "$post_type = $_GET['post_type'];"
+                        },
+                        {
+                            "id": "$post_type - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php:527:4",
+                            "stmt": "$post_type = $_GET['post_type'];"
+                        },
+                        {
+                            "id": "$post_data - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php:555:3",
+                            "stmt": "$post_data['post_type'] = $post_type;"
+                        },
+                        {
+                            "id": "call to Elementor\\Core\\Documents_Manager::create - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php:557:60",
+                            "stmt": "$document = Plugin::$instance->documents->create( $type, $post_data, $meta );"
+                        },
+                        {
+                            "id": "Elementor\\Core\\Documents_Manager::create#2 - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php:347:33",
+                            "stmt": "public function create( $type, $post_data = [], $meta_data = [] ) {"
+                        },
+                        {
+                            "id": "$post_data - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php:347:33",
+                            "stmt": "public function create( $type, $post_data = [], $meta_data = [] ) {"
+                        },
+                        {
+                            "id": "$post_data - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php:355:4",
+                            "stmt": "$post_data['post_title'] = __( 'Elementor', 'elementor' );"
+                        },
+                        {
+                            "id": "$post_data - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php:371:3",
+                            "stmt": "$post_data['meta_input'] = $meta_data;"
+                        },
+                        {
+                            "id": "call to wp_insert_post - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php:373:30",
+                            "stmt": "$post_id = wp_insert_post( $post_data );"
                         }
                     ]
                 }
