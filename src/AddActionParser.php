@@ -17,6 +17,7 @@ class AddActionParser {
 	protected static $instance;
 	public array $foundExpressions = [];
 	protected array $actionsMap = [];
+	protected array $analyzedFiles = [];
 
 	protected function __construct() {
 	}
@@ -124,6 +125,17 @@ class AddActionParser {
 	 */
 	public function removeActionsMap(): void {
 		$this->actionsMap = [];
+	}
+
+	public function addFile( string $filepath ): void {
+		$this->analyzedFiles[] = $filepath;
+	}
+
+	public function printAnalyzedFilesToFile( string $filepath ): void {
+		if ( ! file_exists( $filepath ) ) {
+			fopen( $filepath, 'w' );
+		}
+		file_put_contents( $filepath, json_encode( $this->analyzedFiles ) );
 	}
 
 	private function getArgs( Expr $expr ): array {

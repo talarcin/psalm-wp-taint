@@ -1,350 +1,155 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report>
   <item>
-    <link>https://psalm.dev/243</link>
+    <link>https://psalm.dev/245</link>
     <severity>error</severity>
-    <line_from>66</line_from>
-    <line_to>66</line_to>
-    <type>TaintedCallable</type>
-    <message>Detected tainted text</message>
-    <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/common/modules/connect/admin.php</file_name>
-    <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/common/modules/connect/admin.php</file_path>
-    <snippet>call_user_func( [ $app, $method ] );</snippet>
-    <selected_text>[ $app, $method ]</selected_text>
-    <from>1440</from>
-    <to>1457</to>
-    <snippet_from>1420</snippet_from>
-    <snippet_to>1460</snippet_to>
-    <column_from>21</column_from>
-    <column_to>38</column_to>
-    <shortcode>243</shortcode>
+    <line_from>7</line_from>
+    <line_to>7</line_to>
+    <type>TaintedHtml</type>
+    <message>Detected tainted HTML</message>
+    <file_name>tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_name>
+    <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_path>
+    <snippet>echo $_POST["tainted"];</snippet>
+    <selected_text>$_POST["tainted"]</selected_text>
+    <from>157</from>
+    <to>174</to>
+    <snippet_from>151</snippet_from>
+    <snippet_to>175</snippet_to>
+    <column_from>7</column_from>
+    <column_to>24</column_to>
+    <shortcode>245</shortcode>
     <error_level>-2</error_level>
     <taint_trace>
-      <label>$_GET</label>
+      <label>$_POST</label>
       <entry_path_type></entry_path_type>
     </taint_trace>
     <taint_trace>
-      <label>$_GET['action']</label>
-      <line_from>63</line_from>
-      <line_to>63</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/common/modules/connect/admin.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/common/modules/connect/admin.php</file_path>
-      <snippet>$method = 'action_' . $_GET['action'];</snippet>
-      <from>1359</from>
-      <to>1364</to>
-      <snippet_from>1334</snippet_from>
-      <column_from>26</column_from>
+      <label>$_POST['tainted']</label>
+      <line_from>7</line_from>
+      <line_to>7</line_to>
+      <file_name>tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_name>
+      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_path>
+      <snippet>echo $_POST["tainted"];</snippet>
+      <from>157</from>
+      <to>163</to>
+      <snippet_from>151</snippet_from>
+      <column_from>7</column_from>
+      <column_to>13</column_to>
+    </taint_trace>
+    <taint_trace>
+      <label>call to echo</label>
+      <line_from>7</line_from>
+      <line_to>7</line_to>
+      <file_name>tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_name>
+      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_path>
+      <snippet>echo $_POST["tainted"];</snippet>
+      <from>157</from>
+      <to>174</to>
+      <snippet_from>151</snippet_from>
+      <column_from>7</column_from>
+      <column_to>24</column_to>
+    </taint_trace>
+    <other_references></other_references>
+  </item>
+  <item>
+    <link>https://psalm.dev/274</link>
+    <severity>error</severity>
+    <line_from>7</line_from>
+    <line_to>7</line_to>
+    <type>TaintedTextWithQuotes</type>
+    <message>Detected tainted text with possible quotes</message>
+    <file_name>tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_name>
+    <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_path>
+    <snippet>echo $_POST["tainted"];</snippet>
+    <selected_text>$_POST["tainted"]</selected_text>
+    <from>157</from>
+    <to>174</to>
+    <snippet_from>151</snippet_from>
+    <snippet_to>175</snippet_to>
+    <column_from>7</column_from>
+    <column_to>24</column_to>
+    <shortcode>274</shortcode>
+    <error_level>-2</error_level>
+    <taint_trace>
+      <label>$_POST</label>
+      <entry_path_type></entry_path_type>
+    </taint_trace>
+    <taint_trace>
+      <label>$_POST['tainted']</label>
+      <line_from>7</line_from>
+      <line_to>7</line_to>
+      <file_name>tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_name>
+      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_path>
+      <snippet>echo $_POST["tainted"];</snippet>
+      <from>157</from>
+      <to>163</to>
+      <snippet_from>151</snippet_from>
+      <column_from>7</column_from>
+      <column_to>13</column_to>
+    </taint_trace>
+    <taint_trace>
+      <label>call to echo</label>
+      <line_from>7</line_from>
+      <line_to>7</line_to>
+      <file_name>tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_name>
+      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_path>
+      <snippet>echo $_POST["tainted"];</snippet>
+      <from>157</from>
+      <to>174</to>
+      <snippet_from>151</snippet_from>
+      <column_from>7</column_from>
+      <column_to>24</column_to>
+    </taint_trace>
+    <other_references></other_references>
+  </item>
+  <item>
+    <link>https://psalm.dev/245</link>
+    <severity>error</severity>
+    <line_from>11</line_from>
+    <line_to>11</line_to>
+    <type>TaintedHtml</type>
+    <message>Detected tainted HTML</message>
+    <file_name>tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_name>
+    <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_path>
+    <snippet>print_r( $_POST["taintedTwo"] );</snippet>
+    <selected_text>$_POST["taintedTwo"]</selected_text>
+    <from>224</from>
+    <to>244</to>
+    <snippet_from>214</snippet_from>
+    <snippet_to>247</snippet_to>
+    <column_from>11</column_from>
+    <column_to>31</column_to>
+    <shortcode>245</shortcode>
+    <error_level>-2</error_level>
+    <taint_trace>
+      <label>$_POST</label>
+      <entry_path_type></entry_path_type>
+    </taint_trace>
+    <taint_trace>
+      <label>$_POST['taintedTwo']</label>
+      <line_from>11</line_from>
+      <line_to>11</line_to>
+      <file_name>tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_name>
+      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_path>
+      <snippet>print_r( $_POST["taintedTwo"] );</snippet>
+      <from>224</from>
+      <to>230</to>
+      <snippet_from>214</snippet_from>
+      <column_from>11</column_from>
+      <column_to>17</column_to>
+    </taint_trace>
+    <taint_trace>
+      <label>call to print_r</label>
+      <line_from>11</line_from>
+      <line_to>11</line_to>
+      <file_name>tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_name>
+      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php</file_path>
+      <snippet>print_r( $_POST["taintedTwo"] );</snippet>
+      <from>224</from>
+      <to>244</to>
+      <snippet_from>214</snippet_from>
+      <column_from>11</column_from>
       <column_to>31</column_to>
-    </taint_trace>
-    <taint_trace>
-      <label>concat</label>
-      <line_from>63</line_from>
-      <line_to>63</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/common/modules/connect/admin.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/common/modules/connect/admin.php</file_path>
-      <snippet>$method = 'action_' . $_GET['action'];</snippet>
-      <from>1347</from>
-      <to>1374</to>
-      <snippet_from>1334</snippet_from>
-      <column_from>14</column_from>
-      <column_to>41</column_to>
-    </taint_trace>
-    <taint_trace>
-      <label>$method</label>
-      <line_from>63</line_from>
-      <line_to>63</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/common/modules/connect/admin.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/common/modules/connect/admin.php</file_path>
-      <snippet>$method = 'action_' . $_GET['action'];</snippet>
-      <from>1337</from>
-      <to>1344</to>
-      <snippet_from>1334</snippet_from>
-      <column_from>4</column_from>
-      <column_to>11</column_to>
-    </taint_trace>
-    <taint_trace>
-      <label>array['1']</label>
-      <line_from>66</line_from>
-      <line_to>66</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/common/modules/connect/admin.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/common/modules/connect/admin.php</file_path>
-      <snippet>call_user_func( [ $app, $method ] );</snippet>
-      <from>1448</from>
-      <to>1455</to>
-      <snippet_from>1420</snippet_from>
-      <column_from>29</column_from>
-      <column_to>36</column_to>
-    </taint_trace>
-    <other_references></other_references>
-  </item>
-  <item>
-    <link>https://psalm.dev/245</link>
-    <severity>error</severity>
-    <line_from>373</line_from>
-    <line_to>373</line_to>
-    <type>TaintedHtml</type>
-    <message>Detected tainted HTML</message>
-    <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_name>
-    <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_path>
-    <snippet>$post_id = wp_insert_post( $post_data );</snippet>
-    <selected_text>$post_data</selected_text>
-    <from>9272</from>
-    <to>9282</to>
-    <snippet_from>9243</snippet_from>
-    <snippet_to>9285</snippet_to>
-    <column_from>30</column_from>
-    <column_to>40</column_to>
-    <shortcode>245</shortcode>
-    <error_level>-2</error_level>
-    <taint_trace>
-      <label>$_GET</label>
-      <entry_path_type></entry_path_type>
-    </taint_trace>
-    <taint_trace>
-      <label>$_GET['post_type']</label>
-      <line_from>527</line_from>
-      <line_to>527</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php</file_path>
-      <snippet>$post_type = $_GET['post_type'];</snippet>
-      <from>15968</from>
-      <to>15973</to>
-      <snippet_from>15952</snippet_from>
-      <column_from>17</column_from>
-      <column_to>22</column_to>
-    </taint_trace>
-    <taint_trace>
-      <label>$post_type</label>
-      <line_from>527</line_from>
-      <line_to>527</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php</file_path>
-      <snippet>$post_type = $_GET['post_type'];</snippet>
-      <from>15955</from>
-      <to>15965</to>
-      <snippet_from>15952</snippet_from>
-      <column_from>4</column_from>
-      <column_to>14</column_to>
-    </taint_trace>
-    <taint_trace>
-      <label>$post_data</label>
-      <line_from>555</line_from>
-      <line_to>555</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php</file_path>
-      <snippet>$post_data['post_type'] = $post_type;</snippet>
-      <from>16545</from>
-      <to>16555</to>
-      <snippet_from>16543</snippet_from>
-      <column_from>3</column_from>
-      <column_to>13</column_to>
-    </taint_trace>
-    <taint_trace>
-      <label>call to Elementor\Core\Documents_Manager::create</label>
-      <line_from>557</line_from>
-      <line_to>557</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php</file_path>
-      <snippet>$document = Plugin::$instance-&gt;documents-&gt;create( $type, $post_data, $meta );</snippet>
-      <from>16643</from>
-      <to>16653</to>
-      <snippet_from>16584</snippet_from>
-      <column_from>60</column_from>
-      <column_to>70</column_to>
-    </taint_trace>
-    <taint_trace>
-      <label>Elementor\Core\Documents_Manager::create#2</label>
-      <line_from>347</line_from>
-      <line_to>347</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_path>
-      <snippet>public function create( $type, $post_data = [], $meta_data = [] ) {</snippet>
-      <from>8489</from>
-      <to>8499</to>
-      <snippet_from>8457</snippet_from>
-      <column_from>33</column_from>
-      <column_to>43</column_to>
-    </taint_trace>
-    <taint_trace>
-      <label>$post_data</label>
-      <line_from>347</line_from>
-      <line_to>347</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_path>
-      <snippet>public function create( $type, $post_data = [], $meta_data = [] ) {</snippet>
-      <from>8489</from>
-      <to>8499</to>
-      <snippet_from>8457</snippet_from>
-      <column_from>33</column_from>
-      <column_to>43</column_to>
-    </taint_trace>
-    <taint_trace>
-      <label>$post_data</label>
-      <line_from>371</line_from>
-      <line_to>371</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_path>
-      <snippet>$post_data['meta_input'] = $meta_data;</snippet>
-      <from>9203</from>
-      <to>9213</to>
-      <snippet_from>9201</snippet_from>
-      <column_from>3</column_from>
-      <column_to>13</column_to>
-    </taint_trace>
-    <taint_trace>
-      <label>call to wp_insert_post</label>
-      <line_from>373</line_from>
-      <line_to>373</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_path>
-      <snippet>$post_id = wp_insert_post( $post_data );</snippet>
-      <from>9272</from>
-      <to>9282</to>
-      <snippet_from>9243</snippet_from>
-      <column_from>30</column_from>
-      <column_to>40</column_to>
-    </taint_trace>
-    <other_references></other_references>
-  </item>
-  <item>
-    <link>https://psalm.dev/245</link>
-    <severity>error</severity>
-    <line_from>373</line_from>
-    <line_to>373</line_to>
-    <type>TaintedHtml</type>
-    <message>Detected tainted HTML</message>
-    <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_name>
-    <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_path>
-    <snippet>$post_id = wp_insert_post( $post_data );</snippet>
-    <selected_text>$post_data</selected_text>
-    <from>9272</from>
-    <to>9282</to>
-    <snippet_from>9243</snippet_from>
-    <snippet_to>9285</snippet_to>
-    <column_from>30</column_from>
-    <column_to>40</column_to>
-    <shortcode>245</shortcode>
-    <error_level>-2</error_level>
-    <taint_trace>
-      <label>$_GET</label>
-      <entry_path_type></entry_path_type>
-    </taint_trace>
-    <taint_trace>
-      <label>$_GET['post_type']</label>
-      <line_from>527</line_from>
-      <line_to>527</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php</file_path>
-      <snippet>$post_type = $_GET['post_type'];</snippet>
-      <from>15968</from>
-      <to>15973</to>
-      <snippet_from>15952</snippet_from>
-      <column_from>17</column_from>
-      <column_to>22</column_to>
-    </taint_trace>
-    <taint_trace>
-      <label>$post_type</label>
-      <line_from>527</line_from>
-      <line_to>527</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php</file_path>
-      <snippet>$post_type = $_GET['post_type'];</snippet>
-      <from>15955</from>
-      <to>15965</to>
-      <snippet_from>15952</snippet_from>
-      <column_from>4</column_from>
-      <column_to>14</column_to>
-    </taint_trace>
-    <taint_trace>
-      <label>$post_data</label>
-      <line_from>555</line_from>
-      <line_to>555</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php</file_path>
-      <snippet>$post_data['post_type'] = $post_type;</snippet>
-      <from>16545</from>
-      <to>16555</to>
-      <snippet_from>16543</snippet_from>
-      <column_from>3</column_from>
-      <column_to>13</column_to>
-    </taint_trace>
-    <taint_trace>
-      <label>call to Elementor\Core\Documents_Manager::create</label>
-      <line_from>557</line_from>
-      <line_to>557</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/admin/admin.php</file_path>
-      <snippet>$document = Plugin::$instance-&gt;documents-&gt;create( $type, $post_data, $meta );</snippet>
-      <from>16643</from>
-      <to>16653</to>
-      <snippet_from>16584</snippet_from>
-      <column_from>60</column_from>
-      <column_to>70</column_to>
-    </taint_trace>
-    <taint_trace>
-      <label>Elementor\Core\Documents_Manager::create#2</label>
-      <line_from>347</line_from>
-      <line_to>347</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_path>
-      <snippet>public function create( $type, $post_data = [], $meta_data = [] ) {</snippet>
-      <from>8489</from>
-      <to>8499</to>
-      <snippet_from>8457</snippet_from>
-      <column_from>33</column_from>
-      <column_to>43</column_to>
-    </taint_trace>
-    <taint_trace>
-      <label>$post_data</label>
-      <line_from>347</line_from>
-      <line_to>347</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_path>
-      <snippet>public function create( $type, $post_data = [], $meta_data = [] ) {</snippet>
-      <from>8489</from>
-      <to>8499</to>
-      <snippet_from>8457</snippet_from>
-      <column_from>33</column_from>
-      <column_to>43</column_to>
-    </taint_trace>
-    <taint_trace>
-      <label>$post_data</label>
-      <line_from>355</line_from>
-      <line_to>355</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_path>
-      <snippet>$post_data['post_title'] = __( 'Elementor', 'elementor' );</snippet>
-      <from>8730</from>
-      <to>8740</to>
-      <snippet_from>8727</snippet_from>
-      <column_from>4</column_from>
-      <column_to>14</column_to>
-    </taint_trace>
-    <taint_trace>
-      <label>$post_data</label>
-      <line_from>371</line_from>
-      <line_to>371</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_path>
-      <snippet>$post_data['meta_input'] = $meta_data;</snippet>
-      <from>9203</from>
-      <to>9213</to>
-      <snippet_from>9201</snippet_from>
-      <column_from>3</column_from>
-      <column_to>13</column_to>
-    </taint_trace>
-    <taint_trace>
-      <label>call to wp_insert_post</label>
-      <line_from>373</line_from>
-      <line_to>373</line_to>
-      <file_name>tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_name>
-      <file_path>/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php</file_path>
-      <snippet>$post_id = wp_insert_post( $post_data );</snippet>
-      <from>9272</from>
-      <to>9282</to>
-      <snippet_from>9243</snippet_from>
-      <column_from>30</column_from>
-      <column_to>40</column_to>
     </taint_trace>
     <other_references></other_references>
   </item>

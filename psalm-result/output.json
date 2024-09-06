@@ -3,65 +3,6 @@
     "totalTaintedPlugins": 2,
     "totalNoTaint": 0,
     "results": {
-        "ainted-plugin": {
-            "count": 3,
-            "errors": [
-                {
-                    "errorType": "TaintedHtml",
-                    "errorPath": "/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/ainted-plugin/tainted.php",
-                    "errorMessage": [
-                        {
-                            "id": "$_POST",
-                            "stmt": "<no known location>"
-                        },
-                        {
-                            "id": "$_POST['tainted'] - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/ainted-plugin/tainted.php:7:7",
-                            "stmt": "echo $_POST[\"tainted\"];"
-                        },
-                        {
-                            "id": "call to echo - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/ainted-plugin/tainted.php:7:7",
-                            "stmt": "echo $_POST[\"tainted\"];"
-                        }
-                    ]
-                },
-                {
-                    "errorType": "TaintedTextWithQuotes",
-                    "errorPath": "/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/ainted-plugin/tainted.php",
-                    "errorMessage": [
-                        {
-                            "id": "$_POST",
-                            "stmt": "<no known location>"
-                        },
-                        {
-                            "id": "$_POST['tainted'] - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/ainted-plugin/tainted.php:7:7",
-                            "stmt": "echo $_POST[\"tainted\"];"
-                        },
-                        {
-                            "id": "call to echo - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/ainted-plugin/tainted.php:7:7",
-                            "stmt": "echo $_POST[\"tainted\"];"
-                        }
-                    ]
-                },
-                {
-                    "errorType": "TaintedHtml",
-                    "errorPath": "/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/ainted-plugin/tainted.php",
-                    "errorMessage": [
-                        {
-                            "id": "$_POST",
-                            "stmt": "<no known location>"
-                        },
-                        {
-                            "id": "$_POST['taintedTwo'] - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/ainted-plugin/tainted.php:11:11",
-                            "stmt": "print_r( $_POST[\"taintedTwo\"] );"
-                        },
-                        {
-                            "id": "call to print_r - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/ainted-plugin/tainted.php:11:11",
-                            "stmt": "print_r( $_POST[\"taintedTwo\"] );"
-                        }
-                    ]
-                }
-            ]
-        },
         "elementor": {
             "count": 3,
             "errors": [
@@ -176,6 +117,65 @@
                         {
                             "id": "call to wp_insert_post - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/elementor/core/documents-manager.php:373:30",
                             "stmt": "$post_id = wp_insert_post( $post_data );"
+                        }
+                    ]
+                }
+            ]
+        },
+        "tainted-plugin": {
+            "count": 3,
+            "errors": [
+                {
+                    "errorType": "TaintedHtml",
+                    "errorPath": "/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php",
+                    "errorMessage": [
+                        {
+                            "id": "$_POST",
+                            "stmt": "<no known location>"
+                        },
+                        {
+                            "id": "$_POST['tainted'] - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7",
+                            "stmt": "echo $_POST[\"tainted\"];"
+                        },
+                        {
+                            "id": "call to echo - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7",
+                            "stmt": "echo $_POST[\"tainted\"];"
+                        }
+                    ]
+                },
+                {
+                    "errorType": "TaintedTextWithQuotes",
+                    "errorPath": "/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php",
+                    "errorMessage": [
+                        {
+                            "id": "$_POST",
+                            "stmt": "<no known location>"
+                        },
+                        {
+                            "id": "$_POST['tainted'] - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7",
+                            "stmt": "echo $_POST[\"tainted\"];"
+                        },
+                        {
+                            "id": "call to echo - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:7:7",
+                            "stmt": "echo $_POST[\"tainted\"];"
+                        }
+                    ]
+                },
+                {
+                    "errorType": "TaintedHtml",
+                    "errorPath": "/home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php",
+                    "errorMessage": [
+                        {
+                            "id": "$_POST",
+                            "stmt": "<no known location>"
+                        },
+                        {
+                            "id": "$_POST['taintedTwo'] - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:11:11",
+                            "stmt": "print_r( $_POST[\"taintedTwo\"] );"
+                        },
+                        {
+                            "id": "call to print_r - /home/tuncay/GitHub/psalm-wp-taint/tests/res/psalm-wp-taint-analysis/files/tainted-plugin/tainted.php:11:11",
+                            "stmt": "print_r( $_POST[\"taintedTwo\"] );"
                         }
                     ]
                 }
