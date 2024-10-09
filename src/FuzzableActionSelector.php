@@ -27,7 +27,7 @@ class FuzzableActionSelector {
 		$this->interestingLineNumbers       = [];
 		$this->interestingCallbackFunctions = [];
 		$this->pluginsRelDir                = str_starts_with( $pluginsDir, "." ) ? explode( ".", $pluginsDir )[1] : $pluginsDir;
-		$this->getInterestingFileNamesFromPsalmResult();
+		$this->getInterestingFilenamesFromPsalmResult();
 	}
 
 	/**
@@ -130,7 +130,7 @@ class FuzzableActionSelector {
 		return $this->fuzzableActions;
 	}
 
-	private function getInterestingFileNamesFromPsalmResult(): void {
+	private function getInterestingFilenamesFromPsalmResult(): void {
 		foreach ( $this->psalmResult->getResults() as $pluginResult ) {
 			$pluginErrors = $pluginResult->psalmErrors;
 
