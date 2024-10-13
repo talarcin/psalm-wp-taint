@@ -27,10 +27,10 @@ class Plugin implements PluginEntryPointInterface
 
         require_once "src/AfterAnalysisAddActionChecker.php";
         $registration->registerHooksFromClass(AfterAnalysisAddActionChecker::class);
-		/*
+
         foreach ($this->getStubFiles() as $file) {
             $registration->addStubFile($file);
-        }*/
+        }
     }
 
     /**
